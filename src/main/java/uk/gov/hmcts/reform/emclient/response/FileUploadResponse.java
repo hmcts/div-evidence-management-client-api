@@ -2,11 +2,6 @@ package uk.gov.hmcts.reform.emclient.response;
 
 import org.springframework.http.HttpStatus;
 
-/**
- * 
- * @author nitinprabhu
- *
- */
 public class FileUploadResponse {
     String fileUrl;
     String fileName;

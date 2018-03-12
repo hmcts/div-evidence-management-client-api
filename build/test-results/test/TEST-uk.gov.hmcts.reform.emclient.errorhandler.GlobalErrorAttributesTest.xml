@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="uk.gov.hmcts.reform.emclient.errorhandler.GlobalErrorAttributesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-03-12T16:22:38" hostname="turbo" time="0.006">
+  <properties/>
+  <testcase name="getErrorAttributesShouldNotReturnErrorCodeWhenTheErrorCodeRequestAttributeIsMissing" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalErrorAttributesTest" time="0.002"/>
+  <testcase name="getErrorAttributesShouldReturnErrorCodeWhenCorrectRequestAttributeIsSet" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalErrorAttributesTest" time="0.001"/>
+  <testcase name="getErrorAttributesShouldIncludeAllAttributesFromDefaultErrorAttributes" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalErrorAttributesTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

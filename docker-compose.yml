@@ -2,34 +2,6 @@
 version: '2.1'
 
 services:
-  evidence-management-client-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
-    ports:
-      - "4006:4006"
-    expose:
-      - "4006"
-    environment:
-      - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080
-      - EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL=http://em-api-gateway-web:3404/documents
-      - EVIDENCE_MANAGEMENT_HEALTH_URL=http://em-api-gateway-web:3404/health
-      - DOCUMENT_MANAGEMENT_STORE_URL=http://document-management-store:8080
-    links:
-     - em-api-gateway-web
-     - idam-api
-     - service-auth-provider-api
-     - document-management-store
-    depends_on:
-     - em-api-gateway-web
-     - idam-api
-     - service-auth-provider-api
-     - document-management-store
-
   em-api-gateway-web:
      image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-api-gateway-web:latest
      environment:
