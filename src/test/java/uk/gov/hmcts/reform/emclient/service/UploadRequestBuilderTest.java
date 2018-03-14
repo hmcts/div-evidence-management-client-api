@@ -1,12 +1,13 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import org.junit.Test;
+import static java.lang.reflect.Modifier.isPrivate;
+
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import static java.lang.reflect.Modifier.isPrivate;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class UploadRequestBuilderTest {
 

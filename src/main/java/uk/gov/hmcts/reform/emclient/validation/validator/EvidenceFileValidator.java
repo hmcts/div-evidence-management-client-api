@@ -1,14 +1,15 @@
 package uk.gov.hmcts.reform.emclient.validation.validator;
 
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
 @Component
 public class EvidenceFileValidator implements ConstraintValidator<EvidenceFile, MultipartFile> {
