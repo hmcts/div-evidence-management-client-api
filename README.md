@@ -25,25 +25,25 @@
 ## Project setup
 > * git clone [https://github.com/hmcts/div-evidence-management-client-api.git](https://github.com/hmcts/div-evidence-management-client-api.git)
 > * cd div-evidence-management-client-api
-> * Run `make run-emclient` This command will start the spring boot application in an embedded tomcat on port 4006.To change the port change the configuration in `application.properties`
-* Below commands are available in the make file
-  > `make create-sonar-local`
+> * Run `./gradlew bootRun` 
+    (This command will start the spring boot application in an embedded tomcat on port 4006.
+    To change the port change the configuration in `application.properties`. 
+    This will output 
+    `<==========---> 80% EXECUTING [43s]
+     > :bootRun
+    ` but this is expected behaviour of Gradle and means the project is running.)
+* Below commands are available
+  > `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
   > #### This command will create a local Sonar Qube docker instance on port 9000
   
-  > `make dependency-check`
+  > `./gradlew dependencyCheckAnalyze`
   > #### This command will create a dependency check report to identify the use of known vulnerable components.
   
-  > `make run-sonar`
-  > #### This command will generate sonar reports which can accessed at [http://localhost:9000/] (http://localhost:9000/).Before executing this make command make sure `make create-sonar-local` is executed.
-  
-  > `make clean-install`
-  >  #### This command will compile,run tests and create evidence-management-client-api-0.1.0.jar in target directory.
+  > `./gradlew sonarqube -Dsonar.host.url=http://localhost:9000`
+  >  #### This command will generate sonar reports and update it into local sonarqube instance.
  
-  > `make generate-sonar-report-local`
-  >  #### This command will generate sonar reports and update it into local sonar qube instance.
- 
-  > `make run-test`
-  >  #### This command will run unit tests.
+  > `./gradlew check`
+  >  #### This command will runs all verification tasks in the project, including test.
  
  
 ## API Consumption
