@@ -25,7 +25,13 @@
 ## Project setup
 > * git clone [https://github.com/hmcts/div-evidence-management-client-api.git](https://github.com/hmcts/div-evidence-management-client-api.git)
 > * cd div-evidence-management-client-api
-> * Run `./gradlew build` This command will start the spring boot application in an embedded tomcat on port 4006.To change the port change the configuration in `application.properties`
+> * Run `./gradlew bootRun` 
+    (This command will start the spring boot application in an embedded tomcat on port 4006.
+    To change the port change the configuration in `application.properties`. 
+    This will output 
+    `<==========---> 80% EXECUTING [43s]
+     > :bootRun
+    ` but this is expected behaviour of Gradle and means the project is running.)
 * Below commands are available
   > `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
   > #### This command will create a local Sonar Qube docker instance on port 9000
