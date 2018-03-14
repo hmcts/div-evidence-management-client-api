@@ -10,7 +10,6 @@ import uk.gov.hmcts.Versioner
 
 def packager = new Packager(this, 'divorce')
 def versioner = new Versioner(this)
-
 def notificationChannel = '#div-dev'
 
 buildNode {
@@ -22,14 +21,6 @@ buildNode {
       deleteDir()
       checkout scm
       env.CURRENT_SHA = gitSha()
-    }
-
-    onDevelop {
-      stage('Develop Branch SNAPSHOT') {
-        sh '''
-          sed  -i '1,/parent/ s/<\\/version>/-SNAPSHOT<\\/version>/' pom.xml
-        '''
-      }
     }
 
     stage('Build') {
@@ -60,6 +51,10 @@ buildNode {
             sh "./gradlew -Dsonar.analysis.mode=preview -Dsonar.host.url=$SONARQUBE_URL sonarqube"
         }
 
+        onMaster {
+            sh "./gradlew -Dsonar.host.url=$SONARQUBE_URL sonarqube"
+                }
+
         onDevelop {
             sh "./gradlew -Dsonar.host.url=$SONARQUBE_URL sonarqube"
         }
@@ -67,7 +62,7 @@ buildNode {
 
     stage('OWASP dependency check') {
         try {
-            sh "./gradlew -DdependencyCheck.failBuild=true dependencyCheck"
+            sh "./gradlew -DdependencyCheck.failBuild=true dependencyCheckAnalyze"
         } catch (ignored) {
             archiveArtifacts 'build/reports/dependency-check-report.html'
             notifyBuildResult channel: channel, color: 'warning',
