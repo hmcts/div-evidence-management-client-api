@@ -60,7 +60,7 @@ buildNode {
             sh "./gradlew -Dsonar.analysis.mode=preview -Dsonar.host.url=$SONARQUBE_URL sonarqube"
         }
 
-        if (onDevelopOrMaster) {
+        onDevelop {
             sh "./gradlew -Dsonar.host.url=$SONARQUBE_URL sonarqube"
         }
     }
