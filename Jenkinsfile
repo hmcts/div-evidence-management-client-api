@@ -46,7 +46,7 @@ buildNode {
         }
     }
 
-    stage('Sonar') {
+    stage('Code Coverage (Sonar)') {
         onPR {
             sh "./gradlew -Dsonar.analysis.mode=preview -Dsonar.host.url=$SONARQUBE_URL sonarqube"
         }
@@ -60,7 +60,7 @@ buildNode {
         }
     }
 
-    stage('OWASP dependency check') {
+    stage('Dependency check') {
         try {
             sh "./gradlew -DdependencyCheck.failBuild=true dependencyCheckAnalyze"
         } catch (ignored) {
@@ -73,6 +73,10 @@ buildNode {
     stage('Package (JAR)') {
         versioner.addJavaVersionInfo()
         sh "./gradlew installDist bootRepackage"
+    }
+
+    stage('Jacoco Code Coverage') {
+      sh "./gradlew jacocoTestCoverageVerification"
     }
 
     onDevelop {

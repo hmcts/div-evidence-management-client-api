@@ -152,6 +152,16 @@ jacocoTestReport {
     }
 }
 
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
 def debug = System.getProperty("debug")
 run {
     if (debug == 'true') {
