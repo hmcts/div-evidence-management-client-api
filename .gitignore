@@ -5,6 +5,8 @@
 target/
 bin/
 .mvn/
+.gradle
+/build/
 .checkstyle
 Jacobo.exec
 .idea

@@ -18,8 +18,6 @@
   * Jacoco
   * OWASP dependency check
   * Sonar
-  * Xlint
-  * Checkstyle 
   #### :bulb: Checkstyle is currently configured to not fail on violations as the configuration is not yet finalised.
 
 ## Project setup
@@ -33,17 +31,17 @@
      > :bootRun
     ` but this is expected behaviour of Gradle and means the project is running.)
 * Below commands are available
-  > `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
-  > #### This command will create a local Sonar Qube docker instance on port 9000
-  
-  > `./gradlew dependencyCheckAnalyze`
-  > #### This command will create a dependency check report to identify the use of known vulnerable components.
-  
-  > `./gradlew sonarqube -Dsonar.host.url=http://localhost:9000`
-  >  #### This command will generate sonar reports and update it into local sonarqube instance.
- 
-  > `./gradlew check`
-  >  #### This command will runs all verification tasks in the project, including test.
+> `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
+> #### This command will create a local Sonar Qube docker instance on port 9000
+
+> `./gradlew dependencyCheckAnalyze`
+> #### This command will create a dependency check report to identify the use of known vulnerable components.
+
+> `./gradlew sonarqube -Dsonar.host.url=http://localhost:9000`
+>  #### This command will generate sonar reports and update it into local sonarqube instance.
+
+> `./gradlew check`
+>  #### This command will runs all verification tasks in the project, including test.
  
  
 ## API Consumption
@@ -84,7 +82,7 @@
 ##  License
 ```The MIT License (MIT)
 
-Copyright (c) 2017 HMCTS (HM Courts & Tribunals Service)
+Copyright (c) 2018 HMCTS (HM Courts & Tribunals Service)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
