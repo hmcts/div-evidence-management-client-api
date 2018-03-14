@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandlerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2018-03-12T16:22:38" hostname="turbo" time="0.044">
+  <properties/>
+  <testcase name="handleValidationExceptionShouldSetTheStatusCodeTo200" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandlerTest" time="0.009"/>
+  <testcase name="handleValidationExceptionShouldReturnMessageFromConstraintViolation" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandlerTest" time="0.012"/>
+  <testcase name="handleClientExceptionShouldGetTheStatusCodeFromTheExceptionAndSetTheCorrectBody" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandlerTest" time="0.014"/>
+  <testcase name="handleValidationExceptionShouldReturnErrorAttributes" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandlerTest" time="0.004"/>
+  <testcase name="handleMaxUploadExceptionShouldReturn500" classname="uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandlerTest" time="0.002"/>
+  <system-out><![CDATA[2018-03-12 16:22:38,756 ERROR [Test worker] uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandler: Request Id : null and Exception message : null
+2018-03-12 16:22:38,763 ERROR [Test worker] uk.gov.hmcts.reform.emclient.errorhandler.GlobalExceptionHandler: Request Id : null and Exception message : null
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

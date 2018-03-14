@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImplTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-03-12T16:22:45" hostname="turbo" time="0.068">
+  <properties/>
+  <testcase name="shouldDownloadFileAndReturnInputStreamWhenValidInputsArePassed" classname="uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImplTest" time="0.039"/>
+  <testcase name="testInitialiseTraverson" classname="uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImplTest" time="0.01"/>
+  <testcase name="shouldNotDownloadFileAndThrowExceptionWhenEMServiceIsUnavailable" classname="uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImplTest" time="0.008"/>
+  <testcase name="shouldNotDownloadFileAndThrowExceptionWhenBinaryUrlForResourceIsNotAvailable" classname="uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImplTest" time="0.006"/>
+  <system-out><![CDATA[2018-03-12 16:22:45,879 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl: RequestId : 12344 and Downloading file for self url http://localhost:8080/documents/6 
+2018-03-12 16:22:45,881 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl: RequestId : 12344 and Binary file url retrieved is http://localhost:8080/documents/6/binary 
+2018-03-12 16:22:45,899 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl: RequestId : 12344 and Downloading file for self url http://localhost:8080/documents/6 
+2018-03-12 16:22:45,899 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl: RequestId : 12344 and Binary file url retrieved is http://localhost:8080/documents/6/binary 
+2018-03-12 16:22:45,910 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl: RequestId : 12344 and Downloading file for self url http://localhost:8080/documents/6 
+2018-03-12 16:22:45,911 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl: RequestId : 12344 and Binary file url retrieved is null 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

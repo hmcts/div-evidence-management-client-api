@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImplTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImplTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/uk.gov.hmcts.reform.emclient.service.html">uk.gov.hmcts.reform.emclient.service</a> &gt; EvidenceManagementUploadServiceImplTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">12</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.074s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">givenDataIsNotPresent_whenGetTextFromJsonNode_thenReturnNull</td>
+<td>0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">givenDataPresent_whenGetTextFromJsonNode_thenReturnData</td>
+<td>0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">givenNotTextIsBlank_whenGetTextFromJsonNode_thenReturnNull</td>
+<td>0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">givenNotTextIsNull_whenGetTextFromJsonNode_thenReturnNull</td>
+<td>0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">givenStoredFileIsNull_whenGetTextFromJsonNode_thenReturnNull</td>
+<td>0s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldNotUploadFileWithS2STokenAndThrowExceptionWhenAuthorizationTokenIsInvalid</td>
+<td>0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldNotUploadFileWithS2STokenAndThrowExceptionWhenEMStoreIsNotAvailable</td>
+<td>0.002s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldNotUploadFileWithUserTokenAndThrowExceptionWhenAuthorizationTokenIsInvalid</td>
+<td>0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldNotUploadFileWithUserTokenAndThrowExceptionWhenEMServiceIsNotAvailable</td>
+<td>0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldUploadFileWithS2STokenAndReturnFileUrlWithMetadataWhenValidInputsArePassed</td>
+<td>0.004s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldUploadFileWithS2STokenAndReturnNullForEmptyFieldsWhenValidInputsArePassed</td>
+<td>0.006s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">shouldUploadFileWithUserTokenAndReturnFileUrlWithMetadataWhenValidInputsArePassed</td>
+<td>0.050s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2018-03-12 16:22:45,746 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImpl: For Request Id 123333 : File upload response from Evidence Management service is [{&quot;documentType&quot;:null,&quot;size&quot;:3644305,&quot;mimeType&quot;:&quot;application/pdf&quot;,&quot;originalDocumentName&quot;:&quot;JDP.pdf&quot;,&quot;createdBy&quot;:&quot;testuser&quot;,&quot;lastModifiedBy&quot;:&quot;testuser&quot;,&quot;modifiedOn&quot;:&quot;2017-09-01T13:12:36.860+0000&quot;,&quot;createdOn&quot;:&quot;2017-09-01T13:12:36.862+0000&quot;,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6&quot;},&quot;binary&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6/binary&quot;}},&quot;_embedded&quot;:{&quot;allFileVersions&quot;:{&quot;_embedded&quot;:{&quot;fileVersions&quot;:[{&quot;size&quot;:3644305,&quot;mimeType&quot;:&quot;application/pdf&quot;,&quot;originalFileName&quot;:&quot;JDP.pdf&quot;,&quot;createdBy&quot;:&quot;14&quot;,&quot;lastModifiedBy&quot;:&quot;14&quot;,&quot;modifiedOn&quot;:null,&quot;createOn&quot;:&quot;2017-09-01T13:12:36.862+0000&quot;,&quot;_links&quot;:{&quot;binary&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6/versions/7/binary&quot;}}}]}}}}]
+2018-03-12 16:22:45,800 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImpl: For Request Id 123333 : File upload response from Evidence Management service is [{&quot;documentType&quot;:null,&quot;size&quot;:3644305,&quot;mimeType&quot;:&quot;application/pdf&quot;,&quot;originalDocumentName&quot;:&quot;JDP.pdf&quot;,&quot;createdBy&quot;:&quot;testuser&quot;,&quot;lastModifiedBy&quot;:&quot;testuser&quot;,&quot;modifiedOn&quot;:&quot;2017-09-01T13:12:36.860+0000&quot;,&quot;createdOn&quot;:&quot;2017-09-01T13:12:36.862+0000&quot;,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6&quot;},&quot;binary&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6/binary&quot;}},&quot;_embedded&quot;:{&quot;allFileVersions&quot;:{&quot;_embedded&quot;:{&quot;fileVersions&quot;:[{&quot;size&quot;:3644305,&quot;mimeType&quot;:&quot;application/pdf&quot;,&quot;originalFileName&quot;:&quot;JDP.pdf&quot;,&quot;createdBy&quot;:&quot;14&quot;,&quot;lastModifiedBy&quot;:&quot;14&quot;,&quot;modifiedOn&quot;:null,&quot;createOn&quot;:&quot;2017-09-01T13:12:36.862+0000&quot;,&quot;_links&quot;:{&quot;binary&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6/versions/7/binary&quot;}}}]}}}}]
+2018-03-12 16:22:45,809 INFO [Test worker] uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImpl: For Request Id 123333 : File upload response from Evidence Management service is [{&quot;documentType&quot;:null,&quot;size&quot;:3644305,&quot;mimeType&quot;:&quot;application/pdf&quot;,&quot;originalDocumentName&quot;:&quot;JDP.pdf&quot;,&quot;createdOn&quot;:&quot;2017-09-01T13:12:36.862+0000&quot;,&quot;_links&quot;:{&quot;self&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6&quot;},&quot;binary&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6/binary&quot;}},&quot;_embedded&quot;:{&quot;allFileVersions&quot;:{&quot;_embedded&quot;:{&quot;fileVersions&quot;:[{&quot;size&quot;:3644305,&quot;mimeType&quot;:&quot;application/pdf&quot;,&quot;originalFileName&quot;:&quot;JDP.pdf&quot;,&quot;createOn&quot;:&quot;2017-09-01T13:12:36.862+0000&quot;,&quot;_links&quot;:{&quot;binary&quot;:{&quot;href&quot;:&quot;http://localhost:8080/documents/6/versions/7/binary&quot;}}}]}}}}]
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 4.2.1</a> at 12-Mar-2018 16:22:55</p>
+</div>
+</div>
+</body>
+</html>

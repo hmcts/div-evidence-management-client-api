@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheckTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2018-03-12T16:22:24" hostname="turbo" time="0.269">
+  <properties/>
+  <testcase name="shouldReturnUpWhenServiceReturnsOk" classname="uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheckTest" time="0.185"/>
+  <testcase name="shouldReturnDownWhenServiceReturnsServiceUnavailable" classname="uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheckTest" time="0.035"/>
+  <testcase name="shouldReturnUnknownStatusIfUpstreamStatusIsNot200or503" classname="uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheckTest" time="0.003"/>
+  <testcase name="shouldReturnUnknownIfExceptionIsThrown" classname="uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheckTest" time="0.011"/>
+  <testcase name="shouldReturnDownWhenResourceAccessExceptionIsThrown" classname="uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheckTest" time="0.023"/>
+  <system-out><![CDATA[2018-03-12 16:22:24,868 ERROR [Test worker] uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheck: Exception occurred while doing health check
+org.springframework.web.client.HttpServerErrorException$$EnhancerByMockitoWithCGLIB$$a5bea9bf: null
+2018-03-12 16:22:24,893 INFO [Test worker] uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheck: Unable to access upstream service
+$java.lang.RuntimeException$$EnhancerByMockitoWithCGLIB$$30d445de: null
+2018-03-12 16:22:24,918 ERROR [Test worker] uk.gov.hmcts.reform.emclient.health.WebServiceHealthCheck: Exception occurred while doing health check
+org.springframework.web.client.ResourceAccessException$$EnhancerByMockitoWithCGLIB$$38031e6e: null
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
