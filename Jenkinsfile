@@ -10,6 +10,7 @@ import uk.gov.hmcts.Versioner
 
 def packager = new Packager(this, 'divorce')
 def versioner = new Versioner(this)
+
 def notificationChannel = '#div-dev'
 
 buildNode {
@@ -32,47 +33,51 @@ buildNode {
     }
 
     stage('Build') {
-      sh "mvn clean compile"
+
+        onDevelop {
+            sh "./gradlew clean addReleaseSuffixToDevelop build -x test"
+        }
+
+        onPR {
+            sh "./gradlew clean addReleaseSuffixToDevelop build -x test"
+        }
+
+        onMaster {
+            sh "./gradlew clean build -x test"
+        }
     }
 
     stage('Test (Unit)') {
-      sh "mvn test"
+        try {
+            sh "./gradlew test"
+        } finally {
+            junit 'build/test-results/test/**/*.xml'
+        }
     }
 
-    onMaster {
-      stage('Code Coverage (Sonar)') {
-        sh "mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_URL"
-      }
+    stage('Sonar') {
+        onPR {
+            sh "./gradlew -Dsonar.analysis.mode=preview -Dsonar.host.url=$SONARQUBE_URL sonarqube"
+        }
+
+        if (onDevelopOrMaster) {
+            sh "./gradlew -Dsonar.host.url=$SONARQUBE_URL sonarqube"
+        }
     }
 
-    onDevelop {
-      stage('Code Coverage (Sonar)') {
-        sh "mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_URL"
-      }
-    }
-
-    stage("Dependency check") {
-      try {
-        sh "mvn dependency-check:check"
-      }
-      finally {
-        publishHTML(target: [
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "target/",
-            reportFiles          : 'dependency-check-report.html',
-            reportName           : 'Dependency Check Security Test Report'
-        ])
-      }
+    stage('OWASP dependency check') {
+        try {
+            sh "./gradlew -DdependencyCheck.failBuild=true dependencyCheck"
+        } catch (ignored) {
+            archiveArtifacts 'build/reports/dependency-check-report.html'
+            notifyBuildResult channel: channel, color: 'warning',
+                    message: 'OWASP dependency check failed see the report for the errors'
+        }
     }
 
     stage('Package (JAR)') {
-      versioner.addJavaVersionInfo()
-      sh "mvn clean package -DskipTests=true"
-    }
-
-    stage('Jacoco Code Coverage') {
-      sh "mvn verify"
+        versioner.addJavaVersionInfo()
+        sh "./gradlew installDist bootRepackage"
     }
 
     onDevelop {

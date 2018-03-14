@@ -11,14 +11,13 @@
   *  Java8
   * Spring Boot
   * Junit, Mockito and SpringBootTest and Powermockito
-  * Apache Maven
+  * Gradle
   * Spring Hateos
   * Traverson
 * Plugins used by project
   * Jacoco
   * OWASP dependency check
   * Sonar
-  #### :bulb: Checkstyle is currently configured to not fail on violations as the configuration is not yet finalised.
 
 ## Project setup
 > * git clone [https://github.com/hmcts/div-evidence-management-client-api.git](https://github.com/hmcts/div-evidence-management-client-api.git)
@@ -30,7 +29,7 @@
     `<==========---> 80% EXECUTING [43s]
      > :bootRun
     ` but this is expected behaviour of Gradle and means the project is running.)
-* Below commands are available
+* The following commands are available:
 > `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
 > #### This command will create a local Sonar Qube docker instance on port 9000
 
