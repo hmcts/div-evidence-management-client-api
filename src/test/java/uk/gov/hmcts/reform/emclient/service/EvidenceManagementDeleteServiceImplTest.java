@@ -48,7 +48,7 @@ public class EvidenceManagementDeleteServiceImplTest {
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.OK);
 
-        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "AAAABBBB", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -68,7 +68,7 @@ public class EvidenceManagementDeleteServiceImplTest {
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.NO_CONTENT);
 
-        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "AAAABBBB", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -88,7 +88,7 @@ public class EvidenceManagementDeleteServiceImplTest {
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.UNAUTHORIZED);
 
-        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "CCCCDDDD", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "CCCCDDDD", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -108,7 +108,7 @@ public class EvidenceManagementDeleteServiceImplTest {
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.FORBIDDEN);
 
-        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
@@ -133,7 +133,7 @@ public class EvidenceManagementDeleteServiceImplTest {
                           Matchers.<HttpEntity<String>> any(),
                           Matchers.<Class<Resource>> any());
 
-        deleteService.deleteDocument(fileUrl, "AAAABBBB", "12344");
+        deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
         assertFalse("Failed to receive exception resulting from non-running EM service", true);
     }
