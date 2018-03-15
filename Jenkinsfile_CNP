@@ -14,8 +14,8 @@ properties([
 @Library("Infrastructure")
 
 def type = "java"
-def product = "divorce"
-def component = "div-evidence-management-client-api"
+def product = "div"
+def component = "evidence-management-client-api"
 
 def channel = '#div-dev'
 
