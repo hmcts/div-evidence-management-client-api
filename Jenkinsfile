@@ -83,7 +83,7 @@ buildNode {
       stage('Package (RPM)') {
         evidenceManagementClientApiRPMVersion = packager.javaRPM(
             'evidence-management-client-api',
-            '$(ls target/evidence-management-client-api-*.jar)',
+            '$(ls build/libs/div-evidence-management-client-api-$(./gradlew -q printVersion).jar)',
             'springboot',
             'src/main/resources/application.properties'
         )
@@ -107,7 +107,7 @@ buildNode {
       stage('Package (RPM)') {
         evidenceManagementClientApiRPMVersion = packager.javaRPM(
             'evidence-management-client-api',
-            '$(ls target/evidence-management-client-api-*.jar)',
+            '$(ls build/libs/div-evidence-management-client-api-$(./gradlew -q printVersion).jar)',
             'springboot',
             'src/main/resources/application.properties'
         )
