@@ -1,6 +1,16 @@
 package uk.gov.hmcts.reform.emclient.validation.validator;
 
-import com.google.common.collect.ImmutableList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Resource;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,18 +19,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
+
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
-import javax.annotation.Resource;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.google.common.collect.ImmutableList;
 
 @SpringBootTest(classes = {EvidenceManagementClientApplication.class})
 @RunWith(SpringRunner.class)

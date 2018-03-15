@@ -1,5 +1,14 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.BDDMockito.given;
+
+import java.util.Map;
+
+import javax.xml.bind.ValidationException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,14 +16,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.web.context.request.RequestAttributes;
-
-import javax.xml.bind.ValidationException;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalErrorAttributesTest {
