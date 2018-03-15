@@ -3,7 +3,7 @@ locals {
 }
 
 module "app" {
-  source       = "git@github.com:contino/moj-module-webapp.git?ref=master""
+  source       = "git@github.com:contino/moj-module-webapp.git?ref=master"
   product      = "${reform_team}-${reform_service_name}"
   location     = "${var.location}"
   env          = "${var.env}"
