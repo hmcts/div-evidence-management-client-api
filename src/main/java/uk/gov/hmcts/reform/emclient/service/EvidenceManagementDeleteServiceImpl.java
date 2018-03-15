@@ -33,9 +33,9 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
      */
 
     @Override
-    public ResponseEntity<String> deleteDocument(String fileUrl,
-                                                 String authorizationToken,
-                                                 String requestId) {
+    public ResponseEntity<?> deleteFile(String fileUrl,
+                                        String authorizationToken,
+                                        String requestId) {
 
         log.info("deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
