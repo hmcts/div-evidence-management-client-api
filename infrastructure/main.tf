@@ -2,7 +2,7 @@ locals {
   ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 }
 
-module "app" {
+module "div-evidence-management-client-api" {
   source       = "git@github.com:contino/moj-module-webapp.git?ref=master"
   product      = "${reform_team}-${reform_service_name}"
   location     = "${var.location}"
