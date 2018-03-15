@@ -46,10 +46,10 @@ variable "http_connect_timeout" {
   default = "60000"
 }
 
-variable "http_connect_request_timeout" {
+variable "HTTP_CONNECT_REQUEST_TIMEOUT" {
   default = "60000"
 }
 
-variable "http_connect_socket_timeout" {
+variable "HTTP_CONNECT_SOCKET_TIMEOUT" {
   default = "1000"
 }
