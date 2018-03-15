@@ -21,7 +21,7 @@ plugins {
     id 'pmd'
 }
 
-group = 'org.springframework'
+group = 'uk.gov.hmcts.reform.divorce'
 version = '0.1.4'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
