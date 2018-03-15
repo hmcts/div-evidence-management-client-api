@@ -4,7 +4,7 @@ locals {
 
 module "div-evidence-management-client-api" {
   source       = "git@github.com:contino/moj-module-webapp.git?ref=master"
-  product      = "${reform_team}-${reform_service_name}"
+  product      = "${var.reform_team}-${var.reform_service_name}"
   location     = "${var.location}"
   env          = "${var.env}"
   ilbIp        = "${var.ilbIp}"
@@ -12,8 +12,8 @@ module "div-evidence-management-client-api" {
   is_frontend  = false
 
   app_settings = {
-    REFORM_SERVICE_NAME                                   = "${var.reform_service_name }"
-    REFORM_TEAM                                           = "${var.reform_team }"
+    REFORM_SERVICE_NAME                                   = "${var.reform_service_name}"
+    REFORM_TEAM                                           = "${var.reform_team}"
     REFORM_ENVIRONMENT                                    = "${var.env}"
     SERVER_PORT                                           = "${var.evidence_management_client_api_port}"
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL                  = "${var.auth_provider_service_client_baseurl}"
