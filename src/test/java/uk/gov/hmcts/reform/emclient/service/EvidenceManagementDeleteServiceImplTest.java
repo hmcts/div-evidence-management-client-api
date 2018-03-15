@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,7 +26,7 @@ import static org.mockito.Mockito.doThrow;
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementDeleteServiceImplTest {
 
-    private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "evidenceManagementServiceURL";
+    private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
 
     @Mock
     private RestTemplate restTemplate;
@@ -37,86 +35,125 @@ public class EvidenceManagementDeleteServiceImplTest {
     private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
 
 
-
-    @Before
-    public void before() {
-        ReflectionTestUtils.setField(deleteService, "evidenceManagementServiceURL", EVIDENCE_MANAGEMENT_SERVICE_URL);
-    }
-
+    /**
+     * This test issues a document delete request that is expected to succeed. It ensures that the OK response from
+     *  the EM document store service passes cleanly through the evidence management client api to the caller
+     *  without any issues or exceptions occurring.
+     * <p/>
+     */
 
     @Test
     public void shouldPassThruDocumentDeletedSuccessfullyState() {
 
-        setupMockEvidenceManagementService(HttpStatus.OK);
+        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
+        setupMockEvidenceManagementService(fileUrl, HttpStatus.OK);
 
-        ResponseEntity<String> response = deleteService.deleteDocument("56", "AAAABBBB", "12344");
+        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "AAAABBBB", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
 
+    /**
+     * This test issues a document delete request that is expected to do nothing. It ensures that the NO_CONTENT
+     *  response from the EM document store service passes cleanly through the evidence management client api to
+     *  the caller without any issues or exceptions occurring.
+     * <p/>
+     */
+
     @Test
     public void shouldPassThruNoDocumentIdIsPassedState() {
 
-        setupMockEvidenceManagementService(HttpStatus.NO_CONTENT);
+        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("");
+        setupMockEvidenceManagementService(fileUrl, HttpStatus.NO_CONTENT);
 
-        ResponseEntity<String> response = deleteService.deleteDocument("", "AAAABBBB", "12344");
+        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "AAAABBBB", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
 
+    /**
+     * This test issues a document delete request that is expected to be rejected due to the caller being unauthorised.
+     *  It ensures that the UNAUTHORIZED response from the EM document store service passes cleanly through the
+     *  evidence management client api to the caller without any issues or exceptions occurring.
+     * <p/>
+     */
+
     @Test
     public void shouldPassThruNotAuthorisedAuthTokenState() {
 
-        setupMockEvidenceManagementService(HttpStatus.UNAUTHORIZED);
+        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
+        setupMockEvidenceManagementService(fileUrl, HttpStatus.UNAUTHORIZED);
 
-        ResponseEntity<String> response = deleteService.deleteDocument("56", "CCCCDDDD", "12344");
+        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "CCCCDDDD", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
 
+    /**
+     * This test issues a document delete request that is expected to be rejected due to the caller being unauthenticated.
+     *  It ensures that the FORBIDDEN response from the EM document store service passes cleanly through the
+     *  evidence management client api to the caller without any issues or exceptions occurring.
+     * <p/>
+     */
+
     @Test
     public void shouldPassThruNotAuthenticatedAuthTokenState() {
 
-        setupMockEvidenceManagementService(HttpStatus.FORBIDDEN);
+        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
+        setupMockEvidenceManagementService(fileUrl, HttpStatus.FORBIDDEN);
 
-        ResponseEntity<String> response = deleteService.deleteDocument("56", "", "12344");
+        ResponseEntity<String> response = deleteService.deleteDocument(fileUrl, "", "12344");
 
         assertNotNull(response);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
 
+    /**
+     * This test issues a document delete request that is expected to cause an exception due to the EM document service
+     *  being unavailable. It ensures that the expected exception passes cleanly through to the caller.
+     * <p/>
+     */
+
     @Test(expected = ResourceAccessException.class)
     public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
 
+        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
+
         doThrow(ResourceAccessException.class)
                 .when(restTemplate)
-                .exchange(Mockito.eq(EVIDENCE_MANAGEMENT_SERVICE_URL),
+                .exchange(Mockito.eq(fileUrl),
                           Mockito.eq(HttpMethod.DELETE),
                           Matchers.<HttpEntity<String>> any(),
-                          Matchers.<Class<Resource>> any(),
-                          Mockito.any(String.class));
+                          Matchers.<Class<Resource>> any());
 
-        deleteService.deleteDocument("25", "AAAABBBB", "12344");
+        deleteService.deleteDocument(fileUrl, "AAAABBBB", "12344");
 
         assertFalse("Failed to receive exception resulting from non-running EM service", true);
     }
 
 
-    private void setupMockEvidenceManagementService(HttpStatus httpStatus) {
+    /**
+     * This method sets up the mock evidence management document service endpoint for the currently executing test.
+     * <p/>
+     * @param fileUrl    a String containing the url for which the mock endpoint will respond
+     * @param httpStatus an HttpStatus enum representing the http status value to be returned from the mock endpoint
+     */
+
+    private void setupMockEvidenceManagementService(String     fileUrl,
+                                                    HttpStatus httpStatus) {
 
         doReturn(new ResponseEntity<>(httpStatus))
                 .when(restTemplate)
-                .exchange(Mockito.eq(EVIDENCE_MANAGEMENT_SERVICE_URL),
+                .exchange(Mockito.eq(fileUrl),
                           Mockito.eq(HttpMethod.DELETE),
                           Matchers.<HttpEntity<String>> any(),
-                          Matchers.<Class<Resource>> any(),
-                          Mockito.any(String.class));
+                          Matchers.<Class<Resource>> any());
     }
 }
