@@ -55,3 +55,10 @@ variable "http_connect_socket_timeout" {
 }
 
 variable "subscription" {}
+
+variable "location" {
+  type    = "string"
+  default = "UK South"
+}
+
+variable "ilbIp" {}
