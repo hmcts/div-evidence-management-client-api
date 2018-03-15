@@ -53,3 +53,5 @@ variable "http_connect_request_timeout" {
 variable "http_connect_socket_timeout" {
   default = "1000"
 }
+
+variable "subscription" {}
