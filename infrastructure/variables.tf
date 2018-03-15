@@ -1,5 +1,10 @@
+variable "product" {
+  type    = "string"
+  default = "divorce"
+}
+
 variable "reform_service_name" {
-  default = "evidence-management-client-api"
+  default = "div-evidence-management-client-api"
 }
 
 variable "reform_team" {
