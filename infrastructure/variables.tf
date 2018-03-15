@@ -3,7 +3,7 @@ variable "reform_service_name" {
 }
 
 variable "reform_team" {
-  default = "Divorce"
+  default = "div"
 }
 
 variable "env" {
