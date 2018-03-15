@@ -1,9 +1,9 @@
 variable "reform_service_name" {
-  default = "div-evidence-management-client-api"
+  default = "evidence-management-client-api"
 }
 
 variable "reform_team" {
-  default = "divorce"
+  default = "Divorce"
 }
 
 variable "env" {
