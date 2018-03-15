@@ -54,6 +54,10 @@ variable "http_connect_socket_timeout" {
   default = "1000"
 }
 
+variable "evidence_management_store_url" {
+  default = "https://api.test.dm.reform.hmcts.net:4604"
+}
+
 variable "subscription" {}
 
 variable "location" {
