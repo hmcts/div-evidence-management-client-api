@@ -8,42 +8,39 @@
   * File Upload(s)
   * File Download
 * It uses below technical stack
-  *  Java8
+  * Java8
   * Spring Boot
   * Junit, Mockito and SpringBootTest and Powermockito
-  * Apache Maven
+  * Gradle
   * Spring Hateos
   * Traverson
 * Plugins used by project
   * Jacoco
   * OWASP dependency check
   * Sonar
-  * Xlint
-  * Checkstyle 
-  #### :bulb: Checkstyle is currently configured to not fail on violations as the configuration is not yet finalised.
 
 ## Project setup
 > * git clone [https://github.com/hmcts/div-evidence-management-client-api.git](https://github.com/hmcts/div-evidence-management-client-api.git)
 > * cd div-evidence-management-client-api
-> * Run `make run-emclient` This command will start the spring boot application in an embedded tomcat on port 4006.To change the port change the configuration in `application.properties`
-* Below commands are available in the make file
-  > `make create-sonar-local`
-  > #### This command will create a local Sonar Qube docker instance on port 9000
-  
-  > `make dependency-check`
-  > #### This command will create a dependency check report to identify the use of known vulnerable components.
-  
-  > `make run-sonar`
-  > #### This command will generate sonar reports which can accessed at [http://localhost:9000/] (http://localhost:9000/).Before executing this make command make sure `make create-sonar-local` is executed.
-  
-  > `make clean-install`
-  >  #### This command will compile,run tests and create evidence-management-client-api-0.1.0.jar in target directory.
- 
-  > `make generate-sonar-report-local`
-  >  #### This command will generate sonar reports and update it into local sonar qube instance.
- 
-  > `make run-test`
-  >  #### This command will run unit tests.
+> * Run `./gradlew bootRun` 
+    (This command will start the spring boot application in an embedded tomcat on port 4006.
+    To change the port change the configuration in `application.properties`. 
+    This will output 
+    `<==========---> 80% EXECUTING [43s]
+     > :bootRun
+    ` but this is expected behaviour of Gradle and means the project is running.)
+* The following commands are available:
+> `docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest`
+> #### This command will create a local Sonar Qube docker instance on port 9000
+
+> `./gradlew dependencyCheckAnalyze`
+> #### This command will create a dependency check report to identify the use of known vulnerable components.
+
+> `./gradlew sonarqube -Dsonar.host.url=http://localhost:9000`
+>  #### This command will generate sonar reports and update it into local sonarqube instance.
+
+> `./gradlew check`
+>  #### This command will runs all verification tasks in the project, including test.
  
  
 ## API Consumption
@@ -84,7 +81,7 @@
 ##  License
 ```The MIT License (MIT)
 
-Copyright (c) 2017 HMCTS (HM Courts & Tribunals Service)
+Copyright (c) 2018 HMCTS (HM Courts & Tribunals Service)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

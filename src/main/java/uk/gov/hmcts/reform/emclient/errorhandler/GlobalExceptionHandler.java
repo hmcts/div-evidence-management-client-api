@@ -1,5 +1,11 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,16 +19,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-import java.util.Map;
-
-/**
- * 
- * @author nitinprabhu
- *
- */
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final String EXCEPTION_MESSAGE = "Request Id : {} and Exception message : {}";

@@ -1,7 +1,13 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import static java.util.stream.StreamSupport.stream;
+
+import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.prepareRequest;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +21,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static java.util.stream.StreamSupport.stream;
-import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.prepareRequest;
-
-/**
- * 
- * @author nitinprabhu
- *
- */
 @Service
 public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUploadService {
 

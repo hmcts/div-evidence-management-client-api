@@ -1,7 +1,11 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:8-jre-alpine
 
-COPY target/evidence-management-client-api-*.jar /app.jar
+COPY build/install/div-evidence-management-client-api /opt/app/
+
+WORKDIR /opt/app
+
+HEALTHCHECK --interval=100s --timeout=100s --retries=10 CMD http_proxy="" wget -q http://localhost:4006/status/health || exit 1
 
 EXPOSE 4006
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["/opt/app/bin/div-evidence-management-client-api"]

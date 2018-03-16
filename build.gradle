@@ -1,0 +1,170 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'application'
+    id 'org.springframework.boot' version'1.5.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.3.RELEASE'
+    id 'org.owasp.dependencycheck' version '2.1.0'
+    id 'org.sonarqube' version '2.6.2'
+    id 'jacoco'
+    id 'pmd'
+}
+
+group = 'uk.gov.hmcts.reform.divorce'
+version = '0.1.4'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    }
+}
+
+mainClassName = 'uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication'
+
+compileJava {
+    options.compilerArgs << '-parameters' << '-Xlint:deprecation'
+}
+
+compileTestJava {
+    options.compilerArgs << '-Xlint:deprecation'
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+dependencyCheck {
+    // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+    // range of 0-10 fails the build, anything greater and it doesn't fail the build
+    failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+    suppressionFile = 'dependency-check-suppressions.xml'
+}
+
+def versions = [
+
+        commonsIo: '2.5',
+        commonsLang3: '3.0',
+        hibernate: '6.0.5.Final',
+        jacksonCore: '2.9.4',
+        javaxValidation: '2.0.0.Final',
+        jaywayJsonPath: '2.2.0',
+        puppyCrawl: '7.6',
+        reformsJavaLoggingSpring: '1.2.1',
+        reformsJavaLoggingHttpComponents: '1.2.1',
+        reformsHttpProxySpringBootAutoconfigure: '1.1.0',
+        sprintBoot: '1.5.9.RELEASE',
+        springCloud: '1.2.5.RELEASE',
+        springRetry: '1.2.1.RELEASE',
+        springHateoas: '0.23.0.RELEASE',
+        springPluginCore: '1.2.0.RELEASE'
+]
+
+dependencies {
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
+    compile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
+    compile group: 'commons-io', name: 'commons-io', version: versions.commonsIo
+    compile group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.sprintBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.sprintBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.sprintBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.sprintBoot
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: versions.springCloud
+    compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
+    compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLoggingSpring
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLoggingHttpComponents
+    compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
+        exclude(module: 'commons-logging')
+    }
+}
+
+task printVersion {
+    doLast {
+        print project.version
+    }
+}
+
+task developAddReleaseSuffix() {
+    version = "${version}-SNAPSHOT"
+}
+
+def sonarExclusions = [
+        '**uk/gov/hmcts/reform/emclient/exception/*',
+        '**uk/gov/hmcts/reform/emclient/configuration/*',
+        '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
+        '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
+        '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
+]
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "DivorceEvidenceManagementClientApi"
+        property "sonar.projectName", "Divorce :: Evidence Management Client API"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+        property "sonar.jacoco.itReportPath", "${project.buildDir}/jacoco/apiTest.exec"
+        property "sonar.exclusions", sonarExclusions.join(", ")
+    }
+}
+
+task addReleaseSuffixToDevelop() {
+    version = "${version}-SNAPSHOT"
+}
+
+jacocoTestReport {
+    executionData(test)
+
+    reports {
+        xml {
+            enabled true
+        }
+
+        html {
+            enabled true
+        }
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+def debug = System.getProperty("debug")
+run {
+    if (debug == 'true') {
+        jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5010']
+    }
+}
