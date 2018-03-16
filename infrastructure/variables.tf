@@ -1,5 +1,5 @@
 variable "reform_service_name" {
-  default = "evidence-management-client-api"
+  default = "em-client-api"
 }
 
 variable "reform_team" {
