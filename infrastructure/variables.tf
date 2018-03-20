@@ -10,6 +10,10 @@ variable "env" {
   type = "string"
 }
 
+variable "evidence_management_client_api_port" {
+  default = "4006"
+}
+
 variable "auth_provider_service_client_baseurl" {
   type = "string"
 }
