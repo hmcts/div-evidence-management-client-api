@@ -29,8 +29,13 @@ module "div-em-client-api" {
     # EVIDENCE_MANAGEMENT_HEALTH_URL                        = "${local.dm_store_url}/health"
     # DOCUMENT_MANAGEMENT_STORE_URL                         = "${local.dm_store_url}"
 
-    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.tactical_em_gateway_url}/documents"
-    EVIDENCE_MANAGEMENT_HEALTH_URL      = "${local.tactical_em_gateway_url}/health"
+
+    # EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.tactical_em_gateway_url}/documents"
+    # EVIDENCE_MANAGEMENT_HEALTH_URL      = "${local.tactical_em_gateway_url}/health"
+    # DOCUMENT_MANAGEMENT_STORE_URL       = "${local.tactical_dm_store_url}"
+
+    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.tactical_dm_store_url}/documents"
+    EVIDENCE_MANAGEMENT_HEALTH_URL      = "${local.tactical_dm_store_url}/health"
     DOCUMENT_MANAGEMENT_STORE_URL       = "${local.tactical_dm_store_url}"
     HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
     HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
