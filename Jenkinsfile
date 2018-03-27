@@ -46,6 +46,12 @@ buildNode {
         }
     }
 
+    stage('Mutation Testing (Pitest)') {
+        onPR {
+              sh "./gradlew pitest"
+        }
+    }
+
     stage('Code Coverage (Sonar)') {
         onPR {
             sh "./gradlew -Dsonar.analysis.mode=preview -Dsonar.host.url=$SONARQUBE_URL sonarqube"
