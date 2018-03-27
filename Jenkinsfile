@@ -23,63 +23,73 @@ buildNode {
       env.CURRENT_SHA = gitSha()
     }
 
-    onDevelop {
-      stage('Develop Branch SNAPSHOT') {
-        sh '''
-          sed  -i '1,/parent/ s/<\\/version>/-SNAPSHOT<\\/version>/' pom.xml
-        '''
-      }
-    }
-
     stage('Build') {
-      sh "mvn clean compile"
+
+        onDevelop {
+            sh "./gradlew clean addReleaseSuffixToDevelop build -x test"
+        }
+
+        onPR {
+            sh "./gradlew clean addReleaseSuffixToDevelop build -x test"
+        }
+
+        onMaster {
+            sh "./gradlew clean build -x test"
+        }
     }
 
     stage('Test (Unit)') {
-      sh "mvn test"
+        try {
+            sh "./gradlew test"
+        } finally {
+            junit 'build/test-results/test/**/*.xml'
+        }
     }
 
-    onMaster {
-      stage('Code Coverage (Sonar)') {
-        sh "mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_URL"
-      }
+    stage('Mutation Testing (Pitest)') {
+        onPR {
+              sh "./gradlew pitest"
+        }
     }
 
-    onDevelop {
-      stage('Code Coverage (Sonar)') {
-        sh "mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_URL"
-      }
+    stage('Code Coverage (Sonar)') {
+        onPR {
+            sh "./gradlew -Dsonar.analysis.mode=preview -Dsonar.host.url=$SONARQUBE_URL sonarqube"
+        }
+
+        onMaster {
+            sh "./gradlew -Dsonar.host.url=$SONARQUBE_URL sonarqube"
+                }
+
+        onDevelop {
+            sh "./gradlew -Dsonar.host.url=$SONARQUBE_URL sonarqube"
+        }
     }
 
-    stage("Dependency check") {
-      try {
-        sh "mvn dependency-check:check"
-      }
-      finally {
-        publishHTML(target: [
-            alwaysLinkToLastBuild: true,
-            keepAll              : true,
-            reportDir            : "target/",
-            reportFiles          : 'dependency-check-report.html',
-            reportName           : 'Dependency Check Security Test Report'
-        ])
-      }
+    stage('Dependency check') {
+        try {
+            sh "./gradlew -DdependencyCheck.failBuild=true dependencyCheckAnalyze"
+        } catch (ignored) {
+            archiveArtifacts 'build/reports/dependency-check-report.html'
+            notifyBuildResult channel: channel, color: 'warning',
+                    message: 'OWASP dependency check failed see the report for the errors'
+        }
     }
 
     stage('Package (JAR)') {
-      versioner.addJavaVersionInfo()
-      sh "mvn clean package -DskipTests=true"
+        versioner.addJavaVersionInfo()
+        sh "./gradlew installDist bootRepackage"
     }
 
     stage('Jacoco Code Coverage') {
-      sh "mvn verify"
+      sh "./gradlew jacocoTestCoverageVerification"
     }
 
     onDevelop {
       stage('Package (RPM)') {
         evidenceManagementClientApiRPMVersion = packager.javaRPM(
             'evidence-management-client-api',
-            '$(ls target/evidence-management-client-api-*.jar)',
+            '$(ls build/libs/div-evidence-management-client-api-$(./gradlew -q printVersion).jar)',
             'springboot',
             'src/main/resources/application.properties'
         )
@@ -103,7 +113,7 @@ buildNode {
       stage('Package (RPM)') {
         evidenceManagementClientApiRPMVersion = packager.javaRPM(
             'evidence-management-client-api',
-            '$(ls target/evidence-management-client-api-*.jar)',
+            '$(ls build/libs/div-evidence-management-client-api-$(./gradlew -q printVersion).jar)',
             'springboot',
             'src/main/resources/application.properties'
         )

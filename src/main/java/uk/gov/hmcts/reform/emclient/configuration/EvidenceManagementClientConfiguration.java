@@ -26,11 +26,6 @@ import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingIntercep
 
 import static java.util.Arrays.asList;
 
-/**
- * 
- * @author nitinprabhu
- *
- */
 @Configuration
 public class EvidenceManagementClientConfiguration {
 

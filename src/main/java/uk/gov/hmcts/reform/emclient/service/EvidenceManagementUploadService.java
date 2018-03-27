@@ -1,15 +1,11 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import org.springframework.web.multipart.MultipartFile;
-import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
-
 import java.util.List;
 
-/**
- * 
- * @author nitinprabhu
- *
- */
+import org.springframework.web.multipart.MultipartFile;
+
+import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
+
 public interface EvidenceManagementUploadService {
     List<FileUploadResponse> uploadFilesWithS2SAuthToken(List<MultipartFile> files, String authorizationToken, String requestId);
 
