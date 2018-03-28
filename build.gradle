@@ -25,6 +25,7 @@ group = 'org.springframework'
 version = '0.1.4'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+jar.archiveName = 'div-evidence-management-client-api.jar'
 
 jar {
     manifest {
@@ -103,6 +104,12 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
+    }
+}
+
+task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
+    useJUnit {
+        includeCategories 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
     }
 }
 
