@@ -6,11 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.emclient.category.SmokeTest;
 
-/**
- * 
- * @author nitinprabhu
- *
- */
 @RunWith(SpringRunner.class)
 @Category(SmokeTest.class)
 public class EvidenceManagementClientApplicationTest {
