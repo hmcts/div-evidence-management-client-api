@@ -10,6 +10,10 @@ variable "env" {
   type = "string"
 }
 
+variable evidence_management_gateway_baseurl {
+  type = "string"
+}
+
 variable "evidence_management_client_api_port" {
   default = "4006"
 }
@@ -28,6 +32,10 @@ variable "auth_provider_service_client_tokentimetoliveinseconds" {
 
 variable "document_store_url" {
   default = "dm-store-app"
+}
+
+variable "document_management_store_baseurl" {
+  type = "string"
 }
 
 variable "http_connect_timeout" {
