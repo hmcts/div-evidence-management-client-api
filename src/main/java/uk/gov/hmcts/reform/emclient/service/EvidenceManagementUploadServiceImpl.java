@@ -4,15 +4,19 @@ import static java.util.stream.StreamSupport.stream;
 
 import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.prepareRequest;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.nimbusds.jwt.JWTParser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.hateoas.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,12 +26,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Service
+@EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUploadService {
 
     private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
@@ -42,6 +49,9 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
 
     @Autowired
     private RestTemplate template;
+
+    @Autowired
+    private AuthTokenGenerator authTokenGenerator;
 
     @Override
     public List<FileUploadResponse> uploadFilesWithS2SAuthToken(List<MultipartFile> files, String authorizationToken, String requestId) {
@@ -108,8 +118,21 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
 
     private HttpHeaders setHttpHeaders(String authHeaderName, String authorizationToken) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(authHeaderName, authorizationToken);
+        headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
         headers.set("Content-Type", "multipart/form-data");
+        headers.set("user-id", getUserId(authorizationToken));
         return headers;
+    }
+
+    public String getUserId(String encodedJwt) {
+        String jwt = encodedJwt.replaceFirst("Bearer ", "");
+        Map<String, Object> claims;
+        try {
+            claims = JWTParser.parse(jwt).getJWTClaimsSet().getClaims();
+
+        } catch (ParseException e) {
+            throw new IllegalStateException("Cannot find user from authorization token ", e);
+        }
+        return (String) claims.get("id");
     }
 }
