@@ -6,6 +6,7 @@ target/
 bin/
 .gradle
 /build/
+out/
 .checkstyle
 Jacobo.exec
 .idea

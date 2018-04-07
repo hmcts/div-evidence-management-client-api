@@ -52,6 +52,16 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
+distributions {
+  main {
+    contents {
+      from(file("$projectDir/lib/AI-Agent.xml")) {
+        into "lib"
+      }
+    }
+  }
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
@@ -73,8 +83,9 @@ def versions = [
         javaxValidation: '2.0.0.Final',
         jaywayJsonPath: '2.2.0',
         puppyCrawl: '7.6',
-        reformsJavaLoggingSpring: '1.2.1',
-        reformsJavaLoggingHttpComponents: '1.2.1',
+        reformsJavaLoggingAppInsights: '2.0.2',
+        reformsJavaLoggingSpring: '2.0.2',
+        reformsJavaLoggingHttpComponents: '2.0.2',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
         sprintBoot: '1.5.9.RELEASE',
         springCloud: '1.2.5.RELEASE',
@@ -99,6 +110,7 @@ dependencies {
     compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.reformsJavaLoggingAppInsights
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLoggingSpring
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLoggingHttpComponents
     compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
