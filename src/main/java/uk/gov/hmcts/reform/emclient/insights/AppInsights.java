@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.emclient.logging;
+package uk.gov.hmcts.reform.emclient.insights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import org.slf4j.Logger;
