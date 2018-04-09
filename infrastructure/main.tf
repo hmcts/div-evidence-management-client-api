@@ -22,6 +22,7 @@ module "div-em-client-api" {
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE             = "${var.auth_provider_service_client_microservice}"
     AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.auth_provider_service_client_key.data["value"]}"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
+    DIVORCE_DOCUMENT_UPLOAD_KEY                           = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
 
     DOCUMENT_MANAGEMENT_STORE_URL       = "${var.document_management_store_baseurl}"
     EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${var.evidence_management_gateway_baseurl}/documents"
@@ -37,5 +38,9 @@ provider "vault" {
 }
 
 data "vault_generic_secret" "auth_provider_service_client_key" {
+  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentUpload"
+}
+
+data "vault_generic_secret" "divorce_document_upload_client_key" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentUpload"
 }

@@ -1,83 +1,27 @@
 package uk.gov.hmcts.reform.emclient.response;
 
+import lombok.Builder;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 
+@Value
+@Builder
 public class FileUploadResponse {
-    String fileUrl;
-    String fileName;
-    String mimeType;
-    String createdBy;
-    String lastModifiedBy;
-    String createdOn;
-    String modifiedOn;
-    HttpStatus status;
 
-    public FileUploadResponse(HttpStatus status) {
-        this.status = status;
-    }
+   private String fileUrl;
 
-    public String getFileUrl() {
-        return fileUrl;
-    }
+   private String fileName;
 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
+   private String mimeType;
 
-    public String getFileName() {
-        return fileName;
-    }
+   private String createdBy;
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+   private String lastModifiedBy;
 
-    public String getMimeType() {
-        return mimeType;
-    }
+   private String createdOn;
 
-    public void setMimeType(String mimeType) {
-        this.mimeType = mimeType;
-    }
+   private String modifiedOn;
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public String getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(String createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public String getModifiedOn() {
-        return modifiedOn;
-    }
-
-    public void setModifiedOn(String modifiedOn) {
-        this.modifiedOn = modifiedOn;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
+   private HttpStatus status;
 
 }

@@ -37,8 +37,9 @@ jar {
 }
 
 
+
 sourceSets {
-    integrationTests {
+    integrationTest {
         java {
             compileClasspath += main.output + test.output
             runtimeClasspath += main.output + test.output
@@ -48,10 +49,11 @@ sourceSets {
             srcDir('src/integrationTest/resources')
         }
     }
+
 }
 
 dependencies {
-    integrationTestsCompile(sourceSets.test.output)
+    integrationTestCompile(sourceSets.test.output)
 }
 
 mainClassName = 'uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication'
@@ -65,7 +67,8 @@ compileTestJava {
 }
 
 configurations {
-    integrationTestsCompile.extendsFrom(testCompile)
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
 }
 
 repositories {
@@ -120,22 +123,22 @@ def versions = [
 dependencies {
 
     //integration test
-    integrationTestsCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
-    integrationTestsCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
-    integrationTestsCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
-    integrationTestsCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.5.2'
-    integrationTestsCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version:'1.1.3'
-    integrationTestsCompile group: 'junit', name: 'junit', version: '4.12'
-    integrationTestsCompile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '5.1'
-    integrationTestsCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
-    integrationTestsCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    integrationTestsCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    integrationTestsCompile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
-    integrationTestsCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.4.2'
-    integrationTestsCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-    integrationTestsCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
-    integrationTestsCompile group: 'org.skyscreamer', name:'jsonassert', version: '1.2.3'
-    integrationTestsCompile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '5.1'
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.5.2'
+    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version:'1.1.3'
+    integrationTestCompile group: 'junit', name: 'junit', version: '4.12'
+    integrationTestCompile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '5.1'
+    integrationTestCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.3'
+    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.4.2'
+    integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    integrationTestCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
+    integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: '1.2.3'
+    integrationTestCompile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '5.1'
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
@@ -146,7 +149,9 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
     compile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.4.2'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.sprintBoot
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
     compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '5.1'
+    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.sprintBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.sprintBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.sprintBoot
@@ -168,9 +173,44 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
     }
 }
 
-task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
-    include "uk.gov.hmcts.reform.emclient.functional/**"
+task apiTest(type: Test,  group: 'verification', description : 'Runs the api tests') {
+    setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
+    setClasspath(sourceSets.integrationTest.runtimeClasspath)
+    outputs.upToDateWhen { false }
 }
+
+/*
+
+task a() {
+   println ("executed a")
+}
+
+
+task b() {
+   println("executed b")
+}
+
+tasks.b.dependsOn a
+tasks.a.mustRunAfter b
+*/
+
+
+
+task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
+        setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
+        setClasspath(sourceSets.integrationTest.runtimeClasspath)
+//        include 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
+//    include 'uk.gov.hmcts.reform.emclient.functional.HealthCheckFunctionalTest'
+    /*
+    doLast {
+        setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
+        setClasspath(sourceSets.integrationTest.runtimeClasspath)
+    } */
+
+}
+
+project.tasks.apiTest.mustRunAfter functional
+
 
 task printVersion {
     doLast {
@@ -195,7 +235,7 @@ sonarqube {
         property "sonar.projectKey", "DivorceEvidenceManagementClientApi"
         property "sonar.projectName", "Divorce :: Evidence Management Client API"
         property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-        property "sonar.jacoco.itReportPath", "${project.buildDir}/jacoco/apiTest.exec"
+        property "sonar.jacoco.itReportPath", "${project.buildDir}/jacoco/functional.exec"
         property "sonar.exclusions", sonarExclusions.join(", ")
     }
 }
@@ -205,7 +245,7 @@ task addReleaseSuffixToDevelop() {
 }
 
 jacocoTestReport {
-    executionData(test)
+    executionData(test, functional)
 
     reports {
         xml {
@@ -234,3 +274,6 @@ run {
         jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5010']
     }
 }
+
+
+

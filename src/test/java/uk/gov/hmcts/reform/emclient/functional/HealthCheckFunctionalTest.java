@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.emclient.functional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -49,11 +50,12 @@ public class HealthCheckFunctionalTest {
     @LocalServerPort
     private int port;
 
-    @Value("${evidence.management.health.url}")
-    private String evidenceManagementStoreGWHealthUrl;
-
     @Value("${evidence.management.store.health.url}")
     private String evidenceManagementStoreApiUrl;
+
+    @Value("${idam.s2s-auth.health.url}")
+    private String serviceAuthApiUrl;
+
 
     @Autowired
     private RestTemplate restTemplate;
@@ -72,6 +74,7 @@ public class HealthCheckFunctionalTest {
 
     @Before
     public void setUp() {
+        System.out.println("\n\n ******************** start ************ \n\n ");
         healthUrl = "http://localhost:" + String.valueOf(port) + "/health";
         originalRequestFactory = restTemplate.getRequestFactory();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
@@ -80,81 +83,54 @@ public class HealthCheckFunctionalTest {
     @After
     public void tearDown() {
         restTemplate.setRequestFactory(originalRequestFactory);
+        System.out.println("\n\n ******************** end ************ \n\n ");
     }
 
     @Test
     public void shouldReturnStatusUpWhenAllDependenciesAreUp() throws Exception {
         //stub stubEvidenceManagementStoreApiHealthUp
-        stubHealthService(evidenceManagementStoreApiUrl, HttpStatus.OK,
-                "/fixtures/evidence-management-store-api/healthcheck-up.json");
-        //stub stubEvidenceManagementStoreGWHealthUp
-        stubHealthService(evidenceManagementStoreGWHealthUrl, HttpStatus.OK,
-                "/fixtures/evidence-management-store-GW/healthcheck-up.json");
+        stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl, serviceAuthApiUrl);
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), "UP",
+                "evidenceManagementStoreAPI", "serviceAuthProviderHealthCheck");
 
-        HttpResponse response = getHealth();
-        String body = EntityUtils.toString(response.getEntity());
-
-        assertThat(response.getStatusLine().getStatusCode(), equalTo(200));
-        assertThat(JsonPath.read(body, "$.status").toString(), equalTo("UP"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreGW.status").toString(), equalTo("UP"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreAPI.status").toString(), equalTo("UP"));
-        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
     }
 
     @Test
     public void shouldReturnStatusDownWhenAllDependenciesAreDown() throws Exception {
-        //stub stubEvidenceManagementStoreApiHealthUp
-        stubHealthService(evidenceManagementStoreApiUrl, HttpStatus.SERVICE_UNAVAILABLE,
-                "/fixtures/evidence-management-store-api/healthcheck-down.json");
-        //stub stubEvidenceManagementStoreGWHealthUp
-        stubHealthService(evidenceManagementStoreGWHealthUrl, HttpStatus.SERVICE_UNAVAILABLE,
-                "/fixtures/evidence-management-store-GW/healthcheck-down.json");
 
-        HttpResponse response = getHealth();
-        String body = EntityUtils.toString(response.getEntity());
-
-        assertThat(response.getStatusLine().getStatusCode(), equalTo(503));
-        assertThat(JsonPath.read(body, "$.status").toString(), equalTo("DOWN"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreGW.status").toString(), equalTo("DOWN"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreAPI.status").toString(), equalTo("DOWN"));
-        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
+        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN",
+                "evidenceManagementStoreAPI", "serviceAuthProviderHealthCheck");
     }
 
     @Test
     public void shouldReturnStatusDownWhenEvidenceManagementStoreApiIsDown() throws Exception {
-        //stub stubEvidenceManagementStoreApiHealthUp
-        stubHealthService(evidenceManagementStoreApiUrl, HttpStatus.SERVICE_UNAVAILABLE,
-                "/fixtures/evidence-management-store-api/healthcheck-down.json");
-        //stub stubEvidenceManagementStoreGWHealthUp
-        stubHealthService(evidenceManagementStoreGWHealthUrl, HttpStatus.OK,
-                "/fixtures/evidence-management-store-GW/healthcheck-up.json");
-
+        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
         HttpResponse response = getHealth();
-        String body = EntityUtils.toString(response.getEntity());
-
-        assertThat(response.getStatusLine().getStatusCode(), equalTo(503));
-        assertThat(JsonPath.read(body, "$.status").toString(), equalTo("DOWN"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreAPI.status").toString(), equalTo("DOWN"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreGW.status").toString(), equalTo("UP"));
-        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN", "evidenceManagementStoreAPI");
     }
 
     @Test
-    public void shouldReturnStatusDownWhenEvidenceManagementStoreGWIsDown() throws Exception {
-        //stub stubEvidenceManagementStoreApiHealthUp
-        stubHealthService(evidenceManagementStoreApiUrl, HttpStatus.OK,
-                "/fixtures/evidence-management-store-api/healthcheck-up.json");
-        //stub stubEvidenceManagementStoreGWHealthUp
-        stubHealthService(evidenceManagementStoreGWHealthUrl, HttpStatus.SERVICE_UNAVAILABLE,
-                "/fixtures/evidence-management-store-GW/healthcheck-down.json");
+    public void shouldReturnStatusDownWhenServiceAuthApiIsDown() throws Exception {
+        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN", "serviceAuthProviderHealthCheck");
+    }
 
-        HttpResponse response = getHealth();
-        String body = EntityUtils.toString(response.getEntity());
+    private void stubHealthService( HttpStatus healthStatus, String ... services) throws Exception {
+        String resourceName = "/fixtures/evidence-management-store-api/healthcheck-down.json";
+        if (healthStatus == HttpStatus.OK) {
+            resourceName = "/fixtures/evidence-management-store-api/healthcheck-up.json";
+        }
+        for (String service: services) {
+            stubHealthService(service, healthStatus, resourceName);
+        }
+    }
 
-        assertThat(response.getStatusLine().getStatusCode(), equalTo(503));
-        assertThat(JsonPath.read(body, "$.status").toString(), equalTo("DOWN"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreAPI.status").toString(), equalTo("UP"));
-        assertThat(JsonPath.read(body, "$.evidenceManagementStoreGW.status").toString(), equalTo("DOWN"));
+    private void assertStatus(String body, String checkStatus, String ... onServices) {
+        assertThat(JsonPath.read(body, "$.status").toString(), equalTo(checkStatus));
+        for (String service : onServices) {
+            assertThat(JsonPath.read(body, String.format("$.%s.status", service)).toString(), equalTo(checkStatus));
+        }
         assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
     }
 
@@ -162,8 +138,7 @@ public class HealthCheckFunctionalTest {
         String responseBody = FileUtils.readFileToString(
                 new File(getClass().getResource(resourceName).toURI()),
                 Charset.defaultCharset());
-
-        mockRestServiceServer.expect(once(), requestTo(requestUrl)).andExpect(method(HttpMethod.GET))
+        mockRestServiceServer.expect(manyTimes(), requestTo(requestUrl)).andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(status)
                         .body(responseBody)
                         .contentType(MediaType.APPLICATION_JSON_UTF8));
