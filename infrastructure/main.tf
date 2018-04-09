@@ -1,6 +1,7 @@
 locals {
   ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 
+
   # dm_store_url = "http://${var.document_store_url}-${var.env}.service.${local.ase_name}.internal"
 }
 
