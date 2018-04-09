@@ -8,6 +8,10 @@
         <Class name="uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadServiceImpl">
             <Method name="downloadFile" reportCaughtExceptions="true" reportExecutionTime="true"/>
         </Class>
+        <Class name="uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImpl">
+            <Method name="uploadFilesWithS2SAuthToken" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            <Method name="uploadFilesWithUserAuthToken" reportCaughtExceptions="true" reportExecutionTime="true"/>
+        </Class>
     </Instrumentation>
 </ApplicationInsightsAgent>
 
