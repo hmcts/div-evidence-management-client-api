@@ -41,7 +41,7 @@ public class EvidenceManagementClientController {
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
-        return emUploadService.uploadFilesWithS2SAuthToken(files, authorizationToken, requestId);
+        return emUploadService.upload(files, authorizationToken, requestId);
     }
 
     @PostMapping(value = "/version/1/uploadFiles", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -52,8 +52,20 @@ public class EvidenceManagementClientController {
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
-        return emUploadService.uploadFilesWithUserAuthToken(files, authorizationToken, requestId);
+        return emUploadService.upload(files, authorizationToken, requestId);
     }
+
+    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public List<FileUploadResponse> upload(
+            @RequestHeader(value = "authorizationToken") String authorizationToken,
+            @RequestHeader(value = "requestId", required = false) String requestId,
+            @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
+
+        return emUploadService.upload(files, authorizationToken, requestId);
+    }
+
 
     @GetMapping(value = "/version/1/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody

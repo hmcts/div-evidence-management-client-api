@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.divorce.documentgenerator.management.monitoring.health;
+package uk.gov.hmcts.reform.emclient.health;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
