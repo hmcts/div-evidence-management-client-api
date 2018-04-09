@@ -210,7 +210,7 @@ sonarqube {
         property "sonar.exclusions", sonarExclusions.join(", ")
     }
 }
-
+F
 task addReleaseSuffixToDevelop() {
     version = "${version}-SNAPSHOT"
 }
