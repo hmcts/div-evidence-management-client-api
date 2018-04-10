@@ -1,6 +1,7 @@
 locals {
   ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 
+
   # dm_store_url = "http://${var.document_store_url}-${var.env}.service.${local.ase_name}.internal"
 }
 
@@ -38,7 +39,7 @@ provider "vault" {
 }
 
 data "vault_generic_secret" "auth_provider_service_client_key" {
-  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentUpload"
+  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceCcdSubmission"
 }
 
 data "vault_generic_secret" "divorce_document_upload_client_key" {

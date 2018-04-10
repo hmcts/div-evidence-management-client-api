@@ -37,7 +37,6 @@ jar {
 }
 
 
-
 sourceSets {
     integrationTest {
         java {
@@ -49,7 +48,6 @@ sourceSets {
             srcDir('src/integrationTest/resources')
         }
     }
-
 }
 
 dependencies {
@@ -167,50 +165,21 @@ dependencies {
     }
 }
 
+test {
+    exclude '**/HealthCheckFunctionalTest.class'
+}
+
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
     useJUnit {
         includeCategories 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
     }
 }
 
-task apiTest(type: Test,  group: 'verification', description : 'Runs the api tests') {
-    setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
-    setClasspath(sourceSets.integrationTest.runtimeClasspath)
-    outputs.upToDateWhen { false }
-}
-
-/*
-
-task a() {
-   println ("executed a")
-}
-
-
-task b() {
-   println("executed b")
-}
-
-tasks.b.dependsOn a
-tasks.a.mustRunAfter b
-*/
-
-
 
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
-//        include 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
-//    include 'uk.gov.hmcts.reform.emclient.functional.HealthCheckFunctionalTest'
-    /*
-    doLast {
-        setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
-        setClasspath(sourceSets.integrationTest.runtimeClasspath)
-    } */
-
 }
-
-project.tasks.apiTest.mustRunAfter functional
-
 
 task printVersion {
     doLast {
@@ -225,6 +194,8 @@ task developAddReleaseSuffix() {
 def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/exception/*',
         '**uk/gov/hmcts/reform/emclient/configuration/*',
+        '**uk/gov/hmcts/reform/emclient/response/*',
+        '**uk/gov/hmcts/reform/emclient/controller/*',
         '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
         '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
         '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
@@ -274,6 +245,3 @@ run {
         jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5010']
     }
 }
-
-
-

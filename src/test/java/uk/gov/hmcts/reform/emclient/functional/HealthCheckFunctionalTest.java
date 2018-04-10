@@ -74,7 +74,6 @@ public class HealthCheckFunctionalTest {
 
     @Before
     public void setUp() {
-        System.out.println("\n\n ******************** start ************ \n\n ");
         healthUrl = "http://localhost:" + String.valueOf(port) + "/health";
         originalRequestFactory = restTemplate.getRequestFactory();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
@@ -83,7 +82,6 @@ public class HealthCheckFunctionalTest {
     @After
     public void tearDown() {
         restTemplate.setRequestFactory(originalRequestFactory);
-        System.out.println("\n\n ******************** end ************ \n\n ");
     }
 
     @Test

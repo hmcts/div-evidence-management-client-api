@@ -12,7 +12,7 @@ properties([
 ])
 
 List<LinkedHashMap<String, Object>> secrets = [
-        secret(vaultKeySecretPath((String)env.ENVIRONMENT, "/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentUpload"), 'DIVORCE_DOCUMENT_UPLOAD_KEY'),
+        secret(vaultKeySecretPath((String)env.ENVIRONMENT, "/ccidam/service-auth-provider/api/microservice-keys/divorceCcdSubmission"), 'CASE_PROGRESSION_SERVICE_AUTH_SECRET'),
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
