@@ -94,7 +94,7 @@ public class EMClientFileUploadTest {
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
                 .multiPart("file", file, fileContentType)
-                .post(evidenceManagementClientApiBaseUrl.concat(emClientApiUploadEndpoint))
+                .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
