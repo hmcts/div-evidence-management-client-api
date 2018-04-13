@@ -94,13 +94,6 @@ public class EvidenceManagementUploadServiceImplTest {
         assertEquals("19", getEMRequestHeaders().get("user-id").get(0));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void givenInValidAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectError() {
-        emUploadService.upload(getMultipartFiles(), "not-validAuthKey", "ReqId");
-        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
-        fail();
-    }
-
     @Test
     public void givenNullAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectError() {
         expectedException.expect(NullPointerException.class);

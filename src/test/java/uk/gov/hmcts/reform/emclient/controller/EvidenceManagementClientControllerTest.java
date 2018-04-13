@@ -55,7 +55,7 @@ import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 public class EvidenceManagementClientControllerTest {
     private static final String AUTH_TOKEN = "AAAAAAA";
     private static final String REQUEST_ID = "1234";
-    private static final String AUTHORIZATION_TOKEN_HEADER = "authorizationToken";
+    private static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
     private static final String REQUEST_ID_HEADER = "requestId";
     private static final String CONTENT_TYPE_HEADER = "content-type";
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
@@ -135,25 +135,6 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_S2S_TOKEN_URL)));
     }
 
-    @Test
-    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenWithoutAuthToken() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_S2S_TOKEN_URL)
-                .file(jpegMultipartFile())
-                .header(REQUEST_ID_HEADER, REQUEST_ID)
-                .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenIsInvokedAndEMStoreIsUnavailable()
-            throws Exception {
-        given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
-                .willThrow(new ResourceAccessException("Evidence management service is currently down"));
-
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_S2S_TOKEN_URL);
-
-        verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
-    }
 
     @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEMStoreThrowsHttpServerException()
