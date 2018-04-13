@@ -59,7 +59,7 @@ public class EvidenceManagementClientController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> upload(
-            @RequestHeader(value = "authorizationToken") String authorizationToken,
+            @RequestHeader(value = "Authorization", required = false) String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 

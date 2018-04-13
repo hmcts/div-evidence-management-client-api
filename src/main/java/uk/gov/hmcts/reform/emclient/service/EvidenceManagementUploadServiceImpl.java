@@ -93,14 +93,15 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     }
 
     private String getUserId(String encodedJwt) {
-        String userId;
+        String userId = "divorceEmcli";
         Map<String, Object> claims;
         try {
             String jwt = encodedJwt.replaceFirst("Bearer ", "");
             claims = JWTParser.parse(jwt).getJWTClaimsSet().getClaims();
             userId = String.valueOf(claims.get("id"));
         } catch (ParseException e) {
-            throw new IllegalStateException("Cannot find user from authorization token ", e);
+            log.error("failed parse user from jwt token ", e);
+
         }
         return userId;
     }
