@@ -42,7 +42,8 @@ import static net.serenitybdd.rest.SerenityRest.given;
         FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
-@PropertySource("classpath:application-${CNP_ENVIRONMENT:local}.properties")
+@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-${env}.properties")
 public class EMClientFileUploadTest {
 
     @Rule
