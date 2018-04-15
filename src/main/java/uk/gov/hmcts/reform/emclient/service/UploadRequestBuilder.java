@@ -20,7 +20,7 @@ final class UploadRequestBuilder {
         throw new UnsupportedOperationException();
     }
 
-    static MultiValueMap<String, Object> prepareRequest(List<MultipartFile> files) {
+    static MultiValueMap<String, Object> param(List<MultipartFile> files) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
                 .map(UploadRequestBuilder::buildPartFromFile)

@@ -1,259 +1,148 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import static java.nio.file.Files.readAllBytes;
-import static java.nio.file.Paths.get;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.prepareRequest;
-
-import java.util.Collections;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Paths.get;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementUploadServiceImplTest {
-    private static final String AUTHORIZATION_TOKEN = "AAAAA";
-    private static final String REQUEST_ID = "123333";
-    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final MockMultipartFile MOCK_MULTIPART_FILE = mockMultipartFile();
-    private static final List<MultipartFile> MOCK_MULTIPART_FILE_LIST
-            = Collections.singletonList(MOCK_MULTIPART_FILE);
-    private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "evidenceManagementServiceURL";
-    private static final String EVIDENCE_MANAGEMENT_STORE_URL = "evidenceManagementStoreUrl";
-
-    @InjectMocks
-    private EvidenceManagementUploadServiceImpl classUnderTest = new EvidenceManagementUploadServiceImpl();
-
     @Mock
     private RestTemplate restTemplate;
 
-    private static MockMultipartFile mockMultipartFile() {
-        return new MockMultipartFile("file", "JDP.pdf", "application/pdf",
-                "This is a test pdf file".getBytes());
-    }
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
+
+    @InjectMocks
+    private EvidenceManagementUploadServiceImpl emUploadService;
+
+    private ArgumentCaptor<HttpEntity> httpEntityReqEntity;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
-    public void before() {
-        ReflectionTestUtils.setField(classUnderTest, "evidenceManagementServiceURL", EVIDENCE_MANAGEMENT_SERVICE_URL);
-        ReflectionTestUtils.setField(classUnderTest, "evidenceManagementStoreUrl", EVIDENCE_MANAGEMENT_STORE_URL);
-    }
-
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void shouldUploadFileWithUserTokenAndReturnFileUrlWithMetadataWhenValidInputsArePassed() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_SERVICE_URL, httpEntity, ObjectNode.class))
-                .thenReturn(objectNode);
-
-        assertThat(classUnderTest.uploadFilesWithUserAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID),
-                contains(allOf(hasProperty("fileUrl", containsString("http://localhost:8080/documents/6")),
-                        hasProperty("fileName", containsString("JDP.pdf")),
-                        hasProperty("createdBy", containsString("testuser")),
-                        hasProperty("createdOn", containsString("2017-09-01T13:12:36.862+0000")),
-                        hasProperty("lastModifiedBy", containsString("testuser")),
-                        hasProperty("modifiedOn", containsString("2017-09-01T13:12:36.860+0000")),
-                        hasProperty("mimeType", containsString(MediaType.APPLICATION_PDF_VALUE)),
-                        hasProperty("status", is(HttpStatus.OK)))));
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_SERVICE_URL, httpEntity,
-                ObjectNode.class);
-    }
-
-    @Test(expected = ResourceAccessException.class)
-    public void shouldNotUploadFileWithUserTokenAndThrowExceptionWhenEMServiceIsNotAvailable() {
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_SERVICE_URL, httpEntity,
-                ObjectNode.class)).thenThrow(new ResourceAccessException("Not able to connect to EM Service"));
-
-        classUnderTest.uploadFilesWithUserAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID);
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_SERVICE_URL, httpEntity,
-                ObjectNode.class);
-    }
-
-    @Test(expected = HttpClientErrorException.class)
-    public void shouldNotUploadFileWithUserTokenAndThrowExceptionWhenAuthorizationTokenIsInvalid() {
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_SERVICE_URL, httpEntity,
-                ObjectNode.class)).thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
-
-        classUnderTest.uploadFilesWithUserAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID);
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_SERVICE_URL, httpEntity,
-                ObjectNode.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void shouldUploadFileWithS2STokenAndReturnFileUrlWithMetadataWhenValidInputsArePassed() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(SERVICE_AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class)).thenReturn(objectNode);
-
-        assertThat(classUnderTest.uploadFilesWithS2SAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID),
-                contains(allOf(hasProperty("fileUrl", containsString("http://localhost:8080/documents/6")),
-                        hasProperty("fileName", containsString("JDP.pdf")),
-                        hasProperty("createdBy", containsString("testuser")),
-                        hasProperty("createdOn", containsString("2017-09-01T13:12:36.862+0000")),
-                        hasProperty("lastModifiedBy", containsString("testuser")),
-                        hasProperty("modifiedOn", containsString("2017-09-01T13:12:36.860+0000")),
-                        hasProperty("mimeType", containsString(MediaType.APPLICATION_PDF_VALUE)),
-                        hasProperty("status", is(HttpStatus.OK)))));
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class);
-    }
-
-    @Test(expected = ResourceAccessException.class)
-    public void shouldNotUploadFileWithS2STokenAndThrowExceptionWhenEMStoreIsNotAvailable() {
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(SERVICE_AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class)).thenThrow(new ResourceAccessException("Not able to connect to EM Store"));
-
-        classUnderTest.uploadFilesWithS2SAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID);
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class);
-    }
-
-    @Test(expected = HttpClientErrorException.class)
-    public void shouldNotUploadFileWithS2STokenAndThrowExceptionWhenAuthorizationTokenIsInvalid() {
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(SERVICE_AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class)).thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
-
-        classUnderTest.uploadFilesWithS2SAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID);
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void shouldUploadFileWithS2STokenAndReturnNullForEmptyFieldsWhenValidInputsArePassed() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponsewithnullvalues.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = getHttpEntity(SERVICE_AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN, MOCK_MULTIPART_FILE_LIST);
-
-        when(restTemplate.postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class)).thenReturn(objectNode);
-
-        assertThat(classUnderTest.uploadFilesWithS2SAuthToken(MOCK_MULTIPART_FILE_LIST, AUTHORIZATION_TOKEN, REQUEST_ID),
-                contains(allOf(hasProperty("fileUrl", containsString("http://localhost:8080/documents/6")),
-                        hasProperty("fileName", containsString("JDP.pdf")),
-                        hasProperty("createdBy", is(nullValue())),
-                        hasProperty("createdOn", containsString("2017-09-01T13:12:36.862+0000")),
-                        hasProperty("lastModifiedBy", is(nullValue())),
-                        hasProperty("modifiedOn", is(nullValue())),
-                        hasProperty("mimeType", containsString(MediaType.APPLICATION_PDF_VALUE)),
-                        hasProperty("status", is(HttpStatus.OK)))));
-
-        verify(restTemplate, times(1)).postForObject(EVIDENCE_MANAGEMENT_STORE_URL, httpEntity,
-                ObjectNode.class);
+    public void setup() throws IOException {
+        ReflectionTestUtils.setField(emUploadService,"evidenceManagementStoreUrl", "emuri");
+        when(authTokenGenerator.generate()).thenReturn("xxxx");
+        mockRestTemplate();
     }
 
     @Test
-    public void givenStoredFileIsNull_whenGetTextFromJsonNode_thenReturnNull(){
-        assertNull(getTextFromJsonNode(null, "someText"));
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectUploadToSucceed() {
+        List<FileUploadResponse> responses = emUploadService.upload(getMultipartFiles(),
+                authKey(), "ReqId");
+        assertTrue(responses.size() > 0);
     }
 
     @Test
-    public void givenNotTextIsNull_whenGetTextFromJsonNode_thenReturnNull() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        assertNull(getTextFromJsonNode(objectNode, null));
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMRequestWith3Headers() {
+        emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
+        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+        assertEquals(3, allValues.get(0).getHeaders().size());
     }
 
     @Test
-    public void givenNotTextIsBlank_whenGetTextFromJsonNode_thenReturnNull() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        assertNull(getTextFromJsonNode(objectNode, "  "));
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveSecurityAuthHeader() {
+        emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
+        assertTrue(getEMRequestHeaders().containsKey("ServiceAuthorization"));
     }
 
     @Test
-    public void givenDataIsNotPresent_whenGetTextFromJsonNode_thenReturnNull() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        final JsonNode jsonNode = objectNode.get("_embedded").get("documents").get(0);
-
-        assertNull(getTextFromJsonNode(jsonNode, "nonExistentData"));
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveUserIdHeader() {
+        emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
+        assertTrue(getEMRequestHeaders().containsKey("user-id"));
     }
 
     @Test
-    public void givenDataPresent_whenGetTextFromJsonNode_thenReturnData() throws Exception {
-        final String hatoesResponse = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
-        final ObjectNode objectNode = (ObjectNode) new ObjectMapper().readTree(hatoesResponse);
-
-        final JsonNode jsonNode = objectNode.get("_embedded").get("documents").get(0);
-
-        String actual = getTextFromJsonNode(jsonNode, "mimeType");
-
-        assertEquals("application/pdf", actual);
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveValidContentTypeHeader() {
+        emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
+        assertEquals("multipart/form-data", getEMRequestHeaders().get("Content-Type").get(0));
     }
 
-    private String getTextFromJsonNode(JsonNode storedFile, String node){
-        return ReflectionTestUtils.invokeMethod(classUnderTest, "getTextFromJsonNode", storedFile, node);
+    @Test
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectAuthKeyIsParsedForUserId() {
+        emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
+        assertEquals("19", getEMRequestHeaders().get("user-id").get(0));
     }
 
-    private HttpEntity<MultiValueMap<String, Object>> getHttpEntity(String authHeaderName, String authorizationToken, List<MultipartFile> files) {
-        MultiValueMap<String, Object> parameters = prepareRequest(files);
+    @Test(expected = IllegalStateException.class)
+    public void givenInValidAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectError() {
+        emUploadService.upload(getMultipartFiles(), "not-validAuthKey", "ReqId");
+        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+        fail();
+    }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(authHeaderName, authorizationToken);
-        headers.set("Content-Type", "multipart/form-data");
+    @Test
+    public void givenNullAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectError() {
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("authorizationToken");
+        emUploadService.upload(getMultipartFiles(), null, "ReqId");
+        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+    }
 
-        return new HttpEntity<>(parameters, headers);
+    @Test
+    public void givenNullFileParamIsPassed_whenUploadIsCalled_thenExpectError() {
+        expectedException.expect(NullPointerException.class);
+        expectedException.expectMessage("files");
+        emUploadService.upload(null, authKey(), "ReqId");
+        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+    }
+
+    private ArgumentCaptor<HttpEntity> mockRestTemplate() throws IOException {
+        this.httpEntityReqEntity = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplate.postForObject(eq("emuri"), httpEntityReqEntity.capture(), any())).thenReturn(getResponse());
+        return httpEntityReqEntity;
+    }
+
+    private HttpHeaders getEMRequestHeaders() {
+        return httpEntityReqEntity.getAllValues().get(0).getHeaders();
+    }
+    private ObjectNode getResponse() throws IOException {
+        final String response = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
+        return (ObjectNode) new ObjectMapper().readTree(response);
+    }
+
+    private static String authKey() {
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT" +
+                "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V" +
+                "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV" +
+                "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi" +
+                "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb" +
+                "x72zDa1r7Qnp1M";
+    }
+
+    private List<MultipartFile> getMultipartFiles() {
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "JDP.pdf",
+                "application/pdf", "This is a test pdf file".getBytes());
+        return Arrays.asList(multipartFile);
     }
 }

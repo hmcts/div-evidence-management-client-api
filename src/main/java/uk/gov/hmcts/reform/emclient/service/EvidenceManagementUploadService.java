@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 public interface EvidenceManagementUploadService {
-    List<FileUploadResponse> uploadFilesWithS2SAuthToken(List<MultipartFile> files, String authorizationToken, String requestId);
 
-    List<FileUploadResponse> uploadFilesWithUserAuthToken(List<MultipartFile> files, String authorizationToken, String requestId);
+    List<FileUploadResponse> upload(List<MultipartFile> files, String authorizationToken, String requestId);
+
 }
