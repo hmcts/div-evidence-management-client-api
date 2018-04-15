@@ -39,9 +39,9 @@ provider "vault" {
 }
 
 data "vault_generic_secret" "auth_provider_service_client_key" {
-  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceCcdSubmission"
+  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
 
 data "vault_generic_secret" "divorce_document_upload_client_key" {
-  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentUpload"
+  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
