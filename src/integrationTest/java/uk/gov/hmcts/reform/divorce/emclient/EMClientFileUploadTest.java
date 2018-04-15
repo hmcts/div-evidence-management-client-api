@@ -42,7 +42,8 @@ import static net.serenitybdd.rest.SerenityRest.given;
         FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
-@PropertySource("classpath:application-${CNP_ENVIRONMENT:local}.properties")
+@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-${env}.properties")
 public class EMClientFileUploadTest {
 
     @Rule
@@ -96,7 +97,7 @@ public class EMClientFileUploadTest {
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
-        System.out.println(response.getBody().prettyPrint());
+
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
