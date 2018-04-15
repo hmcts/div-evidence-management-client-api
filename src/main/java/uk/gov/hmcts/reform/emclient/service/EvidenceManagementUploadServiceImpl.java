@@ -48,7 +48,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     private AuthTokenGenerator authTokenGenerator;
 
     @Override
-    public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, @NonNull final String authorizationToken,
+    public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
                                            @Nullable String requestId) {
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(authorizationToken));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)

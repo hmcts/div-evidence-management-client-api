@@ -28,7 +28,6 @@ import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Paths.get;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
@@ -92,14 +91,6 @@ public class EvidenceManagementUploadServiceImplTest {
     public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectAuthKeyIsParsedForUserId() {
         emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
         assertEquals("19", getEMRequestHeaders().get("user-id").get(0));
-    }
-
-    @Test
-    public void givenNullAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectError() {
-        expectedException.expect(NullPointerException.class);
-        expectedException.expectMessage("authorizationToken");
-        emUploadService.upload(getMultipartFiles(), null, "ReqId");
-        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
     }
 
     @Test
