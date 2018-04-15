@@ -99,9 +99,8 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
             String jwt = encodedJwt.replaceFirst("Bearer ", "");
             claims = JWTParser.parse(jwt).getJWTClaimsSet().getClaims();
             userId = String.valueOf(claims.get("id"));
-        } catch (ParseException e) {
-            log.error("failed parse user from jwt token ", e);
-
+        } catch (Exception e) {
+            log.error("failed parse user from jwt token [" + encodedJwt + "]", e);
         }
         return userId;
     }
