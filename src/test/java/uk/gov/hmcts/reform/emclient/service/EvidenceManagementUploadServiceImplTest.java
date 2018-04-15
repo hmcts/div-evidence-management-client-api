@@ -94,6 +94,12 @@ public class EvidenceManagementUploadServiceImplTest {
     }
 
     @Test
+    public void givenAuthKeyParamIsNotPassed_whenUploadIsCalled_thenExpectAuthKeyIsDefault() {
+        emUploadService.upload(getMultipartFiles(), null, "ReqId");
+        assertEquals("divorceEmcli", getEMRequestHeaders().get("user-id").get(0));
+    }
+
+    @Test
     public void givenNullFileParamIsPassed_whenUploadIsCalled_thenExpectError() {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("files");

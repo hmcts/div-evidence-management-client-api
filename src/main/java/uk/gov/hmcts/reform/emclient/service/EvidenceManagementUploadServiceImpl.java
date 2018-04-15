@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import javax.annotation.Nullable;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
