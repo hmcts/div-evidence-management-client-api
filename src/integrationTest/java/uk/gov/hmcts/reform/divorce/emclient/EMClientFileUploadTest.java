@@ -42,6 +42,7 @@ import static net.serenitybdd.rest.SerenityRest.given;
         FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
+@PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
 public class EMClientFileUploadTest {
 
@@ -94,8 +95,9 @@ public class EMClientFileUploadTest {
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
                 .multiPart("file", file, fileContentType)
-                .post(evidenceManagementClientApiBaseUrl.concat(emClientApiUploadEndpoint))
+                .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
+
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
@@ -126,7 +128,7 @@ public class EMClientFileUploadTest {
         idamTestSupportUtil.createUserInIdam(username, password);
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
         Map<String, Object> headers = new HashMap<>();
-        headers.put("authorizationToken", authenticationToken);
+        headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");
         return headers;
     }

@@ -21,7 +21,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import javax.annotation.Nullable;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     private AuthTokenGenerator authTokenGenerator;
 
     @Override
-    public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, @NonNull final String authorizationToken,
+    public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
                                            @Nullable String requestId) {
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(authorizationToken));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
@@ -93,14 +92,14 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     }
 
     private String getUserId(String encodedJwt) {
-        String userId;
+        String userId = "divorceEmcli";
         Map<String, Object> claims;
         try {
             String jwt = encodedJwt.replaceFirst("Bearer ", "");
             claims = JWTParser.parse(jwt).getJWTClaimsSet().getClaims();
             userId = String.valueOf(claims.get("id"));
-        } catch (ParseException e) {
-            throw new IllegalStateException("Cannot find user from authorization token ", e);
+        } catch (Exception e) {
+            log.error("failed parse user from jwt token [" + encodedJwt + "]", e);
         }
         return userId;
     }

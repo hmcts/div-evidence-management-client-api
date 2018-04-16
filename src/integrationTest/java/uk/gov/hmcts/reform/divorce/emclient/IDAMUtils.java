@@ -27,7 +27,9 @@ class IDAMUtils {
     }
 
     void createUserInIdam(String username, String password) {
-        String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username + "\",\"surname\":\"User\",\"password\":\"" + password + "\"}";
+        String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username +
+            "\",\"surname\":\"User\",\"password\":\"" + password + "\"}";
+
         RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(s)
@@ -49,7 +51,8 @@ class IDAMUtils {
     }
 
     private String loginUrl() {
-        return idamUserBaseUrl + "/oauth2/authorize";
+        return idamUserBaseUrl + "/oauth2/authorize?response_type=token&client_id=divorce&redirect_uri="
+                            + "https://case-worker-web.test.ccd.reform.hmcts.net/oauth2redirect";
     }
 
     String generateUserTokenWithNoRoles(String username, String password) {

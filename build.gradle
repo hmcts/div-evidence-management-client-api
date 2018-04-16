@@ -117,16 +117,15 @@ def versions = [
         javaxValidation: '2.0.0.Final',
         jaywayJsonPath: '2.2.0',
         puppyCrawl: '7.6',
-        reformsJavaLoggingAppInsights: '2.0.2',
-        reformsJavaLoggingSpring: '2.0.2',
-        reformsJavaLoggingHttpComponents: '2.0.2',
+        reformsJavaLogging: '2.0.2',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
         serviceTokenGeneratorSpring : '1.0.5',
         sprintBoot: '1.5.9.RELEASE',
         springCloud: '1.2.5.RELEASE',
         springRetry: '1.2.1.RELEASE',
         springHateoas: '0.23.0.RELEASE',
-        springPluginCore: '1.2.0.RELEASE'
+        springPluginCore: '1.2.0.RELEASE',
+        wiremockVersion: '2.8.0'
 ]
 
 dependencies {
@@ -168,10 +167,12 @@ dependencies {
     compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.reformsJavaLoggingAppInsights
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLoggingSpring
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLoggingHttpComponents
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
+
+    testCompile group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }

@@ -37,7 +37,7 @@ public class EvidenceManagementClientController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> handleFileUploadWithS2SToken(
-            @RequestHeader(value = "authorizationToken") String authorizationToken,
+            @RequestHeader(value = "Authorization") String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
@@ -48,7 +48,7 @@ public class EvidenceManagementClientController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> handleFileUpload(
-            @RequestHeader(value = "authorizationToken") String authorizationToken,
+            @RequestHeader(value = "Authorization") String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
@@ -59,7 +59,7 @@ public class EvidenceManagementClientController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> upload(
-            @RequestHeader(value = "authorizationToken") String authorizationToken,
+            @RequestHeader(value = "Authorization", required = false) String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
@@ -70,7 +70,7 @@ public class EvidenceManagementClientController {
     @GetMapping(value = "/version/1/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
     public ResponseEntity<InputStreamResource> downloadFile(
-            @RequestHeader(value = "authorizationToken") String authorizationToken,
+            @RequestHeader(value = "Authorization") String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
             @RequestParam("fileUrl") String selfFileUrl) throws IOException {
         return emDownloadService.downloadFile(selfFileUrl, authorizationToken, requestId);
