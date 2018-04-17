@@ -1,4 +1,3 @@
-env = "preview"
 subscription = "nonprod"
 vault_env = "preprod"
 
