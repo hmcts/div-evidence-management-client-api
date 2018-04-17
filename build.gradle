@@ -198,7 +198,6 @@ def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/exception/*',
         '**uk/gov/hmcts/reform/emclient/configuration/*',
         '**uk/gov/hmcts/reform/emclient/response/*',
-        '**uk/gov/hmcts/reform/emclient/controller/*',
         '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
         '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
         '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
@@ -236,7 +235,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.8
+                minimum = 0.9
             }
         }
     }

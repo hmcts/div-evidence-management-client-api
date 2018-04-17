@@ -1,21 +1,5 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
-import static org.hamcrest.Matchers.is;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.util.StreamUtils.copyToByteArray;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,11 +26,26 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
-
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.util.StreamUtils.copyToByteArray;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
@@ -61,8 +60,7 @@ public class EvidenceManagementClientControllerTest {
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
 
-    private static final String EM_CLIENT_USER_TOKEN_URL = "/emclientapi/version/1/uploadFiles";
-    private static final String EM_CLIENT_S2S_TOKEN_URL = "/emclientapi/version/1/upload";
+    private static final String EM_CLIENT_UPLOAD_URL = "/emclientapi/version/1/upload";
 
     @MockBean
     private EvidenceManagementUploadService emUploadService;
@@ -81,11 +79,11 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldUploadFileTokenWhenHandleFileUploadWithS2STokenIsInvokedWithValidInputs() throws Exception {
+    public void shouldUploadFileTokenWhenHandleFileUploadIsInvokedWithValidInputs() throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(prepareFileUploadResponse());
 
-        mockMvc.perform(fileUpload(EM_CLIENT_S2S_TOKEN_URL)
+        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -109,7 +107,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_S2S_TOKEN_URL)
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -121,7 +119,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_S2S_TOKEN_URL)
+        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -132,7 +130,7 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
                 .andExpect(jsonPath("$.exception", is("javax.validation.ConstraintViolationException")))
                 .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
-                .andExpect(jsonPath("$.path", is(EM_CLIENT_S2S_TOKEN_URL)));
+                .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
 
@@ -142,7 +140,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_S2S_TOKEN_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -153,7 +151,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_USER_TOKEN_URL)
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -165,7 +163,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_USER_TOKEN_URL)
+        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -176,16 +174,7 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
                 .andExpect(jsonPath("$.exception", is("javax.validation.ConstraintViolationException")))
                 .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
-                .andExpect(jsonPath("$.path", is(EM_CLIENT_USER_TOKEN_URL)));
-    }
-
-    @Test
-    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileIsInvokedWithoutAuthToken() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_USER_TOKEN_URL)
-                .file(jpegMultipartFile())
-                .header(REQUEST_ID_HEADER, REQUEST_ID)
-                .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().is4xxClientError());
+                .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
     @Test
@@ -194,7 +183,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new ResourceAccessException("Evidence management service is currently down"));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_USER_TOKEN_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -205,7 +194,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_USER_TOKEN_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
