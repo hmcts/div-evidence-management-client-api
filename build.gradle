@@ -149,6 +149,9 @@ dependencies {
 
     compile (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
         exclude group: 'io.reactivex', module: 'rxnetty'
+        exclude group: 'io.reactivex', module: 'rxnetty-servo'
+        exclude group: 'io.reactivex', module: 'io.reactivex'
+        exclude group: 'io.reactivex', module: 'rxnetty-contexts'
     }
     
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.sprintBoot
