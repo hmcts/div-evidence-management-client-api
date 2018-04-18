@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class EvidenceManagementStoreGW extends WebServiceHealthCheck {
+public class ServiceAuthProviderHealthCheck extends WebServiceHealthCheck {
     @Autowired
-    public EvidenceManagementStoreGW(HttpEntityFactory httpEntityFactory, RestTemplate restTemplate,
-                                     @Value("${evidence.management.health.url}") String uri) {
+    public ServiceAuthProviderHealthCheck(HttpEntityFactory httpEntityFactory, RestTemplate restTemplate,
+                                          @Value("${idam.s2s-auth.health.url}") String uri) {
         super(httpEntityFactory, restTemplate, uri);
     }
 }

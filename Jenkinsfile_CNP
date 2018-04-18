@@ -1,0 +1,51 @@
+#!groovy
+
+properties([
+    [
+        $class: 'GithubProjectProperty',
+        displayName: 'Divorce Evidence Management Client API',
+        projectUrlStr: 'https://github.com/hmcts/div-evidence-management-client-api'
+    ],
+    pipelineTriggers([
+        [$class: 'GitHubPushTrigger']
+    ])
+])
+
+@Library("Infrastructure")
+
+def type = "java"
+def product = "div"
+def component = "em-client-api"
+
+def channel = '#div-dev'
+
+List<LinkedHashMap<String, Object>> secrets = [
+        secret("secret/test/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentUpload", 'DIVORCE_DOCUMENT_UPLOAD_KEY'),
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'value',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
+withPipeline(type , product, component) {
+    before('functionalTest:aat') {
+        env.TEST_ENVIRONMENT = "aat"
+    }
+
+    after('functionalTest:aat') {
+        error('Halting pipeline before prod stages')
+    }
+
+    after('checkout') {
+        echo '${product}-${component} checked out'
+    }
+
+    loadVaultSecrets(secrets)
+
+    enableSlackNotifications(channel)
+}
