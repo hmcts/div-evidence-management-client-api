@@ -12,7 +12,7 @@ properties([
 ])
 
 List<LinkedHashMap<String, Object>> secrets = [
-        secret("secret/test/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator", "IDAM_AUTH_SECRET")
+        secret("secret/preprod/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator", "IDAM_AUTH_SECRET")
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
