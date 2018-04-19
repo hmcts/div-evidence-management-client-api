@@ -1,46 +1,64 @@
-variable "reform_service_name" {
-  default = "em-client-api"
-}
-
 variable "product" {
-  type    = "string"
-  default = "divorce"
+  type = "string"
 }
 
 variable "component" {
   type = "string"
 }
 
-variable "location_app" {
+variable "team_name" {
+  default = "divorce"
+}
+
+variable "app_language" {
+  default = "java"
+}
+
+variable "location" {
   type    = "string"
   default = "UK South"
-}
-
-variable "tenant_id" {}
-
-variable "client_id" {
-  description = "(Required) The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies. This is usually sourced from environment variables and not normally required to be specified."
-}
-
-variable "jenkins_AAD_objectId" {
-  type        = "string"
-  description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
-}
-
-variable "reform_team" {
-  default = "div"
 }
 
 variable "env" {
   type = "string"
 }
 
-variable "evidence_management_client_api_port" {
-  default = "4006"
+variable "subscription" {
+  type = "string"
 }
 
-variable "auth_provider_service_client_baseurl" {
-  type = "string"
+variable "ilbIp"{}
+
+variable "tenant_id" {}
+
+variable "jenkins_AAD_objectId" {
+  type                        = "string"
+  description                 = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
+}
+
+////////////////////////////////////////////////
+//Addtional Vars ///////////////////////////////
+////////////////////////////////////////////////
+variable "capacity" {
+  default = "2"
+}
+
+variable "java_opts" {
+  default = ""
+}
+////////////////////////////////////////////////
+// Endpoints
+////////////////////////////////////////////////
+variable "vault_section" {
+  default = "test"
+}
+
+variable "s2s_url" {
+  default = "rpe-service-auth-provider"
+}
+
+variable "dm_store_app_url" {
+  default = "dm-store"
 }
 
 variable "auth_provider_service_client_microservice" {
@@ -62,14 +80,3 @@ variable "http_connect_request_timeout" {
 variable "http_connect_socket_timeout" {
   default = "1000"
 }
-
-variable "subscription" {}
-
-variable "location" {
-  type    = "string"
-  default = "UK South"
-}
-
-variable "ilbIp" {}
-
-variable "vault_env" {}
