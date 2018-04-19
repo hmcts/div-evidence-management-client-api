@@ -23,7 +23,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 @ComponentScan(basePackages = "uk.gov.hmcts")
 @EnableAutoConfiguration(exclude = HypermediaAutoConfiguration.class)
 @EnableRetry(proxyTargetClass=true)
-//@ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 @EnableCircuitBreaker
 public class EvidenceManagementClientApplication {
