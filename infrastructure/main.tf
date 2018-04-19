@@ -42,7 +42,7 @@ module "key-vault" {
   object_id           = "${var.jenkins_AAD_objectId}"
   resource_group_name = "${module.div-em-client-api.resource_group_name}"
   # dcd_cc-dev group object ID
-  product_group_object_id = "38f9dea6-e861-4a50-9e73-21e64f563537"
+  product_group_object_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
 
 provider "vault" {
