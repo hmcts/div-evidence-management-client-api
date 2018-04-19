@@ -40,14 +40,9 @@ module "key-vault" {
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
   object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
+  resource_group_name = "${module.div-em-client-api.resource_group_name}"
   # dcd_cc-dev group object ID
   product_group_object_id = "38f9dea6-e861-4a50-9e73-21e64f563537"
-}
-
-resource "azurerm_resource_group" "rg" {
-  name     = "${var.product}-${var.component}-${var.env}"
-  location = "${var.location_app}"
 }
 
 provider "vault" {
@@ -60,4 +55,11 @@ data "vault_generic_secret" "idam-auth-secret" {
 
 data "vault_generic_secret" "divorce_document_upload_client_key" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
+}
+
+
+resource "azurerm_key_vault_secret" "idam-auth-secret" {
+  name      = "idam-auth-secret"
+  value     = "${data.vault_generic_secret.idam-auth-secret.data["value"]}"
+  vault_uri = "${module.key-vault.key_vault_uri}"
 }

@@ -4,16 +4,10 @@ variable "reform_service_name" {
 
 variable "product" {
   type    = "string"
-  default = "divorce"
 }
 
 variable "component" {
   type = "string"
-}
-
-variable "location_app" {
-  type    = "string"
-  default = "UK South"
 }
 
 variable "tenant_id" {}
