@@ -185,6 +185,10 @@ dependencies {
     }
 }
 
+test {
+    exclude '**/HealthCheckFunctionalTest.class'
+}
+
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {
     useJUnit {
         includeCategories 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
