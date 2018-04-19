@@ -25,7 +25,7 @@ List<LinkedHashMap<String, Object>> secrets = [
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     [ $class: 'AzureKeyVaultSecret',
-      secretType: 'value',
+      secretType: 'Secret',
       name: secretName,
       version: '',
       envVariable: envVar
