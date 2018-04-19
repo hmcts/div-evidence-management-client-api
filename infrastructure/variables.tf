@@ -10,8 +10,8 @@ variable "env" {
   type = "string"
 }
 
-variable evidence_management_gateway_baseurl {
-  type = "string"
+variable "evidence_management_gateway_baseurl" {
+  default = "notneeded"
 }
 
 variable "evidence_management_client_api_port" {
@@ -23,7 +23,7 @@ variable "auth_provider_service_client_baseurl" {
 }
 
 variable "auth_provider_service_client_microservice" {
-//  default = "divorce_document_upload"
+  //  default = "divorce_document_upload"
   default = "divorce_document_generator"
 }
 
@@ -32,7 +32,7 @@ variable "auth_provider_service_client_tokentimetoliveinseconds" {
 }
 
 variable "document_store_url" {
-  default = "dm-store-app"
+  default = "dm-store"
 }
 
 variable "document_management_store_baseurl" {
