@@ -10,10 +10,6 @@ variable "env" {
   type = "string"
 }
 
-variable "evidence_management_gateway_baseurl" {
-  default = "notneeded"
-}
-
 variable "evidence_management_client_api_port" {
   default = "4006"
 }
@@ -23,20 +19,11 @@ variable "auth_provider_service_client_baseurl" {
 }
 
 variable "auth_provider_service_client_microservice" {
-  //  default = "divorce_document_upload"
   default = "divorce_document_generator"
 }
 
 variable "auth_provider_service_client_tokentimetoliveinseconds" {
   default = "900"
-}
-
-variable "document_store_url" {
-  default = "dm-store"
-}
-
-variable "document_management_store_baseurl" {
-  type = "string"
 }
 
 variable "http_connect_timeout" {

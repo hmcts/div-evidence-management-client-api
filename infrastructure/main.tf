@@ -1,8 +1,7 @@
 locals {
   ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 
-
-  # dm_store_url = "http://${var.document_store_url}-${var.env}.service.${local.ase_name}.internal"
+  dm_store_url = "http://dm-store-${var.env}.service.${local.ase_name}.internal"
 }
 
 module "div-em-client-api" {
@@ -25,9 +24,9 @@ module "div-em-client-api" {
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
     DIVORCE_DOCUMENT_UPLOAD_KEY                           = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
 
-    DOCUMENT_MANAGEMENT_STORE_URL       = "${var.document_management_store_baseurl}"
-    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${var.evidence_management_gateway_baseurl}/documents"
-    EVIDENCE_MANAGEMENT_HEALTH_URL      = "${var.evidence_management_gateway_baseurl}/health"
+    DOCUMENT_MANAGEMENT_STORE_URL       = "${local.dm_store_url}"
+    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.dm_store_url}/documents"
+    EVIDENCE_MANAGEMENT_HEALTH_URL      = "${local.dm_store_url}/health"
     HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
     HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
     HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
