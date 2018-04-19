@@ -20,7 +20,7 @@ def component = "em-client-api"
 def channel = '#div-dev'
 
 List<LinkedHashMap<String, Object>> secrets = [
-        secret("idam-auth-secret", "IDAM_AUTH_SECRET")
+        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET")
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -40,9 +40,9 @@ withPipeline(type , product, component) {
         env.TEST_ENVIRONMENT = "aat"
     }
 
-    after('functionalTest:aat') {
-        error('Halting pipeline before prod stages')
-    }
+//    after('functionalTest:aat') {
+//        error('Halting pipeline before prod stages')
+//    }
 
     after('checkout') {
         echo '${product}-${component} checked out'

@@ -2,6 +2,7 @@ locals {
   ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 
   dm_store_url = "http://dm-store-${var.env}.service.${local.ase_name}.internal"
+  idam_s2s_url = "http://rpe-service-auth-provider-${var.env}.service.${local.ase_name}.internal"
 }
 
 module "div-em-client-api" {
@@ -17,10 +18,9 @@ module "div-em-client-api" {
     REFORM_SERVICE_NAME                                   = "${var.reform_service_name}"
     REFORM_TEAM                                           = "${var.reform_team}"
     REFORM_ENVIRONMENT                                    = "${var.env}"
-    SERVER_PORT                                           = "${var.evidence_management_client_api_port}"
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL                  = "${var.auth_provider_service_client_baseurl}"
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL                  = "${local.idam_s2s_url}"
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE             = "${var.auth_provider_service_client_microservice}"
-    AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.idam-auth-secret.data["value"]}"
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.div-doc-s2s-auth-secret.data["value"]}"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
     DIVORCE_DOCUMENT_UPLOAD_KEY                           = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
 
@@ -49,7 +49,7 @@ provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
 }
 
-data "vault_generic_secret" "idam-auth-secret" {
+data "vault_generic_secret" "div-doc-s2s-auth-secret" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
 
@@ -58,8 +58,8 @@ data "vault_generic_secret" "divorce_document_upload_client_key" {
 }
 
 
-resource "azurerm_key_vault_secret" "idam-auth-secret" {
-  name      = "idam-auth-secret"
-  value     = "${data.vault_generic_secret.idam-auth-secret.data["value"]}"
+resource "azurerm_key_vault_secret" "div-doc-s2s-auth-secret" {
+  name      = "div-doc-s2s-auth-secret"
+  value     = "${data.vault_generic_secret.div-doc-s2s-auth-secret.data["value"]}"
   vault_uri = "${module.key-vault.key_vault_uri}"
 }
