@@ -119,7 +119,7 @@ def versions = [
         puppyCrawl: '7.6',
         reformsJavaLogging: '2.0.2',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
-        serviceTokenGenerator: '0.4.2',
+        serviceTokenGenerator: '0.6.0',
         sprintBoot: '1.5.9.RELEASE',
         springCloud: '1.2.5.RELEASE',
         springRetry: '1.2.1.RELEASE',
@@ -142,7 +142,7 @@ dependencies {
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
-    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.4.2'
+    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.6.0'
     integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     integrationTestCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
     integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: '1.2.3'
