@@ -29,6 +29,10 @@ variable "env" {
   type = "string"
 }
 
+variable "idam_s2s_url_prefix" {
+  default = "rpe-service-auth-provider"
+}
+
 variable "auth_provider_service_client_microservice" {
   default = "divorce_document_generator"
 }

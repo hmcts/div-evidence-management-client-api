@@ -2,7 +2,7 @@ locals {
   ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 
   dm_store_url = "http://dm-store-${var.env}.service.${local.ase_name}.internal"
-  idam_s2s_url = "http://rpe-service-auth-provider-${var.env}.service.${local.ase_name}.internal"
+  idam_s2s_url = "http://${var.idam_s2s_url_prefix}-${var.env}.service.${local.ase_name}.internal"
 }
 
 module "div-em-client-api" {
