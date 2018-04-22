@@ -120,7 +120,7 @@ def versions = [
         reformsJavaLogging: '2.0.2',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
         serviceTokenGenerator: '0.6.0',
-        sprintBoot: '1.5.9.RELEASE',
+        sprintBoot: '1.5.10.RELEASE',
         springCloud: '1.2.5.RELEASE',
         springRetry: '1.2.1.RELEASE',
         springHateoas: '0.23.0.RELEASE',
