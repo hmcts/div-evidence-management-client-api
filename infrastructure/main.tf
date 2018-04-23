@@ -5,7 +5,7 @@ locals {
   idam_s2s_url = "http://${var.idam_s2s_url_prefix}-${var.env}.service.${local.ase_name}.internal"
 }
 
-module "div-em-client-api" {
+module "div-emca" {
   source       = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product      = "${var.reform_team}-${var.reform_service_name}"
   location     = "${var.location}"
@@ -41,7 +41,7 @@ module "key-vault" {
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
   object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${module.div-em-client-api.resource_group_name}"
+  resource_group_name = "${module.div-emca.resource_group_name}"
   # dcd_cc-dev group object ID
   product_group_object_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
