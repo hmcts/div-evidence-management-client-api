@@ -4,7 +4,7 @@
 properties([
         parameters([
                 string(name: 'PRODUCT_NAME', defaultValue: 'div', description: 'Divorce'),
-                string(name: 'APP', defaultValue: 'em-client-api', description: 'Divorce Evidence Management Client API'),
+                string(name: 'APP', defaultValue: 'emca', description: 'Divorce Evidence Management Client API'),
                 string(name: 'TYPE', defaultValue: 'java', description: ''),
                 string(name: 'ENVIRONMENT', defaultValue: 'saat', description: 'Environment where code should be built and deployed'),
                 choice(name: 'SUBSCRIPTION', choices: 'sandbox\nnonprod\nprod', description: 'Azure subscriptions available to build in')

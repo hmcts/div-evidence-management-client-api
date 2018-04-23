@@ -1,5 +1,5 @@
 variable "reform_service_name" {
-  default = "em-client-api"
+  default = "emca"
 }
 
 variable "product" {

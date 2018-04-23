@@ -15,7 +15,7 @@ properties([
 
 def type = "java"
 def product = "div"
-def component = "em-client-api"
+def component = "emca"
 
 def channel = '#div-dev'
 
