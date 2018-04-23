@@ -36,12 +36,13 @@ module "div-emca" {
 # region save DB details to Azure Key Vault
 module "key-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+  name                = "${var.product}-${var.component}-${var.env}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
   object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${module.div-emca.resource_group_name}"
+  resource_group_name = "${var.product}-${var.component}"
+
   # dcd_cc-dev group object ID
   product_group_object_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
@@ -57,7 +58,6 @@ data "vault_generic_secret" "div-doc-s2s-auth-secret" {
 data "vault_generic_secret" "divorce_document_upload_client_key" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
-
 
 resource "azurerm_key_vault_secret" "div-doc-s2s-auth-secret" {
   name      = "div-doc-s2s-auth-secret"
