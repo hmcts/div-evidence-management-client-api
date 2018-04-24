@@ -30,6 +30,13 @@ class IDAMUtils {
         String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username +
             "\",\"surname\":\"User\",\"password\":\"" + password + "\"}";
 
+        System.out.println("|||||||||||||||||||||||||||||||||||||||||");
+
+        System.out.println("String s: " + s);
+        System.out.println("idamCreateUrl: " + idamCreateUrl());
+
+        System.out.println("|||||||||||||||||||||||||||||||||||||||||");
+
         RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(s)
