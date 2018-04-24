@@ -24,7 +24,7 @@ plugins {
 }
 
 group = 'uk.gov.hmcts.reform.divorce'
-version = '2.2.0'
+version = '3.0.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 jar.archiveName = 'div-evidence-management-client-api.jar'
@@ -77,6 +77,16 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
+distributions {
+  main {
+    contents {
+      from(file("$projectDir/lib/AI-Agent.xml")) {
+        into "lib"
+      }
+    }
+  }
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
@@ -107,11 +117,10 @@ def versions = [
         javaxValidation: '2.0.0.Final',
         jaywayJsonPath: '2.2.0',
         puppyCrawl: '7.6',
-        reformsJavaLoggingSpring: '1.2.1',
-        reformsJavaLoggingHttpComponents: '1.2.1',
+        reformsJavaLogging: '2.0.2',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
-        serviceTokenGenerator: '0.4.2',
-        sprintBoot: '1.5.9.RELEASE',
+        serviceTokenGenerator: '0.6.0',
+        sprintBoot: '1.5.12.RELEASE',
         springCloud: '1.2.5.RELEASE',
         springRetry: '1.2.1.RELEASE',
         springHateoas: '0.23.0.RELEASE',
@@ -133,7 +142,7 @@ dependencies {
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
-    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.4.2'
+    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: '0.6.0'
     integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     integrationTestCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
     integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: '1.2.3'
@@ -165,8 +174,9 @@ dependencies {
     compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLoggingSpring
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLoggingHttpComponents
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
 
     testCompile group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
@@ -205,7 +215,6 @@ def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/exception/*',
         '**uk/gov/hmcts/reform/emclient/configuration/*',
         '**uk/gov/hmcts/reform/emclient/response/*',
-        '**uk/gov/hmcts/reform/emclient/controller/*',
         '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
         '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
         '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
@@ -243,7 +252,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.8
+                minimum = 0.9
             }
         }
     }
