@@ -130,6 +130,7 @@ def versions = [
 
 dependencies {
 
+    
     //integration test
     integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
     integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
