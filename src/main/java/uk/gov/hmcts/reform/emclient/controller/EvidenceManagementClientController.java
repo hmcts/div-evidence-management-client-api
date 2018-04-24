@@ -61,7 +61,7 @@ public class EvidenceManagementClientController {
 
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseEntity<?> deleteFile(@RequestHeader(value = "authorizationToken") String authorizationToken,
+    public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
                                         @RequestParam("fileUrl") String fileUrl) {
         return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);

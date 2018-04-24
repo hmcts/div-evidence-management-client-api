@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDeleteService {
 
     private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
-    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -62,7 +62,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
     private HttpEntity<Object> getHeaders(String authorizationToken) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(AUTHORIZATION_HEADER, authorizationToken);
+        httpHeaders.add(SERVICE_AUTHORIZATION_HEADER, authorizationToken);
 
         return new HttpEntity<>(httpHeaders);
     }
