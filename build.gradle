@@ -109,7 +109,6 @@ dependencyCheck {
 }
 
 def versions = [
-
         commonsIo: '2.5',
         commonsLang3: '3.0',
         hibernate: '6.0.5.Final',
@@ -130,7 +129,6 @@ def versions = [
 
 dependencies {
 
-    
     //integration test
     integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
     integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
