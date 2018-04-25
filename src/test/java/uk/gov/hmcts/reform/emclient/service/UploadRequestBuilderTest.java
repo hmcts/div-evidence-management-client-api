@@ -1,13 +1,12 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import static java.lang.reflect.Modifier.isPrivate;
-
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import org.junit.Test;
+import static java.lang.reflect.Modifier.isPrivate;
+import static org.junit.Assert.assertTrue;
 
 public class UploadRequestBuilderTest {
 
@@ -25,5 +24,4 @@ public class UploadRequestBuilderTest {
         constructor.setAccessible(true);
         constructor.newInstance();
     }
-
 }
