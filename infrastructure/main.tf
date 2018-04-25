@@ -30,7 +30,7 @@ module "div-emca" {
     REFORM_ENVIRONMENT                                    = "${var.env}"
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL                  = "${local.idam_s2s_url}"
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE             = "${var.auth_provider_service_client_microservice}"
-    AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.div-doc-s2s-auth-secret.data["value"]}"
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.ccd-submission-s2s-auth-secret.data["value"]}"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
     DIVORCE_DOCUMENT_UPLOAD_KEY                           = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
 
@@ -59,6 +59,10 @@ module "key-vault" {
 
 provider "vault" {
   address = "https://vault.reform.hmcts.net:6200"
+}
+
+data "vault_generic_secret" "ccd-submission-s2s-auth-secret" {
+  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceCcdSubmission"
 }
 
 data "vault_generic_secret" "div-doc-s2s-auth-secret" {
