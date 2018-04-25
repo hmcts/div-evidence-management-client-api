@@ -1,14 +1,12 @@
 locals {
-  ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  ase_name       = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
+  dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
+  idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
-  local_env = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
-
-  dm_store_url = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
-  idam_s2s_url = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
-
-  previewVaultName = "${var.product}-${var.reform_service_name}"
-  nonPreviewVaultName = "${var.reform_team}-${var.reform_service_name}-${var.env}"
-  vaultName = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
+  previewVaultName       = "${var.product}-${var.reform_service_name}"
+  nonPreviewVaultName    = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+  vaultName              = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
 
   nonPreviewVaultUri = "${module.key-vault.key_vault_uri}"
   previewVaultUri = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
@@ -17,12 +15,12 @@ locals {
 
 module "div-emca" {
   source       = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
-  product = "${var.product}-${var.reform_service_name}"
-  location = "${var.location}"
-  env = "${var.env}"
-  ilbIp = "${var.ilbIp}"
+  product      = "${var.product}-${var.reform_service_name}"
+  location     = "${var.location}"
+  env          = "${var.env}"
+  ilbIp        = "${var.ilbIp}"
   subscription = "${var.subscription}"
-  is_frontend = false
+  is_frontend  = false
 
   app_settings = {
     REFORM_SERVICE_NAME                                   = "${var.reform_service_name}"
