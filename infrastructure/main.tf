@@ -17,12 +17,12 @@ locals {
 
 module "div-emca" {
   source       = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
-  product      = "${var.reform_team}-${var.reform_service_name}"
-  location     = "${var.product}"
-  env          = "${var.env}"
-  ilbIp        = "${var.ilbIp}"
+  product = "${var.product}-${var.reform_service_name}"
+  location = "${var.location}"
+  env = "${var.env}"
+  ilbIp = "${var.ilbIp}"
   subscription = "${var.subscription}"
-  is_frontend  = false
+  is_frontend = false
 
   app_settings = {
     REFORM_SERVICE_NAME                                   = "${var.reform_service_name}"
