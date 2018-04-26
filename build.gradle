@@ -157,9 +157,9 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
 
     compile (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
+        exclude group: 'io.reactivex', module: 'io.reactivex'
         exclude group: 'io.reactivex', module: 'rxnetty'
         exclude group: 'io.reactivex', module: 'rxnetty-servo'
-        exclude group: 'io.reactivex', module: 'io.reactivex'
         exclude group: 'io.reactivex', module: 'rxnetty-contexts'
     }
     
