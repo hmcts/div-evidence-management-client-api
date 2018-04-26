@@ -19,6 +19,10 @@ def component = "emca"
 
 def channel = '#div-dev'
 
+List<LinkedHashMap<String, Object>> secrets = [
+        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET")
+]
+
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     [ $class: 'AzureKeyVaultSecret',
       secretType: 'Secret',
@@ -27,10 +31,6 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
       envVariable: envVar
     ]
 }
-
-List<LinkedHashMap<String, Object>> secrets = [
-        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET")
-]
 
 withPipeline(type, product, component) {
 

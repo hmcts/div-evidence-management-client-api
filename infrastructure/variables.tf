@@ -2,16 +2,12 @@ variable "reform_service_name" {
   default = "emca"
 }
 
-variable "reform_team" {
-  default = "div"
-}
-
-variable "env" {
-  type = "string"
-}
-
 variable "product" {
   type    = "string"
+}
+
+variable "component" {
+  type = "string"
 }
 
 variable "tenant_id" {}
@@ -19,13 +15,18 @@ variable "tenant_id" {}
 variable "client_id" {
   description = "(Required) The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies. This is usually sourced from environment variables and not normally required to be specified."
 }
-variable "component" {
-  type = "string"
-}
 
 variable "jenkins_AAD_objectId" {
   type        = "string"
   description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
+}
+
+variable "reform_team" {
+  default = "div"
+}
+
+variable "env" {
+  type = "string"
 }
 
 variable "idam_s2s_url_prefix" {
