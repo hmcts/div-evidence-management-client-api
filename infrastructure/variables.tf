@@ -37,10 +37,6 @@ variable "auth_provider_service_client_microservice" {
   default = "divorce_document_generator"
 }
 
-variable "auth_provider_service_client_key" {
-  default = "{{ evidence_management_client_api.secret }}"
-}
-
 variable "auth_provider_service_client_tokentimetoliveinseconds" {
   default = "900"
 }
