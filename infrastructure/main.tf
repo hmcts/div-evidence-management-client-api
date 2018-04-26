@@ -4,13 +4,13 @@ locals {
   dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
   idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
+  vaultName              = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
   previewVaultName       = "${var.product}-${var.reform_service_name}"
   nonPreviewVaultName    = "${var.reform_team}-${var.reform_service_name}-${var.env}"
-  vaultName              = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
 
-  nonPreviewVaultUri = "${module.key-vault.key_vault_uri}"
-  previewVaultUri = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
-  vaultUri = "${var.env == "preview"? local.previewVaultUri : local.nonPreviewVaultUri}"
+  vaultUri                = "${var.env == "preview"? local.previewVaultUri : local.nonPreviewVaultUri}"
+  previewVaultUri         = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
+  nonPreviewVaultUri      = "${module.key-vault.key_vault_uri}"
 }
 
 module "div-emca" {
