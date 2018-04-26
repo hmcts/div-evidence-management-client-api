@@ -68,7 +68,7 @@ data "vault_generic_secret" "divorce_document_upload_client_key" {
 }
 
 resource "azurerm_key_vault_secret" "divorce_document_upload_client_key" {
-  name      = "divorce_document_uplchoad_client_key"
+  name      = "divorce-document-upload-client-key"
   value     = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
   vault_uri = "${module.key-vault.key_vault_uri}"
 }
