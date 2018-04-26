@@ -1,13 +1,21 @@
 locals {
-  ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  ase_name       = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
+  dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
+  idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
-  dm_store_url = "http://dm-store-${var.env}.service.${local.ase_name}.internal"
-  idam_s2s_url = "http://${var.idam_s2s_url_prefix}-${var.env}.service.${local.ase_name}.internal"
+  previewVaultName = "${var.product}-${var.reform_service_name}-preview"
+  nonPreviewVaultName = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+  vaultName = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
+
+  nonPreviewVaultUri = "${module.key-vault.key_vault_uri}"
+  previewVaultUri = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
+  vaultUri = "${var.env == "preview"? local.previewVaultUri : local.nonPreviewVaultUri}"
 }
 
 module "div-emca" {
   source       = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
-  product      = "${var.reform_team}-${var.reform_service_name}"
+  product      = "${var.product}-${var.reform_service_name}"
   location     = "${var.location}"
   env          = "${var.env}"
   ilbIp        = "${var.ilbIp}"
@@ -22,7 +30,6 @@ module "div-emca" {
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE             = "${var.auth_provider_service_client_microservice}"
     AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.div-doc-s2s-auth-secret.data["value"]}"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
-    DIVORCE_DOCUMENT_UPLOAD_KEY                           = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
 
     DOCUMENT_MANAGEMENT_STORE_URL       = "${local.dm_store_url}"
     EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.dm_store_url}/documents"
@@ -33,10 +40,14 @@ module "div-emca" {
   }
 }
 
+provider "vault" {
+  address = "https://vault.reform.hmcts.net:6200"
+}
+
 # region save DB details to Azure Key Vault
 module "key-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "${var.product}-${var.component}-${var.env}"
+  name                = "${local.vaultName}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
@@ -47,15 +58,7 @@ module "key-vault" {
   product_group_object_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
 }
 
-provider "vault" {
-  address = "https://vault.reform.hmcts.net:6200"
-}
-
 data "vault_generic_secret" "div-doc-s2s-auth-secret" {
-  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
-}
-
-data "vault_generic_secret" "divorce_document_upload_client_key" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
 
