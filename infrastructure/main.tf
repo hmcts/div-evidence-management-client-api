@@ -4,13 +4,13 @@ locals {
   dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
   idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
-  vaultName              = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
-  previewVaultName       = "${var.product}-${var.reform_service_name}"
-  nonPreviewVaultName    = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+  previewVaultName = "${var.product}-${var.reform_service_name}-preview"
+  nonPreviewVaultName = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+  vaultName = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
 
-  vaultUri                = "${var.env == "preview"? local.previewVaultUri : local.nonPreviewVaultUri}"
-  previewVaultUri         = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
-  nonPreviewVaultUri      = "${module.key-vault.key_vault_uri}"
+  nonPreviewVaultUri = "${module.key-vault.key_vault_uri}"
+  previewVaultUri = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
+  vaultUri = "${var.env == "preview"? local.previewVaultUri : local.nonPreviewVaultUri}"
 }
 
 module "div-emca" {
@@ -68,7 +68,7 @@ data "vault_generic_secret" "divorce_document_upload_client_key" {
 }
 
 resource "azurerm_key_vault_secret" "divorce_document_upload_client_key" {
-  name      = "divorce_document_upload_client_key"
+  name      = "divorce_document_uplchoad_client_key"
   value     = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
   vault_uri = "${module.key-vault.key_vault_uri}"
 }
