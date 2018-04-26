@@ -1,13 +1,21 @@
 locals {
-  ase_name = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  ase_name       = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
+  dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
+  idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
-  dm_store_url = "http://dm-store-${var.env}.service.${local.ase_name}.internal"
-  idam_s2s_url = "http://${var.idam_s2s_url_prefix}-${var.env}.service.${local.ase_name}.internal"
+  vaultName              = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
+  previewVaultName       = "${var.product}-${var.reform_service_name}"
+  nonPreviewVaultName    = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+
+  vaultUri                = "${var.env == "preview"? local.previewVaultUri : local.nonPreviewVaultUri}"
+  previewVaultUri         = "https://div-${var.reform_service_name}-aat.vault.azure.net/"
+  nonPreviewVaultUri      = "${module.key-vault.key_vault_uri}"
 }
 
 module "div-emca" {
   source       = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
-  product      = "${var.reform_team}-${var.reform_service_name}"
+  product      = "${var.product}-${var.reform_service_name}"
   location     = "${var.location}"
   env          = "${var.env}"
   ilbIp        = "${var.ilbIp}"
@@ -36,7 +44,7 @@ module "div-emca" {
 # region save DB details to Azure Key Vault
 module "key-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "${var.product}-${var.component}-${var.env}"
+  name                = "${local.vaultName}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
@@ -57,6 +65,12 @@ data "vault_generic_secret" "div-doc-s2s-auth-secret" {
 
 data "vault_generic_secret" "divorce_document_upload_client_key" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
+}
+
+resource "azurerm_key_vault_secret" "divorce_document_upload_client_key" {
+  name      = "divorce_document_upload_client_key"
+  value     = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
+  vault_uri = "${module.key-vault.key_vault_uri}"
 }
 
 resource "azurerm_key_vault_secret" "div-doc-s2s-auth-secret" {
