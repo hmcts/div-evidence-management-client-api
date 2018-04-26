@@ -41,6 +41,10 @@ module "div-emca" {
   }
 }
 
+provider "vault" {
+  address = "https://vault.reform.hmcts.net:6200"
+}
+
 # region save DB details to Azure Key Vault
 module "key-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
@@ -53,10 +57,6 @@ module "key-vault" {
 
   # dcd_cc-dev group object ID
   product_group_object_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
-}
-
-provider "vault" {
-  address = "https://vault.reform.hmcts.net:6200"
 }
 
 data "vault_generic_secret" "div-doc-s2s-auth-secret" {
