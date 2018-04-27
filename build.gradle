@@ -93,7 +93,7 @@ tasks.withType(JavaCompile) {
 
 pitest {
     targetClasses = ['uk.gov.hmcts.reform.emclient.*']
-    excludedClasses = ['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*']
+    excludedClasses = ['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*', 'uk.gov.hmcts.reform.emclient.response.*']
     threads = 4
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
