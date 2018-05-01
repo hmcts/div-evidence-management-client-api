@@ -30,4 +30,8 @@ withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.E
     before('functionalTest:aat') {
         env.TEST_ENVIRONMENT = "aat"
     }
+
+    before('functionalTest:saat') {
+        env.TEST_ENVIRONMENT = "saat"
+    }
 }
