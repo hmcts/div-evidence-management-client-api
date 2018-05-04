@@ -63,3 +63,7 @@ variable "location" {
 variable "ilbIp" {}
 
 variable "vault_env" {}
+
+variable "idam_api_baseurl" {
+    type = "string"
+}
