@@ -20,7 +20,7 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService testObj;
-
+    
     @Test
     public void userServiceReturnUserDetails(){
 
