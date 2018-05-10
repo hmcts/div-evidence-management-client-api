@@ -24,11 +24,11 @@ import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.serenitybdd.rest.SerenityRest.given;
 
 
 @Lazy
@@ -63,7 +63,8 @@ public class EvidenceManagementFileDeleteTest {
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
         String fileUrl = uploadFileToEvidenceManagement(FILE_NAME, "image/png");
-        Response response = deleteFileFromEvidenceManagement(fileUrl, getAuthenticationTokenHeader("CitizenTestUser", "password"));
+        System.out.println("fileUrl: " + fileUrl);
+        Response response = deleteFileFromEvidenceManagement(fileUrl, getAuthenticationTokenHeader("CitizenTestUser", "password", false));
 
         Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
     }
@@ -73,7 +74,7 @@ public class EvidenceManagementFileDeleteTest {
     public void verifyDeleteRequestForNonExistentDocumentIsIgnored() {
         String fileUrl = uploadFileToEvidenceManagement(FILE_NAME, "image/png");
         String fileUrlAlt = fileUrl.concat("xyzzy");
-        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, getAuthenticationTokenHeader("CitizenTestUser", "password"));
+        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, getAuthenticationTokenHeader("CitizenTestUser", "password", false));
 
         Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
@@ -83,7 +84,7 @@ public class EvidenceManagementFileDeleteTest {
     public void verifyDeleteRequestWithMissingDocumentIdIsIgnored() {
         String fileUrl = uploadFileToEvidenceManagement(FILE_NAME, "image/png");
         String fileUrlAlt = fileUrl.substring(0, fileUrl.lastIndexOf("/") + 1);
-        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, getAuthenticationTokenHeader("CitizenTestUser", "password"));
+        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, getAuthenticationTokenHeader("CitizenTestUser", "password", false));
 
         Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
@@ -92,9 +93,9 @@ public class EvidenceManagementFileDeleteTest {
     @Test
     public void verifyDeleteRequestWithInvalidAuthTokenIsRejected() {
         String fileUrl = uploadFileToEvidenceManagement(FILE_NAME, "image/png");
-        Map<String, Object> headers = getAuthenticationTokenHeader("CitizenTestUser", "password");
-        String token = "x".concat(headers.get("Authorization").toString()).concat("x");
-        headers.put("Authorization", token);
+        Map<String, Object> headers = getAuthenticationTokenHeader("CitizenTestUser", "password", false);
+        String token = "x".concat(headers.get("ServiceAuthorization").toString()).concat("x");
+        headers.put("ServiceAuthorization", token);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
 
         Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
@@ -104,7 +105,7 @@ public class EvidenceManagementFileDeleteTest {
     @Test
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsRejected() {
         String fileUrl = uploadFileToEvidenceManagement(FILE_NAME, "image/png");
-        Response response = deleteFileFromEvidenceManagement(fileUrl, getAuthenticationTokenHeader("CaseWorkerTest", "password"));
+        Response response = deleteFileFromEvidenceManagement(fileUrl, getAuthenticationTokenHeader("CaseWorkerTest", "password", false));
 
         Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
@@ -121,9 +122,10 @@ public class EvidenceManagementFileDeleteTest {
     private String uploadFileToEvidenceManagement(String fileName,
                                           String fileContentType) {
 
-        File file = new File("src/integrationTest/resources/FileTypes/" + fileName);
-        Response response = given()
-                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+        File file = new File("../../src/integrationTest/resources/FileTypes/" + fileName);
+        System.out.println("uploadEndpoint: " + evidenceManagementClientApiBaseUrl.concat("/upload"));
+        Response response = SerenityRest.given()
+                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password", true))
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
@@ -135,20 +137,28 @@ public class EvidenceManagementFileDeleteTest {
 
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
+        String documentId = fileUrl.substring(fileUrl.lastIndexOf('/'));
+        System.out.println("fileUrl: " + fileUrl);
+//        System.out.println("deleteEndpoint: " + evidenceManagementClientApiBaseUrl.concat("/documents" + documentId));
+        System.out.println("deleteEndpoint changed to: " + "http://localhost:4603/emclientapi/version/1/documents" + documentId);
 
         return SerenityRest.given()
                 .headers(headers)
-                .delete(fileUrl)
+                .delete("http://localhost:4603/emclientapi/version/1/documents" + documentId)
+//                .delete(evidenceManagementClientApiBaseUrl.concat("/documents" + documentId))
                 .andReturn();
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
+    private Map<String, Object> getAuthenticationTokenHeader(String username, String password, Boolean upload) {
         idamTestSupportUtil.createUserInIdam(username, password);
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
+        System.out.println("authenticationToken: " + authenticationToken);
         Map<String, Object> headers = new HashMap<>();
-        headers.put("Authorization", authenticationToken);
-        headers.put("Content-Type", "multipart/form-data");
+        headers.put("ServiceAuthorization", authenticationToken);
+        if(upload != null && upload){
+            headers.put("Content-Type", "multipart/form-data");
+        }
         return headers;
     }
 
