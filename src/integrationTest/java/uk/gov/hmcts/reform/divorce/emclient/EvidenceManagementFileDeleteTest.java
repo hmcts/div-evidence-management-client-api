@@ -22,6 +22,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -56,6 +57,9 @@ public class EvidenceManagementFileDeleteTest {
 
     @Value("${document.management.store.baseUrl}")
     private String documentManagementURL;
+
+    @Autowired
+    private AuthTokenGenerator authTokenGenerator;
 
     private static final String FILE_NAME = "PNGFile.png";
 
@@ -138,27 +142,31 @@ public class EvidenceManagementFileDeleteTest {
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
         String documentId = fileUrl.substring(fileUrl.lastIndexOf('/'));
-        System.out.println("fileUrl: " + fileUrl);
-//        System.out.println("deleteEndpoint: " + evidenceManagementClientApiBaseUrl.concat("/documents" + documentId));
-        System.out.println("deleteEndpoint changed to: " + "http://localhost:4603/emclientapi/version/1/documents" + documentId);
+        //fileUrl = fileUrl + headers.get("ServiceAuthorization");
+        System.out.println("deleteEndpoint = fileUrl: " + fileUrl);
+//        System.out.println("deleteEndpoint changed to: " + "http://localhost:4603/emclientapi/version/1/documents" + documentId);
 
         return SerenityRest.given()
                 .headers(headers)
-                .delete("http://localhost:4603/emclientapi/version/1/documents" + documentId)
+//                .delete("http://localhost:4603/emclientapi/version/1/documents" + documentId)
 //                .delete(evidenceManagementClientApiBaseUrl.concat("/documents" + documentId))
+                .delete(fileUrl)
                 .andReturn();
     }
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> getAuthenticationTokenHeader(String username, String password, Boolean upload) {
         idamTestSupportUtil.createUserInIdam(username, password);
-        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
-        System.out.println("authenticationToken: " + authenticationToken);
+//        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
+        String authenticationToken = authTokenGenerator.generate();
+        System.out.println("authenticationToken before: " + authenticationToken);
+        authenticationToken = authenticationToken.substring(authenticationToken.indexOf(' ') + 1);
+        System.out.println("authenticationToken after: " + authenticationToken);
         Map<String, Object> headers = new HashMap<>();
         headers.put("ServiceAuthorization", authenticationToken);
-        if(upload != null && upload){
-            headers.put("Content-Type", "multipart/form-data");
-        }
+        headers.put("Content-Type", "multipart/form-data");
+        headers.put("user-id", "CitizenTestUser@test.com");
+        headers.put("Accept", "*/*");
         return headers;
     }
 
