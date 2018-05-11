@@ -43,7 +43,7 @@ public class EvidenceManagementUploadServiceImplTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Mock
-    UserService userService;
+    private UserService userService;
 
     @InjectMocks
     private EvidenceManagementUploadServiceImpl emUploadService;
