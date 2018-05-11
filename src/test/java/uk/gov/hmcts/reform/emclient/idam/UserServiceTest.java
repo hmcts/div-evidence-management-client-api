@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.emclient.idam;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,10 +16,10 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
 
     @Mock
-    IdamApiClient idamApiClient;
+    private IdamApiClient idamApiClient;
 
     @InjectMocks
-    UserService testObj;
+    private UserService testObj;
 
     @Test
     public void userServiceReturnUserDetails(){
