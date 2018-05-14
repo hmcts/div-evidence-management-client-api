@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,10 +17,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -34,10 +38,18 @@ public class EvidenceManagementDeleteServiceImplTest {
     private RestTemplate restTemplate;
 
     @Mock
+    UserService userService;
+
+    @Mock
     private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
     private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
+
+    @Before
+    public void setUp(){
+        when(userService.getUserDetails(anyString())).thenReturn(UserDetails.builder().id("19").build());
+    }
 
 
     /**

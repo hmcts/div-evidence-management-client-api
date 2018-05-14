@@ -1,8 +1,7 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,19 +10,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-
-import static uk.gov.hmcts.reform.emclient.utils.ServiceUtils.getUserId;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
 
 @Service
+@Slf4j
 public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDeleteService {
 
-    private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private static final String USER_ID_HEADER = "user-id";
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
@@ -47,7 +49,9 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
         log.info("deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
-        HttpEntity<Object> httpEntity = getHeaders(authorizationToken);
+        UserDetails userDetails = userService.getUserDetails(authorizationToken);
+
+        HttpEntity<Object> httpEntity = getHeaders(userDetails.getId());
         ResponseEntity<String> response = restTemplate.exchange(fileUrl,
                 HttpMethod.DELETE,
                 httpEntity,
@@ -62,15 +66,15 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
      * This method generates the http headers required to be provided as part of the delete document request.
      * <p/>
      *
-     * @param authorizationToken a String holding the authorisation token of the current user
+     * @param userId a String holding the userId of the current user
      * @return an HttpEntity instance holding the formatted headers
      */
 
-    private HttpEntity<Object> getHeaders(String authorizationToken) {
+    private HttpEntity<Object> getHeaders(String userId) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
-        httpHeaders.add(USER_ID_HEADER, getUserId(authorizationToken));
+        httpHeaders.add(USER_ID_HEADER, userId);
 
         return new HttpEntity<>(httpHeaders);
     }
