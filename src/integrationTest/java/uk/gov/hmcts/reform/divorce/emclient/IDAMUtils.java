@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.divorce.emclient;
 
 import com.nimbusds.jwt.JWTParser;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.text.ParseException;
@@ -26,11 +27,14 @@ class IDAMUtils {
         return (String) claims.get("id");
     }
 
-    void createUserInIdam(String username, String password) {
+    Response createUserInIdam(String username, String password) {
         String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username +
             "\",\"surname\":\"User\",\"password\":\"" + password + "\"}";
 
-        RestAssured.given()
+        System.out.println("David - user s"+s);
+        System.out.println("David - IdamCreate"+idamCreateUrl());
+
+        return RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(s)
                 .post(idamCreateUrl());
@@ -40,6 +44,10 @@ class IDAMUtils {
         String body = "{\"email\":\"" + username + "@test.com" + "\", "
                 + "\"forename\":" + "\"" + username + "\"," + "\"surname\":\"User\",\"password\":\"" + password + "\", "
                 + "\"roles\":[\"caseworker-divorce\"], \"userGroup\":{\"code\":\"caseworker\"}}";
+
+        System.out.println("David - user body"+body);
+        System.out.println("David - IdamCreate"+idamCreateUrl());
+
         RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(body)
@@ -57,7 +65,12 @@ class IDAMUtils {
 
     String generateUserTokenWithNoRoles(String username, String password) {
         String userLoginDetails = String.join(":", username + "@test.com", password);
+        System.out.println("David - userLoginDetails"+userLoginDetails);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
+
+        System.out.println("David - loginUrl()"+loginUrl());
+        System.out.println("David - authHeader"+authHeader);
+
 
         final String token = RestAssured.given()
                 .header("Authorization", authHeader)
