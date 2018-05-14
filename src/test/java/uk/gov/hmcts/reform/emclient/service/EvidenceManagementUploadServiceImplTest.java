@@ -117,7 +117,7 @@ public class EvidenceManagementUploadServiceImplTest {
         return httpEntityReqEntity.getAllValues().get(0).getHeaders();
     }
     private ObjectNode getResponse() throws IOException {
-        final String response = new String(readAllBytes(get("../../src/test/resources/fileuploadresponse.txt")));
+        final String response = new String(readAllBytes(get("src/test/resources/fileuploadresponse.txt")));
         return (ObjectNode) new ObjectMapper().readTree(response);
     }
 
