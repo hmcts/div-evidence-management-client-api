@@ -3,12 +3,11 @@ package uk.gov.hmcts.reform.emclient.utils;
 import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImpl;
 
 import java.util.Map;
 
 public class ServiceUtils {
-    private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ServiceUtils.class);
 
     public static String getUserId(String encodedJwt) {
         String userId = "divorceEmcli";

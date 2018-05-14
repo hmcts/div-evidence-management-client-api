@@ -91,7 +91,7 @@ public class EMClientFileUploadTest {
 
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
-        File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
+        File file = new File("../../src/integrationTest/resources/FileTypes/" + fileToUpload);
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
                 .multiPart("file", file, fileContentType)

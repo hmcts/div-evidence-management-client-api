@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.StreamSupport.stream;
 import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
+import static uk.gov.hmcts.reform.emclient.utils.ServiceUtils.getUserId;
 
 @Service
 @Slf4j
@@ -89,18 +90,5 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.set("Content-Type", "multipart/form-data");
         headers.set("user-id", getUserId(authorizationToken));
         return headers;
-    }
-
-    private String getUserId(String encodedJwt) {
-        String userId = "divorceEmcli";
-        Map<String, Object> claims;
-        try {
-            String jwt = encodedJwt.replaceFirst("Bearer ", "");
-            claims = JWTParser.parse(jwt).getJWTClaimsSet().getClaims();
-            userId = String.valueOf(claims.get("id"));
-        } catch (Exception e) {
-            log.error("failed parse user from jwt token [" + encodedJwt + "]", e);
-        }
-        return userId;
     }
 }
