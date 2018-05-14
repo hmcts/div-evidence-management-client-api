@@ -15,12 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,6 +32,9 @@ public class EvidenceManagementDeleteServiceImplTest {
 
     @Mock
     private RestTemplate restTemplate;
+
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
     private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
@@ -149,6 +154,7 @@ public class EvidenceManagementDeleteServiceImplTest {
 
     private void setupMockEvidenceManagementService(String fileUrl,
                                                     HttpStatus httpStatus) {
+        when(authTokenGenerator.generate()).thenReturn("xxxx");
 
         doReturn(new ResponseEntity<>(httpStatus))
                 .when(restTemplate)
