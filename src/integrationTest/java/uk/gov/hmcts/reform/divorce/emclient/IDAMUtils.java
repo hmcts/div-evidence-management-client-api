@@ -65,6 +65,8 @@ class IDAMUtils {
                 .body()
                 .path("access-token");
 
+        System.out.println("David token>"+token);
+
         return "Bearer " + token;
     }
 

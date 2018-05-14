@@ -92,11 +92,17 @@ public class EMClientFileUploadTest {
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
+        System.out.println("David's super duper log" +
+                "");
+        System.out.println("File>"+file);
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
+
+        System.out.println("Response>"+response);
+        System.out.println("Response Pretty>"+response.getBody().prettyPrint());
 
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
