@@ -10,6 +10,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+
+import static uk.gov.hmcts.reform.emclient.utils.ServiceUtils.getUserId;
 
 
 @Service
@@ -17,9 +20,13 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
     private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
+    private static final String USER_ID_HEADER = "user-id";
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AuthTokenGenerator authTokenGenerator;
 
 
     /**
@@ -62,7 +69,8 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
     private HttpEntity<Object> getHeaders(String authorizationToken) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(SERVICE_AUTHORIZATION_HEADER, authorizationToken);
+        httpHeaders.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
+        httpHeaders.add(USER_ID_HEADER, getUserId(authorizationToken));
 
         return new HttpEntity<>(httpHeaders);
     }
