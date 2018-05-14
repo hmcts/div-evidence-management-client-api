@@ -18,12 +18,13 @@ import org.springframework.retry.annotation.EnableRetry;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
+import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "uk.gov.hmcts")
 @EnableAutoConfiguration(exclude = HypermediaAutoConfiguration.class)
 @EnableRetry(proxyTargetClass=true)
-@EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
+@EnableFeignClients(basePackageClasses = {ServiceAuthorisationApi.class, IdamApiClient.class})
 @EnableCircuitBreaker
 public class EvidenceManagementClientApplication {
 
