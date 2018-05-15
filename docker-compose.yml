@@ -19,7 +19,7 @@ services:
       - EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL=http://em-api-gateway-web:3404/documents
       - EVIDENCE_MANAGEMENT_HEALTH_URL=http://em-api-gateway-web:3404/health
       - DOCUMENT_MANAGEMENT_STORE_URL=http://document-management-store:8080
-      - IDAM_API_BASEURL=http://idam-api:8080
+      - IDAM_API_URL=http://idam-api:8080
     links:
      - em-api-gateway-web
      - idam-api
