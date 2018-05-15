@@ -3,11 +3,14 @@ package uk.gov.hmcts.reform.divorce.emclient;
 import com.nimbusds.jwt.JWTParser;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.text.ParseException;
 import java.util.Base64;
 import java.util.Map;
+
+import static jnr.posix.WString.path;
 
 class IDAMUtils {
 
@@ -72,11 +75,13 @@ class IDAMUtils {
         System.out.println("David - authHeader"+authHeader);
 
 
-        final String token = RestAssured.given()
+        ResponseBody authorization = RestAssured.given()
                 .header("Authorization", authHeader)
                 .post(loginUrl())
-                .body()
-                .path("access-token");
+                .body();
+
+        System.out.println("authenticationToken"+authorization.prettyPrint());
+                String token  = authorization.path("access-token");
 
         System.out.println("David token>"+token);
 
