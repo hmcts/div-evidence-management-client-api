@@ -63,7 +63,7 @@ class IDAMUtils {
 
     private String loginUrl() {
         return idamUserBaseUrl + "/oauth2/authorize?response_type=token&client_id=divorce&redirect_uri="
-                            + "https://div-pfe-aat.service.core-compute-aat.internal/authenticated";
+                            + "https://www.preprod.ccd.reform.hmcts.net/oauth2redirect";
     }
 
     String generateUserTokenWithNoRoles(String username, String password) {
