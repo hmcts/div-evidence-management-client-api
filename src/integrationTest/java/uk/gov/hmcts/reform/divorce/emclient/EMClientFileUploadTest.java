@@ -92,36 +92,27 @@ public class EMClientFileUploadTest {
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
-        System.out.println("David's super duper log" +
-                "");
-        System.out.println("File>"+file);
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
-        System.out.println("Response Pretty>"+response.getBody().prettyPrint());
-
-        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
     }
 
     private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
         Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
-        System.out.println("get file"+responseFromEvidenceManagement.getBody().prettyPrint());
         Assert.assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
         Assert.assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
         Assert.assertEquals(fileContentType, responseFromEvidenceManagement.getBody().path("mimeType"));
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
-        System.out.println("David - read data user");
         idamTestSupportUtil.createDivorceCaseworkerUserInIdam("CaseWorkerTest", "password");
         Map<String, Object> headers = new HashMap<>();
-        String token = authTokenGenerator.generate();
-        System.out.print("David - read data token "+token);
-        headers.put("ServiceAuthorization", token);
+        headers.put("ServiceAuthorization", authTokenGenerator.generate());
         headers.put("user-id", "CaseWorkerTest");
         headers.put("user-roles", "caseworker-divorce");
         return given()
@@ -133,12 +124,9 @@ public class EMClientFileUploadTest {
     }
 
     private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
-        System.out.println("David - user "+username+" password "+password);
         idamTestSupportUtil.createUserInIdam(username, password);
-
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
         Map<String, Object> headers = new HashMap<>();
-        System.out.print("David - put auth token >"+authenticationToken+"<");
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");
         return headers;
