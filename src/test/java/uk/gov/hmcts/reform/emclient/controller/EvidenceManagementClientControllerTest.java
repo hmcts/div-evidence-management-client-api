@@ -214,7 +214,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EvidenceManagementClientControllerTest.EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
