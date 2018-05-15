@@ -100,8 +100,6 @@ public class EMClientFileUploadTest {
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
-
-        System.out.println("Response>"+response);
         System.out.println("Response Pretty>"+response.getBody().prettyPrint());
 
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
@@ -118,7 +116,7 @@ public class EMClientFileUploadTest {
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
-        System.out.print("David - read data user");
+        System.out.println("David - read data user");
         idamTestSupportUtil.createDivorceCaseworkerUserInIdam("CaseWorkerTest", "password");
         Map<String, Object> headers = new HashMap<>();
         String token = authTokenGenerator.generate();
@@ -140,7 +138,7 @@ public class EMClientFileUploadTest {
 
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
         Map<String, Object> headers = new HashMap<>();
-        System.out.print("David - put auth token "+authenticationToken);
+        System.out.print("David - put auth token >"+authenticationToken+"<");
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");
         return headers;
