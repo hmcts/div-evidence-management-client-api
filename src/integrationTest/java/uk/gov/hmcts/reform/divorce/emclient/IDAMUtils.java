@@ -1,9 +1,16 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
+import com.nimbusds.jwt.JWTParser;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.text.ParseException;
 import java.util.Base64;
+import java.util.Map;
+
+import static jnr.posix.WString.path;
 
 class IDAMUtils {
 
@@ -24,6 +31,10 @@ class IDAMUtils {
         String body = "{\"email\":\"" + username + "@test.com" + "\", "
                 + "\"forename\":" + "\"" + username + "\"," + "\"surname\":\"User\",\"password\":\"" + password + "\", "
                 + "\"roles\":[\"caseworker-divorce\"], \"userGroup\":{\"code\":\"caseworker\"}}";
+
+        System.out.println("David - user body"+body);
+        System.out.println("David - IdamCreate"+idamCreateUrl());
+
         RestAssured.given()
                 .header("Content-Type", "application/json")
                 .body(body)
@@ -41,13 +52,22 @@ class IDAMUtils {
 
     String generateUserTokenWithNoRoles(String username, String password) {
         String userLoginDetails = String.join(":", username + "@test.com", password);
+        System.out.println("David - userLoginDetails"+userLoginDetails);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
-        final String token = RestAssured.given()
+        System.out.println("David - loginUrl()"+loginUrl());
+        System.out.println("David - authHeader"+authHeader);
+
+
+        ResponseBody authorization = RestAssured.given()
                 .header("Authorization", authHeader)
                 .post(loginUrl())
-                .body()
-                .path("access-token");
+                .body();
+
+        System.out.println("authenticationToken"+authorization.prettyPrint());
+                String token  = authorization.path("access-token");
+
+        System.out.println("David token>"+token);
 
         return "Bearer " + token;
     }
