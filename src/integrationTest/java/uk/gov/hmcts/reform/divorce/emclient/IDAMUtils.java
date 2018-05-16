@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Base64;
@@ -43,12 +44,15 @@ class IDAMUtils {
         String userLoginDetails = String.join(":", username + "@test.com", password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
-        final String token = RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization", authHeader)
-                .post(loginUrl())
-                .body()
-                .path("access-token");
+                .post(loginUrl());
 
+        if (response.getStatusCode() >= 300) {
+            throw  new RuntimeException("Token generation failed with code: " + response.getStatusCode() + " body: " + response.getBody().prettyPrint());
+        }
+
+        String token = response.getBody().path("access-token");
         return "Bearer " + token;
     }
 
