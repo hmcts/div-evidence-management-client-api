@@ -49,7 +49,7 @@ class IDAMUtils {
                 .post(loginUrl());
 
         if (response.getStatusCode() >= 300) {
-            throw  new RuntimeException("Token generation failed with code: " + response.getStatusCode() + " body: " + response.getBody().prettyPrint());
+            throw  new IDAMUtilsException("Token generation failed with code: " + response.getStatusCode() + " body: " + response.getBody().prettyPrint());
         }
 
         String token = response.getBody().path("access-token");
