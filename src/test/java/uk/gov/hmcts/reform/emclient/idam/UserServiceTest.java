@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.hmcts.reform.emclient.idam.api.IdamApiClient;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
@@ -29,5 +31,14 @@ public class UserServiceTest {
         when(idamApiClient.retrieveUserDetails(authToken)).thenReturn(userDetails);
 
         assertThat(testObj.getUserDetails(authToken)).isEqualTo(userDetails);
+    }
+
+    @Test(expected = HttpClientErrorException.class)
+    public void userServiceThrowErrorWhenNotAuthorised(){
+        UserDetails userDetails = UserDetails.builder().id("IdOne").build();
+        String authToken = "authTokenValue";
+        when(idamApiClient.retrieveUserDetails(authToken)).thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+
+        testObj.getUserDetails(authToken);
     }
 }
