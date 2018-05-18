@@ -55,6 +55,9 @@ public class EvidenceManagementClientControllerTest {
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
 
     private static final String EM_CLIENT_UPLOAD_URL = "/emclientapi/version/1/upload";
+    private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
+    private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/downloadFile?fileUrl=";
+    public static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
 
     @MockBean
     private EvidenceManagementUploadService emUploadService;
@@ -193,14 +196,57 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
+<<<<<<< HEAD
 
+=======
+    @Test
+    public void shouldDownloadFileWhenDownloadFileIsInvokedWithSelfUrl() throws Exception {
+        ResponseEntity<InputStreamResource> responseEntity = new ResponseEntity<>(
+                new InputStreamResource(this.getClass().getResourceAsStream("/marriage-cert-example.png")),
+                HttpStatus.OK);
+
+        given(emDownloadService.downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
+                .willReturn(responseEntity);
+
+        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
+                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+                .header(REQUEST_ID_HEADER, REQUEST_ID))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .bytes(copyToByteArray(this.getClass().getResourceAsStream("/marriage-cert-example.png"))))
+                .andReturn();
+
+        verifyInteractionsForDownloadService();
+    }
+
+    @Test
+    public void shouldNotDownloadFileWhenDownloadFileIsInvokedWithSelfUrlWithoutAuthToken() throws Exception {
+        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
+                .header(REQUEST_ID_HEADER, REQUEST_ID))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void shouldNotDownloadFileAndThrowServerExceptionWhenDownloadFileIsInvokedAndEMServiceIsUnavailable()
+            throws Exception {
+        given(emDownloadService.downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
+                .willThrow(new ResourceAccessException("Evidence management service is currently down"));
+
+        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
+                .header(REQUEST_ID_HEADER, REQUEST_ID)
+                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
+                .andExpect(status().is5xxServerError());
+
+        verifyInteractionsForDownloadService();
+    }
+>>>>>>> DIV-1435
 
     @Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
-        given(emDeleteService.deleteFile("http://localhost:8080/documents/6", AUTH_TOKEN, REQUEST_ID))
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(new ResponseEntity<>(HttpStatus.OK));
 
-        mockMvc.perform(delete("/emclientapi/version/1/deleteFile?fileUrl=http://localhost:8080/documents/6")
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
                 .andExpect(status().isOk())
@@ -209,10 +255,10 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldDoNothingWhenDeleteFileIsInvokedWithoutFileUrl() throws Exception {
-        given(emDeleteService.deleteFile("http://localhost:8080/documents/", AUTH_TOKEN, REQUEST_ID))
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
 
-        mockMvc.perform(delete("/emclientapi/version/1/deleteFile?fileUrl=http://localhost:8080/documents/")
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
                 .andExpect(status().isNoContent())
@@ -222,10 +268,10 @@ public class EvidenceManagementClientControllerTest {
     @Test
     public void shouldFailWhenDeleteFileIsInvokedWithBadToken() throws Exception {
         String badAuthToken = "x" + AUTH_TOKEN + "x";
-        given(emDeleteService.deleteFile("http://localhost:8080/documents/6", badAuthToken, REQUEST_ID))
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, badAuthToken, REQUEST_ID))
                 .willReturn(new ResponseEntity<>(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(delete("/emclientapi/version/1/deleteFile?fileUrl=http://localhost:8080/documents/6")
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
                 .header(AUTHORIZATION_TOKEN_HEADER, badAuthToken)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
                 .andExpect(status().isForbidden())
@@ -234,10 +280,10 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReceiveExceptionWhenDeleteFileIsInvokedAgainstDeadEmService() throws Exception {
-        given(emDeleteService.deleteFile("http://localhost:8080/documents/", AUTH_TOKEN, REQUEST_ID))
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new ResourceAccessException("Service not found"));
 
-        mockMvc.perform(delete("/emclientapi/version/1/deleteFile?fileUrl=http://localhost:8080/documents/")
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
                 .andExpect(status().isInternalServerError());
@@ -246,7 +292,7 @@ public class EvidenceManagementClientControllerTest {
     private List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
         fileUploadResponse = FileUploadResponse.builder() .status(HttpStatus.OK)
-        .fileUrl("http://localhost:8080/documents/6")
+        .fileUrl(UPLOADED_FILE_URL)
         .fileName("test.txt")
         .createdBy("testuser")
         .createdOn("2017-09-01T13:12:36.862+0000")
@@ -256,6 +302,15 @@ public class EvidenceManagementClientControllerTest {
         return Collections.singletonList(fileUploadResponse);
     }
 
+<<<<<<< HEAD
+=======
+    private void verifyInteractionsForDownloadService() throws IOException {
+        verify(emDownloadService).downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID);
+
+        verifyNoMoreInteractions(emDownloadService);
+    }
+
+>>>>>>> DIV-1435
     private MockMultipartFile textMultipartFile() {
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
                 "This is a test file".getBytes());

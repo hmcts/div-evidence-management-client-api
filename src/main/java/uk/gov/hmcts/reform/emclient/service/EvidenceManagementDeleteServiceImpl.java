@@ -1,8 +1,7 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +14,9 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 
 @Service
+@Slf4j
 public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDeleteService {
 
-    private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private static final String USER_ID_HEADER = "user-id";
 

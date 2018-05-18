@@ -49,17 +49,17 @@ public class EvidenceManagementTestUtils {
      * Make REST call to an emclient API with user token to store a document in EM Store
      * <p/>
      *
-     * @param fileName the name of the file to be sent to the EM store
+     * @param filePath the name of the file to be sent to the EM store
      * @param fileContentType the fileContentType represents the contentType of the file
      * @return the id of the stored document
      */
     @SuppressWarnings("unchecked")
-    public String uploadFileToEvidenceManagement(String fileName,
+    public String uploadFileToEvidenceManagement(String filePath,
                                                  String fileContentType, String username,
                                                  String password, String evidenceManagementClientApiBaseUrl,
                                                  String documentManagementURL, IDAMUtils idamTestSupportUtil) {
 
-        File file = new File("../../src/integrationTest/resources/FileTypes/" + fileName);
+        File file = new File(filePath);
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader(username, password, idamTestSupportUtil))
                 .multiPart("file", file, fileContentType)
