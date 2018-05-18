@@ -54,12 +54,11 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
 
-    private static final String FILE_NAME = "PNGFile.png";
+    private static final String FILE_PATH = "../../src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
-
     private static final String CITIZEN_USERNAME = "CitizenTestUser";
     private static final String PASSWORD = "password";
-
+    public static final String DELE_ENDPOINT = "/deleteFile?fileUrl=";
 
 
     @Test
@@ -114,12 +113,12 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
         return SerenityRest.given()
                 .headers(headers)
-                .delete(evidenceManagementClientApiBaseUrl.concat("/deleteFile?fileUrl=" + fileUrl))
+                .delete(evidenceManagementClientApiBaseUrl.concat(DELE_ENDPOINT + fileUrl))
                 .andReturn();
     }
 
     private String uploadFile(){
-        return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_NAME, IMAGE_FILE_CONTENT_TYPE,
+        return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
                                                                         CITIZEN_USERNAME, PASSWORD,
                                                                         evidenceManagementClientApiBaseUrl,
                                                                         documentManagementURL,
