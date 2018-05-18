@@ -45,9 +45,6 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     @Autowired
     private IDAMUtils idamTestSupportUtil;
 
-    @Value("${evidence.management.client.api.endpoint.uploadwiths2stoken}")
-    private String emClientApiUploadEndpoint;
-
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
