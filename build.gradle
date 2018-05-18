@@ -184,7 +184,7 @@ dependencies {
 }
 
 test {
-    exclude '**/HealthCheckFunctionalTest.class'
+    exclude '**/*FunctionalTest.class'
 }
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {

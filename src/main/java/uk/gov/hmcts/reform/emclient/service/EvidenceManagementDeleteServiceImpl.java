@@ -1,7 +1,8 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,22 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
-import uk.gov.hmcts.reform.emclient.idam.services.UserService;
+
 
 
 @Service
-@Slf4j
 public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDeleteService {
 
+    private static final Logger log = LoggerFactory.getLogger(EvidenceManagementUploadServiceImpl.class);
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private static final String USER_ID_HEADER = "user-id";
 
     @Autowired
     private RestTemplate restTemplate;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
@@ -49,9 +46,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
         log.info("deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
-        UserDetails userDetails = userService.getUserDetails(authorizationToken);
-
-        HttpEntity<Object> httpEntity = getHeaders(userDetails.getId());
+        HttpEntity<Object> httpEntity = deleteServiceCallHeaders(authorizationToken);
         ResponseEntity<String> response = restTemplate.exchange(fileUrl,
                 HttpMethod.DELETE,
                 httpEntity,
@@ -70,7 +65,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
      * @return an HttpEntity instance holding the formatted headers
      */
 
-    private HttpEntity<Object> getHeaders(String userId) {
+    private HttpEntity<Object> deleteServiceCallHeaders(String userId) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
