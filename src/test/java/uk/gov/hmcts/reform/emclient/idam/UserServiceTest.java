@@ -35,7 +35,6 @@ public class UserServiceTest {
 
     @Test(expected = HttpClientErrorException.class)
     public void userServiceThrowErrorWhenNotAuthorised(){
-        UserDetails userDetails = UserDetails.builder().id("IdOne").build();
         String authToken = "authTokenValue";
         when(idamApiClient.retrieveUserDetails(authToken)).thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
 
