@@ -37,7 +37,7 @@ import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.A
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
-public class EvidenceManagementFileDeleteTest {
+public class EvidenceManagementFileDeleteIntegrationTest {
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
