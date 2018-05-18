@@ -16,6 +16,7 @@ public class UserService {
     }
 
     public UserDetails getUserDetails(String authorisation) {
+        System.out.println("AUTHORISATION: "+authorisation);
         return idamApiClient.retrieveUserDetails(authorisation);
     }
 
