@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-public class ServiceUtils {
-    private static final Logger log = LoggerFactory.getLogger(ServiceUtils.class);
+public class EvidenceManagementServiceUtils {
+    private static final Logger log = LoggerFactory.getLogger(EvidenceManagementServiceUtils.class);
 
     public static String getUserId(String encodedJwt) {
         String userId = "divorceEmcli";

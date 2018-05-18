@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
-import static uk.gov.hmcts.reform.emclient.utils.ServiceUtils.getUserId;
+import static uk.gov.hmcts.reform.emclient.utils.EvidenceManagementServiceUtils.getUserId;
 
 
 @Service
@@ -47,7 +47,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
         log.info("deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
-        HttpEntity<Object> httpEntity = getHeaders(authorizationToken);
+        HttpEntity<Object> httpEntity = deleteServiceCallHeaders(authorizationToken);
         ResponseEntity<String> response = restTemplate.exchange(fileUrl,
                 HttpMethod.DELETE,
                 httpEntity,
@@ -66,7 +66,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
      * @return an HttpEntity instance holding the formatted headers
      */
 
-    private HttpEntity<Object> getHeaders(String authorizationToken) {
+    private HttpEntity<Object> deleteServiceCallHeaders(String authorizationToken) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
