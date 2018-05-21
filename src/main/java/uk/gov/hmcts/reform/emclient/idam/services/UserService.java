@@ -16,7 +16,6 @@ public class UserService {
     }
 
     public UserDetails getUserDetails(String authorisation) {
-        System.out.println("AUTHORISATION: "+authorisation);
         String authToken = authorisation.contains("Bearer") ? authorisation : "Bearer "+authorisation;
         return idamApiClient.retrieveUserDetails(authToken);
     }
