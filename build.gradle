@@ -157,6 +157,7 @@ dependencies {
     compile group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     compile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
+
     compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.sprintBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.sprintBoot
