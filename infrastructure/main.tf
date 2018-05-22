@@ -23,7 +23,6 @@ module "div-emca" {
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE             = "${var.auth_provider_service_client_microservice}"
     AUTH_PROVIDER_SERVICE_CLIENT_KEY                      = "${data.vault_generic_secret.div-doc-s2s-auth-secret.data["value"]}"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS = "${var.auth_provider_service_client_tokentimetoliveinseconds}"
-    DIVORCE_DOCUMENT_UPLOAD_KEY                           = "${data.vault_generic_secret.divorce_document_upload_client_key.data["value"]}"
 
     DOCUMENT_MANAGEMENT_STORE_URL       = "${local.dm_store_url}"
     EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.dm_store_url}/documents"
@@ -31,6 +30,8 @@ module "div-emca" {
     HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
     HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
     HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
+    IDAM_API_URL = "${var.idam_api_url}"
+    IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
   }
 }
 
@@ -53,10 +54,6 @@ provider "vault" {
 }
 
 data "vault_generic_secret" "div-doc-s2s-auth-secret" {
-  path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
-}
-
-data "vault_generic_secret" "divorce_document_upload_client_key" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
 
