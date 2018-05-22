@@ -6,13 +6,14 @@ locals {
 }
 
 module "div-emca" {
-  source       = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
-  product      = "${var.product}-${var.reform_service_name}"
-  location     = "${var.location}"
-  env          = "${var.env}"
-  ilbIp        = "${var.ilbIp}"
-  subscription = "${var.subscription}"
-  is_frontend  = false
+  source                          = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
+  product                         = "${var.product}-${var.reform_service_name}"
+  location                        = "${var.location}"
+  env                             = "${var.env}"
+  ilbIp                           = "${var.ilbIp}"
+  subscription                    = "${var.subscription}"
+  appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
+  is_frontend                     = false
 
   app_settings = {
     REFORM_SERVICE_NAME                                   = "${var.reform_service_name}"
