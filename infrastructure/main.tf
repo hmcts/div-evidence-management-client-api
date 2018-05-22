@@ -29,6 +29,8 @@ module "div-emca" {
     HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
     HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
     HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
+    IDAM_API_URL = "${var.idam_api_url}"
+    IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
   }
 }
 

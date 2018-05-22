@@ -111,7 +111,6 @@ def versions = [
         jsr305: '3.0.2',
         junit: '4.12',
         lombok: '1.16.16',
-        nimbusJoseJwt: '5.1',
         puppyCrawl: '7.6',
         reformsJavaLogging: '2.1.1',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
@@ -133,7 +132,6 @@ dependencies {
 
     //integration test
     integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
-    integrationTestCompile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: versions.nimbusJoseJwt
     integrationTestCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
     integrationTestCompile group: 'junit', name: 'junit', version: versions.junit
     integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
@@ -150,9 +148,9 @@ dependencies {
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
     compile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
-    compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: versions.nimbusJoseJwt
     compile group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     compile group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     compile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
