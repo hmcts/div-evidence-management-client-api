@@ -17,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import javax.annotation.Nullable;
@@ -45,10 +47,14 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public List<FileUploadResponse> upload(@NonNull final List<MultipartFile> files, final String authorizationToken,
                                            @Nullable String requestId) {
-        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(authorizationToken));
+        UserDetails userDetails = userService.getUserDetails(authorizationToken);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
                 .path("_embedded").path("documents");
         log.info("For Request Id {} : File upload response from Evidence Management service is {}", requestId, documents);
@@ -82,11 +88,11 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
                 .orElse(null);
     }
 
-    private HttpHeaders headers(String authorizationToken) {
+    private HttpHeaders headers(String userId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
         headers.set("Content-Type", "multipart/form-data");
-        headers.set("user-id", getUserId(authorizationToken));
+        headers.set("user-id", userId);
         return headers;
     }
 }

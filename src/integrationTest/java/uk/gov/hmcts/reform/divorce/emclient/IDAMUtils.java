@@ -1,30 +1,15 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
-import com.nimbusds.jwt.JWTParser;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.text.ParseException;
 import java.util.Base64;
-import java.util.Map;
 
 class IDAMUtils {
 
     @Value("${auth.idam.client.baseUrl}")
     private String idamUserBaseUrl;
-
-
-    public String getUserId(String encodedJwt) {
-        String jwt = encodedJwt.replaceFirst("Bearer ", "");
-        Map<String, Object> claims;
-        try {
-            claims = JWTParser.parse(jwt).getJWTClaimsSet().getClaims();
-
-        } catch (ParseException e) {
-            throw new IllegalStateException("Cannot find user from authorization token ", e);
-        }
-        return (String) claims.get("id");
-    }
 
     void createUserInIdam(String username, String password) {
         String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username +
@@ -52,19 +37,22 @@ class IDAMUtils {
 
     private String loginUrl() {
         return idamUserBaseUrl + "/oauth2/authorize?response_type=token&client_id=divorce&redirect_uri="
-                            + "https://case-worker-web.test.ccd.reform.hmcts.net/oauth2redirect";
+                            + "https://www.preprod.ccd.reform.hmcts.net/oauth2redirect";
     }
 
     String generateUserTokenWithNoRoles(String username, String password) {
         String userLoginDetails = String.join(":", username + "@test.com", password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
-        final String token = RestAssured.given()
+        Response response = RestAssured.given()
                 .header("Authorization", authHeader)
-                .post(loginUrl())
-                .body()
-                .path("access-token");
+                .post(loginUrl());
 
+        if (response.getStatusCode() >= 300) {
+            throw  new IDAMUtilsException("Token generation failed with code: " + response.getStatusCode() + " body: " + response.getBody().prettyPrint());
+        }
+
+        String token = response.getBody().path("access-token");
         return "Bearer " + token;
     }
 

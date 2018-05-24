@@ -11,10 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
 import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,7 +30,6 @@ import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,12 +39,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.util.StreamUtils.copyToByteArray;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
@@ -75,7 +70,7 @@ public class EvidenceManagementClientControllerTest {
 
     @MockBean
     private EvidenceManagementDeleteService emDeleteService;
-
+  
     private MockMvc mockMvc;
 
     @Autowired
@@ -148,7 +143,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -191,7 +186,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new ResourceAccessException("Evidence management service is currently down"));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -202,7 +197,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -245,8 +240,7 @@ public class EvidenceManagementClientControllerTest {
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
                 .andExpect(status().is5xxServerError());
 
-        verifyInteractionsForDownloadService();
-    }
+
 
     @Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
@@ -324,8 +318,8 @@ public class EvidenceManagementClientControllerTest {
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 
-    private void verifyExceptionFromUploadServiceIsHandledGracefully(String url) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(url)
+    private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
