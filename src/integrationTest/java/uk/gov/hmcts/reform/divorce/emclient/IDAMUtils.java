@@ -37,7 +37,7 @@ class IDAMUtils {
 
     private String loginUrl() {
         return idamUserBaseUrl + "/oauth2/authorize?response_type=token&client_id=divorce&redirect_uri="
-                            + "https://www-test.divorce.reform.hmcts.net/authenticated";
+                            + "https://case-worker-web.test.ccd.reform.hmcts.net/oauth2redirect";
     }
 
     String generateUserTokenWithNoRoles(String username, String password) {
