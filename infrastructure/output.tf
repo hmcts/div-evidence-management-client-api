@@ -13,3 +13,7 @@ output "idam_s2s_url" {
 output "test_environment" {
   value = "${local.local_env}"
 }
+
+output "tenant_id" {
+  value = "${var.tenant_id}"
+}
