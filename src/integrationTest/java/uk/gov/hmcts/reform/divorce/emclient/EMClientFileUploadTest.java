@@ -1,11 +1,14 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import io.restassured.specification.ProxySpecification;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,8 +46,11 @@ import static net.serenitybdd.rest.SerenityRest.given;
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 @PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-${env}.properties")
+//@PropertySource("classpath:application-${env}.properties")
 public class EMClientFileUploadTest {
+
+    @Value("${tenant.id}")
+    private String tenantId;
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
@@ -91,15 +97,17 @@ public class EMClientFileUploadTest {
 
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
-        File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
-        Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
-                .multiPart("file", file, fileContentType)
-                .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
-                .andReturn();
-        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
-        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
-        assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
+        System.out.println("************* tenant id = " +  tenantId);
+
+//        File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
+//        Response response = SerenityRest.given()
+//                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+//                .multiPart("file", file, fileContentType)
+//                .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
+//                .andReturn();
+//        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+//        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
+//        assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
     }
 
     private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
@@ -124,6 +132,16 @@ public class EMClientFileUploadTest {
     }
 
     private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
+
+        System.setProperty("http.proxyHost", "proxyout.reform.hmcts.net");
+        System.setProperty("http.proxyPort", "8080");
+        System.setProperty("https.proxyHost", "proxyout.reform.hmcts.net");
+        System.setProperty("https.proxyPort", "8080");
+
+        RestAssured.proxy = ProxySpecification.host("proxyout.reform.hmcts.net").withPort(8080);
+        SerenityRest.proxy("proxyout.reform.hmcts.net", 8080);
+
+
         idamTestSupportUtil.createUserInIdam(username, password);
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
         Map<String, Object> headers = new HashMap<>();
