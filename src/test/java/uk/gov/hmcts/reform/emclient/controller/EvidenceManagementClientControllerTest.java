@@ -67,8 +67,6 @@ public class EvidenceManagementClientControllerTest {
     @MockBean
     private EvidenceManagementDeleteService emDeleteService;
 
-    @MockBean
-    private EvidenceManagementDownloadService emDownloadService;
 
     private MockMvc mockMvc;
 
@@ -201,46 +199,6 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
-    public void shouldDownloadFileWhenDownloadFileIsInvokedWithSelfUrl() throws Exception {
-        ResponseEntity<InputStreamResource> responseEntity = new ResponseEntity<>(
-                new InputStreamResource(this.getClass().getResourceAsStream("/marriage-cert-example.png")),
-                HttpStatus.OK);
-
-        given(emDownloadService.downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
-                .willReturn(responseEntity);
-
-        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-                .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .bytes(copyToByteArray(this.getClass().getResourceAsStream("/marriage-cert-example.png"))))
-                .andReturn();
-
-        verifyInteractionsForDownloadService();
-    }
-
-    @Test
-    public void shouldNotDownloadFileWhenDownloadFileIsInvokedWithSelfUrlWithoutAuthToken() throws Exception {
-        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void shouldNotDownloadFileAndThrowServerExceptionWhenDownloadFileIsInvokedAndEMServiceIsUnavailable()
-            throws Exception {
-        given(emDownloadService.downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
-                .willThrow(new ResourceAccessException("Evidence management service is currently down"));
-
-        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + UPLOADED_FILE_URL)
-                .header(REQUEST_ID_HEADER, REQUEST_ID)
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
-                .andExpect(status().is5xxServerError());
-
-        verifyInteractionsForDownloadService();
-    }
 
     @Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
@@ -301,11 +259,6 @@ public class EvidenceManagementClientControllerTest {
         .lastModifiedBy("testuser")
         .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
         return Collections.singletonList(fileUploadResponse);
-    }
-    private void verifyInteractionsForDownloadService() throws IOException {
-        verify(emDownloadService).downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID);
-
-        verifyNoMoreInteractions(emDownloadService);
     }
 
     private MockMultipartFile textMultipartFile() {
