@@ -37,6 +37,8 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -64,6 +66,9 @@ public class EvidenceManagementClientControllerTest {
 
     @MockBean
     private EvidenceManagementDeleteService emDeleteService;
+
+    @MockBean
+    private EvidenceManagementDownloadService emDownloadService;
 
     private MockMvc mockMvc;
 
@@ -196,9 +201,6 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-<<<<<<< HEAD
-
-=======
     @Test
     public void shouldDownloadFileWhenDownloadFileIsInvokedWithSelfUrl() throws Exception {
         ResponseEntity<InputStreamResource> responseEntity = new ResponseEntity<>(
@@ -239,7 +241,6 @@ public class EvidenceManagementClientControllerTest {
 
         verifyInteractionsForDownloadService();
     }
->>>>>>> DIV-1435
 
     @Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
@@ -301,16 +302,12 @@ public class EvidenceManagementClientControllerTest {
         .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
         return Collections.singletonList(fileUploadResponse);
     }
-
-<<<<<<< HEAD
-=======
     private void verifyInteractionsForDownloadService() throws IOException {
         verify(emDownloadService).downloadFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID);
 
         verifyNoMoreInteractions(emDownloadService);
     }
 
->>>>>>> DIV-1435
     private MockMultipartFile textMultipartFile() {
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
                 "This is a test file".getBytes());

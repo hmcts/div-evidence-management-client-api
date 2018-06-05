@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 
-
 @Service
 @Slf4j
 public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDeleteService {

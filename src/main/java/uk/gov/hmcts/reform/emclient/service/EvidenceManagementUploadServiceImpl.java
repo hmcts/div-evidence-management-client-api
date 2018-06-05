@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.StreamSupport.stream;
 import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
+import static uk.gov.hmcts.reform.emclient.utils.EvidenceManagementServiceUtils.getUserId;
 
 @Service
 @Slf4j
@@ -94,5 +95,4 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.set("user-id", userId);
         return headers;
     }
-
 }
