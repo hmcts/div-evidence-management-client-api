@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
 
 @Service
@@ -21,6 +23,9 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
@@ -44,7 +49,8 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
         log.info("deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
-        HttpEntity<Object> httpEntity = deleteServiceCallHeaders(authorizationToken);
+        UserDetails userDetails = userService.getUserDetails(authorizationToken);
+        HttpEntity<Object> httpEntity = deleteServiceCallHeaders(userDetails.getId());
         ResponseEntity<String> response = restTemplate.exchange(fileUrl,
                 HttpMethod.DELETE,
                 httpEntity,
