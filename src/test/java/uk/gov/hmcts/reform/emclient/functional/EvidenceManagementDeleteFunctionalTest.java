@@ -59,7 +59,6 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     private RestTemplate restTemplate;
     private String docUri = "http://doc-store/1";
     private String API_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
-    private String authToken = "authToken";
 
     @Before
     public void before() {
@@ -72,7 +71,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
         mockDocumentService(HttpStatus.FORBIDDEN, docUri);
 
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL + docUri)
-                .header(AUTHORIZATION_HEADER_NAME, authToken)
+                .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isForbidden())
                 .andReturn();
@@ -87,7 +86,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
         mockDocumentService(HttpStatus.METHOD_NOT_ALLOWED, "");
 
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL)
-                .header(AUTHORIZATION_HEADER_NAME, authToken)
+                .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isMethodNotAllowed())
                 .andReturn();
@@ -102,7 +101,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
 
 
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort)+ API_URL + docUri)
-                .header(AUTHORIZATION_HEADER_NAME, authToken)
+                .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isNoContent())
                 .andReturn();
@@ -114,5 +113,14 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     private void mockDocumentService(HttpStatus expectedResponse, String documentUrl) {
         mockRestServiceServer.expect(once(), requestTo(documentUrl)).andExpect(method(HttpMethod.DELETE))
                 .andRespond(withStatus(expectedResponse));
+    }
+
+    private static String authToken() {
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT" +
+                "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V" +
+                "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV" +
+                "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi" +
+                "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb" +
+                "x72zDa1r7Qnp1M";
     }
 }
