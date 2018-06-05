@@ -58,7 +58,6 @@ public class EvidenceManagementClientControllerTest {
 
     private static final String EM_CLIENT_UPLOAD_URL = "/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
-    private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/downloadFile?fileUrl=";
     public static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
 
     @MockBean
