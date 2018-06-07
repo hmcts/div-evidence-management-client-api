@@ -1,2 +1,2 @@
 vault_env = "test"
-idam_api_url = "http://betaDevBccidamAppLB.reform.hmcts.net:80"
+idam_api_url = "http://idam-api-idam-saat.service.core-compute-saat.internal"
