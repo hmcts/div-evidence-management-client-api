@@ -53,7 +53,7 @@ class IDAMUtils {
         }
 
         String token = response.getBody().path("access-token");
-        return "Bearer " + token;
+        return token;
     }
 
 }
