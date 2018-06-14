@@ -6,6 +6,7 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,7 +71,6 @@ public class EMClientFileUploadTest {
 
     private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
             "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
-
 
     @TestData
     public static Collection<Object[]> testData() {
