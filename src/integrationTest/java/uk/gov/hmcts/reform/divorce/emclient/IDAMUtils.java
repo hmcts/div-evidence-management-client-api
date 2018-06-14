@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -17,6 +18,10 @@ class IDAMUtils {
 
     @Value("${auth.idam.redirect.url}")
     private String idamRedirectUrl;
+
+    public IDAMUtils() {
+        RestAssured.defaultParser = Parser.JSON;
+    }
 
     public String getIdamTestUser(String username, String password) {
         createCitizen(username, password);
