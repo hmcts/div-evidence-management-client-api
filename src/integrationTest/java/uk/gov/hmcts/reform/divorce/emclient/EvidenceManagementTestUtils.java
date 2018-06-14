@@ -18,8 +18,7 @@ public class EvidenceManagementTestUtils {
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAuthenticationTokenHeader(String username, String password,
                                                             IDAMUtils idamTestSupportUtil) {
-        idamTestSupportUtil.createUserInIdam(username, password);
-        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
+        String authenticationToken = idamTestSupportUtil.getIdamTestUser(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
         return headers;
