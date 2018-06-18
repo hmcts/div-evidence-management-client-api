@@ -7,6 +7,10 @@ buildscript {
         jcenter()
     }
     dependencies {
+        classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:0.32.0') {
+            exclude(group: 'org.pitest')
+        }
+        classpath ('org.pitest:pitest-command-line:0.33')
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
