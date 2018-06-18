@@ -8,7 +8,7 @@ buildscript {
             exclude(group: 'org.pitest')
         }
         classpath ('org.pitest:pitest-command-line:0.33')
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:versions.springBoot")
     }
 }
 
