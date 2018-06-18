@@ -18,6 +18,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
+import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.io.IOException;
@@ -43,6 +45,9 @@ public class EvidenceManagementUploadServiceImplTest {
     @InjectMocks
     private EvidenceManagementUploadServiceImpl emUploadService;
 
+    @Mock
+    private UserService userService;
+
     private ArgumentCaptor<HttpEntity> httpEntityReqEntity;
 
     @Rule
@@ -52,6 +57,7 @@ public class EvidenceManagementUploadServiceImplTest {
     public void setup() throws IOException {
         ReflectionTestUtils.setField(emUploadService,"evidenceManagementStoreUrl", "emuri");
         when(authTokenGenerator.generate()).thenReturn("xxxx");
+        when(userService.getUserDetails(authKey())).thenReturn(UserDetails.builder().id("19").build());
         mockRestTemplate();
     }
 
@@ -91,12 +97,6 @@ public class EvidenceManagementUploadServiceImplTest {
     public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectAuthKeyIsParsedForUserId() {
         emUploadService.upload(getMultipartFiles(), authKey(), "ReqId");
         assertEquals("19", getEMRequestHeaders().get("user-id").get(0));
-    }
-
-    @Test
-    public void givenAuthKeyParamIsNotPassed_whenUploadIsCalled_thenExpectAuthKeyIsDefault() {
-        emUploadService.upload(getMultipartFiles(), null, "ReqId");
-        assertEquals("divorceEmcli", getEMRequestHeaders().get("user-id").get(0));
     }
 
     @Test

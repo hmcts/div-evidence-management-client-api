@@ -25,6 +25,10 @@ variable "reform_team" {
   default = "div"
 }
 
+variable "capacity" {
+  default = "1"
+}
+
 variable "env" {
   type = "string"
 }
@@ -45,6 +49,11 @@ variable "http_connect_timeout" {
   default = "60000"
 }
 
+variable "appinsights_instrumentation_key" {
+  description = "Instrumentation key of the App Insights instance this webapp should use. Module will create own App Insights resource if this is not provided"
+  default = ""
+}
+
 variable "http_connect_request_timeout" {
   default = "60000"
 }
@@ -63,3 +72,5 @@ variable "location" {
 variable "ilbIp" {}
 
 variable "vault_env" {}
+
+variable "idam_api_url" {}

@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
 import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,24 +27,21 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
-import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.util.StreamUtils.copyToByteArray;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
@@ -61,12 +57,15 @@ public class EvidenceManagementClientControllerTest {
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
 
     private static final String EM_CLIENT_UPLOAD_URL = "/emclientapi/version/1/upload";
+    private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
+    public static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
 
     @MockBean
     private EvidenceManagementUploadService emUploadService;
 
     @MockBean
-    private EvidenceManagementDownloadService emDownloadService;
+    private EvidenceManagementDeleteService emDeleteService;
+
 
     private MockMvc mockMvc;
 
@@ -140,7 +139,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -183,7 +182,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new ResourceAccessException("Evidence management service is currently down"));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
@@ -194,56 +193,64 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
-        verifyExceptionFromUploadServiceIsHandledGracefully(EM_CLIENT_UPLOAD_URL);
+        verifyExceptionFromUploadServiceIsHandledGracefully();
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
+
     @Test
-    public void shouldDownloadFileWhenDownloadFileIsInvokedWithSelfUrl() throws Exception {
-        ResponseEntity<InputStreamResource> responseEntity = new ResponseEntity<>(
-                new InputStreamResource(this.getClass().getResourceAsStream("/marriage-cert-example.png")),
-                HttpStatus.OK);
+    public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
+                .willReturn(new ResponseEntity<>(HttpStatus.OK));
 
-        given(emDownloadService.downloadFile("http://localhost:8080/documents/6", AUTH_TOKEN, REQUEST_ID))
-                .willReturn(responseEntity);
-
-        mockMvc.perform(get("/emclientapi/version/1/downloadFile?fileUrl=http://localhost:8080/documents/6")
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .bytes(copyToByteArray(this.getClass().getResourceAsStream("/marriage-cert-example.png"))))
                 .andReturn();
-
-        verifyInteractionsForDownloadService();
     }
 
     @Test
-    public void shouldNotDownloadFileWhenDownloadFileIsInvokedWithSelfUrlWithoutAuthToken() throws Exception {
-        mockMvc.perform(get("/emclientapi/version/1/downloadFile?fileUrl=http://localhost:8080/documents/6")
+    public void shouldDoNothingWhenDeleteFileIsInvokedWithoutFileUrl() throws Exception {
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
+                .willReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT));
+
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
+                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isNoContent())
+                .andReturn();
     }
 
     @Test
-    public void shouldNotDownloadFileAndThrowServerExceptionWhenDownloadFileIsInvokedAndEMServiceIsUnavailable()
-            throws Exception {
-        given(emDownloadService.downloadFile("http://localhost:8080/documents/6", AUTH_TOKEN, REQUEST_ID))
-                .willThrow(new ResourceAccessException("Evidence management service is currently down"));
+    public void shouldFailWhenDeleteFileIsInvokedWithBadToken() throws Exception {
+        String badAuthToken = "x" + AUTH_TOKEN + "x";
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, badAuthToken, REQUEST_ID))
+                .willReturn(new ResponseEntity<>(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(get("/emclientapi/version/1/downloadFile?fileUrl=http://localhost:8080/documents/6")
-                .header(REQUEST_ID_HEADER, REQUEST_ID)
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN))
-                .andExpect(status().is5xxServerError());
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
+                .header(AUTHORIZATION_TOKEN_HEADER, badAuthToken)
+                .header(REQUEST_ID_HEADER, REQUEST_ID))
+                .andExpect(status().isForbidden())
+                .andReturn();
+    }
 
-        verifyInteractionsForDownloadService();
+    @Test
+    public void shouldReceiveExceptionWhenDeleteFileIsInvokedAgainstDeadEmService() throws Exception {
+        given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
+                .willThrow(new ResourceAccessException("Service not found"));
+
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
+                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+                .header(REQUEST_ID_HEADER, REQUEST_ID))
+                .andExpect(status().isInternalServerError());
     }
 
     private List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
         fileUploadResponse = FileUploadResponse.builder() .status(HttpStatus.OK)
-        .fileUrl("http://localhost:8080/documents/6")
+        .fileUrl(UPLOADED_FILE_URL)
         .fileName("test.txt")
         .createdBy("testuser")
         .createdOn("2017-09-01T13:12:36.862+0000")
@@ -251,12 +258,6 @@ public class EvidenceManagementClientControllerTest {
         .lastModifiedBy("testuser")
         .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
         return Collections.singletonList(fileUploadResponse);
-    }
-
-    private void verifyInteractionsForDownloadService() throws IOException {
-        verify(emDownloadService).downloadFile("http://localhost:8080/documents/6", AUTH_TOKEN, REQUEST_ID);
-
-        verifyNoMoreInteractions(emDownloadService);
     }
 
     private MockMultipartFile textMultipartFile() {
@@ -268,8 +269,8 @@ public class EvidenceManagementClientControllerTest {
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 
-    private void verifyExceptionFromUploadServiceIsHandledGracefully(String url) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(url)
+    private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
