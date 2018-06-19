@@ -39,21 +39,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "service-auth-provider.service.stub.enabled=false",
         "evidence-management-api.service.stub.enabled=false"})
 @AutoConfigureMockMvc
-public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
+public class EvidenceManagementDeleteFunctionalTest extends BaseFunctionalTest{
 
     @Autowired
     private MockMvc webClient;
 
     private MockRestServiceServer mockRestServiceServer;
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-
+    private static final String AUTHTOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT" +
+                "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V" +
+                "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV" +
+                "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi" +
+                "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb" +
+                "x72zDa1r7Qnp1M";
 
 //   TODO - Clarify with Ganesh/Mathan @Value("${evidence.management.client.api.baseUrl}")
 //    private String evidenceManagementClientApiBaseUrl;
 
     @Value("${evidence.management.client.api.service.port}")
     private String serverPort;
-
 
     @Autowired
     private RestTemplate restTemplate;
@@ -63,19 +67,18 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     @Before
     public void before() {
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
-
     }
+
     @Test
     public void givenDocServiceReturnsForbiddenForBadS2SToken_thenReturn() throws Exception {
 
         mockDocumentService(HttpStatus.FORBIDDEN, docUri);
 
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL + docUri)
-                .header(AUTHORIZATION_HEADER_NAME, authToken())
+                .header(AUTHORIZATION_HEADER_NAME, AUTHTOKEN)
                 .content(""))
                 .andExpect(status().isForbidden())
                 .andReturn();
-
 
         mockRestServiceServer.verify();
     }
@@ -86,11 +89,10 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
         mockDocumentService(HttpStatus.METHOD_NOT_ALLOWED, "");
 
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL)
-                .header(AUTHORIZATION_HEADER_NAME, authToken())
+                .header(AUTHORIZATION_HEADER_NAME, AUTHTOKEN)
                 .content(""))
                 .andExpect(status().isMethodNotAllowed())
                 .andReturn();
-
 
         mockRestServiceServer.verify();
     }
@@ -99,13 +101,11 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     public void givenAllGoesWell_thenReturn() throws Exception {
         mockDocumentService(HttpStatus.NO_CONTENT, docUri);
 
-
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort)+ API_URL + docUri)
-                .header(AUTHORIZATION_HEADER_NAME, authToken())
+                .header(AUTHORIZATION_HEADER_NAME, AUTHTOKEN)
                 .content(""))
                 .andExpect(status().isNoContent())
                 .andReturn();
-
 
         mockRestServiceServer.verify();
     }
