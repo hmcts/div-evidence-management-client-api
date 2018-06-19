@@ -17,6 +17,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
+    private static final String AUTH_TOKEN = "Bearer authTokenValue";
+
     @Mock
     private IdamApiClient idamApiClient;
 
@@ -27,17 +29,15 @@ public class UserServiceTest {
     public void userServiceReturnUserDetails(){
 
         UserDetails userDetails = UserDetails.builder().id("IdOne").build();
-        String authToken = "Bearer authTokenValue";
-        when(idamApiClient.retrieveUserDetails(authToken)).thenReturn(userDetails);
+        when(idamApiClient.retrieveUserDetails(AUTH_TOKEN)).thenReturn(userDetails);
 
-        assertThat(testObj.getUserDetails(authToken)).isEqualTo(userDetails);
+        assertThat(testObj.getUserDetails(AUTH_TOKEN)).isEqualTo(userDetails);
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void userServiceThrowErrorWhenNotAuthorised(){
-        String authToken = "Bearer authTokenValue";
-        when(idamApiClient.retrieveUserDetails(authToken)).thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        when(idamApiClient.retrieveUserDetails(AUTH_TOKEN)).thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
 
-        testObj.getUserDetails(authToken);
+        testObj.getUserDetails(AUTH_TOKEN);
     }
 }
