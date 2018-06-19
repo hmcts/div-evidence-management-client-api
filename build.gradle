@@ -128,9 +128,9 @@ def versions = [
         skyscreamer: '1.2.3',
         sprintBoot: '1.5.12.RELEASE',
         springCloud: '1.2.5.RELEASE',
-        springRetry: '1.2.1.RELEASE',
         springHateoas: '0.23.0.RELEASE',
         springPluginCore: '1.2.0.RELEASE',
+        springRetry: '1.2.1.RELEASE',
         unirestJava: '1.4.9',
         wiremockVersion: '2.8.0'
 ]
