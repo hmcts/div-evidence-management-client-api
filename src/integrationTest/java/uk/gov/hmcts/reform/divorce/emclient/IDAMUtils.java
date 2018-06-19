@@ -52,7 +52,8 @@ class IDAMUtils {
             throw  new IDAMUtilsException("Token generation failed with code: " + response.getStatusCode() + " body: " + response.getBody().prettyPrint());
         }
 
-        return response.getBody().path("access-token");
+        String token = response.getBody().path("access-token");
+        return "Bearer " + token;
     }
 
 }
