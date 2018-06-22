@@ -202,9 +202,8 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 
 
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
-    useJUnit {
-        includeCategories 'uk.gov.hmcts.reform.emclient.category.SmokeTest'
-    }
+        setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
+        setClasspath(sourceSets.integrationTest.runtimeClasspath)
 }
 
 task printVersion {
