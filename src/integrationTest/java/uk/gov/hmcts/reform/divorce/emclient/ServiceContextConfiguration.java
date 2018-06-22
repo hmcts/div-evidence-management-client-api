@@ -20,6 +20,15 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 public class ServiceContextConfiguration {
 
+    @Value("${auth.idam.client.baseUrl}")
+    private String idamUserBaseUrl;
+
+    @Value("${auth.idam.secret}")
+    private String idamSecret;
+
+    @Value("${auth.idam.redirect.url}")
+    private String idamRedirectUrl;
+
     @Bean
     public AuthTokenGenerator serviceAuthTokenGenerator(
             @Value("${idam.auth.secret}") final String secret,
@@ -31,6 +40,6 @@ public class ServiceContextConfiguration {
 
     @Bean
     public IDAMUtils getIDAMUtil() {
-       return new IDAMUtils();
+       return new IDAMUtils(idamUserBaseUrl, idamSecret, idamRedirectUrl);
     }
 }

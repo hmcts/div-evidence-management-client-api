@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.divorce.emclient;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.URLEncoder;
 import java.util.Base64;
@@ -12,17 +11,18 @@ import static io.restassured.config.EncoderConfig.encoderConfig;
 
 class IDAMUtils {
 
-    @Value("${auth.idam.client.baseUrl}")
-    private String idamUserBaseUrl;
+    private final String idamUserBaseUrl;
 
-    @Value("${auth.idam.secret}")
-    private String idamSecret;
+    private final String idamSecret;
 
-    @Value("${auth.idam.redirect.url}")
-    private String idamRedirectUrl;
+    private final String idamRedirectUrl;
 
-    public IDAMUtils() {
+    public IDAMUtils(String idamUserBaseUrl, String idamSecret, String idamRedirectUrl) {
         RestAssured.defaultParser = Parser.JSON;
+        this.idamUserBaseUrl = idamUserBaseUrl;
+        this.idamSecret = idamSecret;
+        this.idamRedirectUrl = idamRedirectUrl;
+
         System.out.println("IDAM USER BASE URL " + idamUserBaseUrl);
         System.out.println("SECRET " + idamSecret);
         System.out.println("IDAM REDIRECT URL " + idamRedirectUrl);
