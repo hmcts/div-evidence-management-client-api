@@ -50,16 +50,21 @@ class IDAMUtils {
             "&grant_type=authorization_code")
             .body().path("access_token");
 
+        System.out.println("Generated token " + token);
+
         return "Bearer " + token;
     }
 
     private String generateClientCode(String username, String password) {
         String encoded = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
 
-        return RestAssured.given().baseUri(idamUserBaseUrl)
+        String code = RestAssured.given().baseUri(idamUserBaseUrl)
             .header("Authorization", "Basic " + encoded)
             .post("/oauth2/authorize?response_type=code&client_id=divorce&redirect_uri=" + idamRedirectUrl)
             .body().path("code");
+        System.out.println("Generated code " + code);
+
+        return code;
     }
 
     void createDivorceCaseworkerUserInIdam(String username, String password) {
