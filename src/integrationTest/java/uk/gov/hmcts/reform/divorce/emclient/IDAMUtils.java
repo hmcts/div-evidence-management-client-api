@@ -1,12 +1,14 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
-import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.net.URLEncoder;
 import java.util.Base64;
-import java.util.List;
+
+import static io.restassured.config.EncoderConfig.encoderConfig;
 
 class IDAMUtils {
 
@@ -58,11 +60,17 @@ class IDAMUtils {
     private String generateClientCode(String username, String password) {
         String encoded = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
 
-        String code = RestAssured.given().baseUri(idamUserBaseUrl)
+        String code = RestAssured.given()
+            .config(
+                RestAssured
+                    .config()
+                    .encoderConfig(encoderConfig().encodeContentTypeAs("{\"mimeType\":\"application/x-www-form-urlencoded\",\"charset\":\"ISO-8859-1\"}", ContentType.URLENC)))
+            .baseUri(idamUserBaseUrl)
             .header("Authorization", "Basic " + encoded)
-            .post("/oauth2/authorize?response_type=code&client_id=divorce&redirect_uri=" + idamRedirectUrl)
+            .header("Content-Type", ContentType.URLENC)
+            .body(String.format("response_type=code&client_id=divorce&redirect_uri=%s", URLEncoder.encode(idamRedirectUrl)))
+            .post("/oauth2/authorize")
             .body().path("code");
-        System.out.println("Generated code " + code);
 
         return code;
     }
