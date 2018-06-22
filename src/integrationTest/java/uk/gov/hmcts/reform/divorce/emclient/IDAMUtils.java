@@ -23,6 +23,10 @@ class IDAMUtils {
 
     public IDAMUtils() {
         RestAssured.defaultParser = Parser.JSON;
+        System.out.println("IDAM USER BASE URL " + idamUserBaseUrl);
+        System.out.println("SECRET " + idamSecret);
+        System.out.println("IDAM REDIRECT URL " + idamRedirectUrl);
+
     }
 
     public String getIdamTestUser(String username, String password) {
