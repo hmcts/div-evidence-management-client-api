@@ -22,11 +22,6 @@ class IDAMUtils {
         this.idamUserBaseUrl = idamUserBaseUrl;
         this.idamSecret = idamSecret;
         this.idamRedirectUrl = idamRedirectUrl;
-
-        System.out.println("IDAM USER BASE URL " + idamUserBaseUrl);
-        System.out.println("SECRET " + idamSecret);
-        System.out.println("IDAM REDIRECT URL " + idamRedirectUrl);
-
     }
 
     public String getIdamTestUser(String username, String password) {
@@ -49,14 +44,20 @@ class IDAMUtils {
     private String generateClientToken(String username, String password) {
         String code = generateClientCode(username, password);
 
-        String token = RestAssured.given().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
-            "&client_secret=" + idamSecret +
-            "&client_id=divorce" +
-            "&redirect_uri=" + idamRedirectUrl +
-            "&grant_type=authorization_code")
+        String token = RestAssured.given()
+            .config(
+                RestAssured
+                    .config()
+                    .encoderConfig(encoderConfig().encodeContentTypeAs("{\"mimeType\":\"application/x-www-form-urlencoded\",\"charset\":\"ISO-8859-1\"}", ContentType.URLENC)))
+            .baseUri(idamUserBaseUrl)
+            .header("Content-Type", ContentType.URLENC)
+            .body("code=" + code +
+                "&client_secret=" + idamSecret +
+                "&client_id=divorce" +
+                "&redirect_uri=" + idamRedirectUrl +
+                "&grant_type=authorization_code")
+            .post(idamUserBaseUrl + "/oauth2/token")
             .body().path("access_token");
-
-        System.out.println("Generated token " + token);
 
         return "Bearer " + token;
     }
@@ -64,7 +65,7 @@ class IDAMUtils {
     private String generateClientCode(String username, String password) {
         String encoded = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
 
-        String code = RestAssured.given()
+        return RestAssured.given()
             .config(
                 RestAssured
                     .config()
@@ -75,18 +76,16 @@ class IDAMUtils {
             .body(String.format("response_type=code&client_id=divorce&redirect_uri=%s", URLEncoder.encode(idamRedirectUrl)))
             .post("/oauth2/authorize")
             .body().path("code");
-
-        return code;
     }
 
     void createDivorceCaseworkerUserInIdam(String username, String password) {
         String body = "{\"email\":\"" + username + "@test.com" + "\", "
-                + "\"forename\":" + "\"" + username + "\"," + "\"surname\":\"User\",\"password\":\"" + password + "\", "
-                + "\"roles\":[\"caseworker-divorce\"], \"userGroup\":{\"code\":\"caseworker\"}}";
+            + "\"forename\":" + "\"" + username + "\"," + "\"surname\":\"User\",\"password\":\"" + password + "\", "
+            + "\"roles\":[\"caseworker-divorce\"], \"userGroup\":{\"code\":\"caseworker\"}}";
         RestAssured.given()
-                .header("Content-Type", "application/json")
-                .body(body)
-                .post(idamCreateUrl());
+            .header("Content-Type", "application/json")
+            .body(body)
+            .post(idamCreateUrl());
     }
 
 }
