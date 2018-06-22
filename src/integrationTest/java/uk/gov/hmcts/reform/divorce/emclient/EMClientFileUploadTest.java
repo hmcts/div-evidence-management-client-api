@@ -71,7 +71,6 @@ public class EMClientFileUploadTest {
     private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
             "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
-
     @TestData
     public static Collection<Object[]> testData() {
         return IntStream.range(0, fileName.length)
@@ -124,8 +123,7 @@ public class EMClientFileUploadTest {
     }
 
     private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
-        idamTestSupportUtil.createUserInIdam(username, password);
-        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
+        String authenticationToken = idamTestSupportUtil.getIdamTestUser(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");

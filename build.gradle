@@ -3,6 +3,13 @@ buildscript {
         mavenLocal()
         jcenter()
     }
+    dependencies {
+        classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:0.32.0') {
+            exclude(group: 'org.pitest')
+        }
+        classpath ('org.pitest:pitest-command-line:0.33')
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:versions.springBoot")
+    }
 }
 
 plugins {
@@ -86,7 +93,7 @@ tasks.withType(JavaCompile) {
 
 pitest {
     targetClasses = ['uk.gov.hmcts.reform.emclient.*']
-    excludedClasses = ['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*']
+    excludedClasses = ['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*', 'uk.gov.hmcts.reform.emclient.response.*']
     threads = 4
     outputFormats = ['XML', 'HTML']
     timestampedReports = false
@@ -184,7 +191,7 @@ dependencies {
 }
 
 test {
-    exclude '**/HealthCheckFunctionalTest.class'
+    exclude '**/*FunctionalTest.class'
 }
 
 task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verification') {

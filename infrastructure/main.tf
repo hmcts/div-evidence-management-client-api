@@ -13,6 +13,7 @@ module "div-emca" {
   ilbIp                           = "${var.ilbIp}"
   subscription                    = "${var.subscription}"
   appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
+  capacity                        = "${var.capacity}"
   is_frontend                     = false
 
   app_settings = {
@@ -57,8 +58,18 @@ data "vault_generic_secret" "div-doc-s2s-auth-secret" {
   path = "secret/${var.vault_env}/ccidam/service-auth-provider/api/microservice-keys/divorceDocumentGenerator"
 }
 
+data "vault_generic_secret" "idam-secret" {
+  path = "secret/${var.vault_env}/ccidam/idam-api/oauth2/client-secrets/divorce"
+}
+
 resource "azurerm_key_vault_secret" "div-doc-s2s-auth-secret" {
   name      = "div-doc-s2s-auth-secret"
   value     = "${data.vault_generic_secret.div-doc-s2s-auth-secret.data["value"]}"
+  vault_uri = "${module.key-vault.key_vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "idam-secret" {
+  name      = "idam-secret"
+  value     = "${data.vault_generic_secret.idam-secret.data["value"]}"
   vault_uri = "${module.key-vault.key_vault_uri}"
 }
