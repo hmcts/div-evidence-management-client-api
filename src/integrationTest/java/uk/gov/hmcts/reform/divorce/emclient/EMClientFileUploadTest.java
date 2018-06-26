@@ -5,6 +5,7 @@ import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,6 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -91,7 +93,7 @@ public class EMClientFileUploadTest {
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
-        String username = "simulate-delivered-divorce-emca@notify.gov.uk";
+        String username = String.format("simulate-delivered-divorce-emca-%s@notify.gov.uk", UUID.randomUUID().toString());
         String password = "L0nGRaND0m?VA1u3";
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader(username, password))
