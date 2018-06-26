@@ -36,4 +36,9 @@ public class ServiceContextConfiguration {
         @Value("${auth.idam.redirect.url}") final String redirectUrl) {
        return new IDAMUtils(baseUrl, secret, redirectUrl);
     }
+
+    @Bean
+    public EvidenceManagementTestUtils getEvidenceManagementTestUtils() {
+        return new EvidenceManagementTestUtils();
+    }
 }
