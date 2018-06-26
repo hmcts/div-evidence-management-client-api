@@ -74,7 +74,7 @@ public class EMClientFileUploadTest {
             "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
     private EvidenceManagementTestUtils evidenceManagementTestUtils =
-        new EvidenceManagementTestUtils();
+        new EvidenceManagementTestUtils(idamTestSupportUtil);
 
     @TestData
     public static Collection<Object[]> testData() {
