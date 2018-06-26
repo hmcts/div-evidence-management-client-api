@@ -44,17 +44,13 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
 
     @Autowired
-    private IDAMUtils idamTestSupportUtil;
+    private EvidenceManagementTestUtils evidenceManagementTestUtils;
 
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
     @Value("${document.management.store.baseUrl}")
     private String documentManagementURL;
-
-    private EvidenceManagementTestUtils evidenceManagementTestUtils =
-        new EvidenceManagementTestUtils(idamTestSupportUtil);
-
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";

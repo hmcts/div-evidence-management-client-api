@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.divorce.emclient;
 import io.restassured.response.Response;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import java.io.File;
@@ -14,11 +15,8 @@ import java.util.UUID;
 public class EvidenceManagementTestUtils {
 
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-    private final IDAMUtils idamUtils;
-
-    public EvidenceManagementTestUtils(IDAMUtils idamUtils) {
-        this.idamUtils = idamUtils;
-    }
+    @Autowired
+    private IDAMUtils idamUtils;
 
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAuthenticationTokenHeader() {

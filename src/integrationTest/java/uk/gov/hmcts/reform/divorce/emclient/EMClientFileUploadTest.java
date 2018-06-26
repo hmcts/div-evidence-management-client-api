@@ -63,6 +63,9 @@ public class EMClientFileUploadTest {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
+    @Autowired
+    private EvidenceManagementTestUtils evidenceManagementTestUtils;
+
     private String name;
 
     private String fileType;
@@ -73,8 +76,6 @@ public class EMClientFileUploadTest {
     private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
             "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
-    private EvidenceManagementTestUtils evidenceManagementTestUtils =
-        new EvidenceManagementTestUtils(idamTestSupportUtil);
 
     @TestData
     public static Collection<Object[]> testData() {
