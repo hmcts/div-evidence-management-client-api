@@ -91,8 +91,10 @@ public class EMClientFileUploadTest {
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
+        String username = "simulate-delivered-divorce-emca@notify.gov.uk";
+        String password = "L0nGRaND0m?VA1u3";
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+                .headers(getAuthenticationTokenHeader(username, password))
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
