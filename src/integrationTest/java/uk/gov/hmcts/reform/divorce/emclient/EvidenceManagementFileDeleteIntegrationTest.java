@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
@@ -51,20 +52,19 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     @Value("${document.management.store.baseUrl}")
     private String documentManagementURL;
 
-    private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
+    private EvidenceManagementTestUtils evidenceManagementTestUtils =
+        new EvidenceManagementTestUtils(idamTestSupportUtil);
 
 
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
-    private static final String CITIZEN_USERNAME = "CitizenTestUser";
-    private static final String PASSWORD = "password";
     public static final String DELE_ENDPOINT = "/deleteFile?fileUrl=";
 
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
         String fileUrl = uploadFile();
-        Response response = deleteFileFromEvidenceManagement(fileUrl, evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil));
+        Response response = deleteFileFromEvidenceManagement(fileUrl, evidenceManagementTestUtils.getAuthenticationTokenHeader());
         Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
 
@@ -73,7 +73,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public void verifyDeleteRequestForNonExistentDocumentIs404NotFound() {
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.concat("xyzzy");
-        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil));
+        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, evidenceManagementTestUtils.getAuthenticationTokenHeader());
 
         Assert.assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
     }
@@ -83,7 +83,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public void verifyDeleteRequestWithMissingDocumentIdIsNotAllowed() {
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.substring(0, fileUrl.lastIndexOf("/") + 1);
-        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil));
+        Response response = deleteFileFromEvidenceManagement(fileUrlAlt, evidenceManagementTestUtils.getAuthenticationTokenHeader());
 
         Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
     }
@@ -92,7 +92,7 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     @Test
     public void verifyDeleteRequestWithInvalidAuthTokenIsForbidden() {
         String fileUrl = uploadFile();
-        Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(CITIZEN_USERNAME, PASSWORD, idamTestSupportUtil);
+        Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader();
         String token = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
         headers.put(AUTHORIZATION_HEADER_NAME, token);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
@@ -104,7 +104,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     @Test
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
         String fileUrl = uploadFile();
-        Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader("Unauthorised@unauthorized.com", PASSWORD, idamTestSupportUtil);
+        Map<String, Object> headers = new HashMap<>();
+        headers.put(AUTHORIZATION_HEADER_NAME, "Bearer incorrect token");
 
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
         Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
@@ -119,10 +120,8 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
     private String uploadFile(){
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
-                                                                        CITIZEN_USERNAME, PASSWORD,
                                                                         evidenceManagementClientApiBaseUrl,
-                                                                        documentManagementURL,
-                                                                        idamTestSupportUtil);
+                                                                        documentManagementURL);
 
     }
 }

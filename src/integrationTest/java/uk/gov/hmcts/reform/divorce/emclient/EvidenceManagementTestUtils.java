@@ -9,16 +9,22 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class EvidenceManagementTestUtils {
 
-
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+    private final IDAMUtils idamUtils;
+
+    public EvidenceManagementTestUtils(IDAMUtils idamUtils) {
+        this.idamUtils = idamUtils;
+    }
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getAuthenticationTokenHeader(String username, String password,
-                                                            IDAMUtils idamTestSupportUtil) {
-        String authenticationToken = idamTestSupportUtil.getIdamTestUser(username, password);
+    public Map<String, Object> getAuthenticationTokenHeader() {
+        String username = String.format("simulate-delivered-divorce-emca-%s@notify.gov.uk", UUID.randomUUID().toString());
+        String password = "L0nGRaND0m?VA1u3";
+        String authenticationToken = idamUtils.getIdamTestUser(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
         return headers;
@@ -32,7 +38,7 @@ public class EvidenceManagementTestUtils {
      * @return updated url
      */
     //this is a hack to make this work with the docker container
-    String getDocumentStoreURI(String uri, String documentManagementURL) {
+    private String getDocumentStoreURI(String uri, String documentManagementURL) {
         if (uri.contains("http://em-api-gateway-web:3404")) {
             return uri.replace("http://em-api-gateway-web:3404", documentManagementURL);
         }
@@ -54,13 +60,12 @@ public class EvidenceManagementTestUtils {
      */
     @SuppressWarnings("unchecked")
     public String uploadFileToEvidenceManagement(String filePath,
-                                                 String fileContentType, String username,
-                                                 String password, String evidenceManagementClientApiBaseUrl,
-                                                 String documentManagementURL, IDAMUtils idamTestSupportUtil) {
+                                                 String fileContentType, String evidenceManagementClientApiBaseUrl,
+                                                 String documentManagementURL) {
 
         File file = new File(filePath);
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader(username, password, idamTestSupportUtil))
+                .headers(getAuthenticationTokenHeader())
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();

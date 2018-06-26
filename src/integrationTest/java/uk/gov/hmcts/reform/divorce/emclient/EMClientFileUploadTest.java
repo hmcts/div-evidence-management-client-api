@@ -73,6 +73,9 @@ public class EMClientFileUploadTest {
     private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
             "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
+    private EvidenceManagementTestUtils evidenceManagementTestUtils =
+        new EvidenceManagementTestUtils();
+
     @TestData
     public static Collection<Object[]> testData() {
         return IntStream.range(0, fileName.length)
@@ -93,10 +96,8 @@ public class EMClientFileUploadTest {
     @SuppressWarnings("unchecked")
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
-        String username = String.format("simulate-delivered-divorce-emca-%s@notify.gov.uk", UUID.randomUUID().toString());
-        String password = "L0nGRaND0m?VA1u3";
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader(username, password))
+                .headers(evidenceManagementTestUtils.getAuthenticationTokenHeader())
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
@@ -124,14 +125,6 @@ public class EMClientFileUploadTest {
                 .when()
                 .get(uri)
                 .andReturn();
-    }
-
-    private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
-        String authenticationToken = idamTestSupportUtil.getIdamTestUser(username, password);
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("Authorization", authenticationToken);
-        headers.put("Content-Type", "multipart/form-data");
-        return headers;
     }
 
 }
