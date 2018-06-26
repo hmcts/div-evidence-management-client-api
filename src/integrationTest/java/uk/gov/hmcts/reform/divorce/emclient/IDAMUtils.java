@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.divorce.emclient;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
-import io.restassured.response.ResponseBody;
 
 import java.net.URLEncoder;
 import java.util.Base64;
@@ -45,9 +44,7 @@ class IDAMUtils {
     private String generateClientToken(String username, String password) {
         String code = generateClientCode(username, password);
 
-        System.out.println("Code is " + code);
-
-        ResponseBody tokenResponseBody = RestAssured.given()
+        String token = RestAssured.given()
             .config(
                 RestAssured
                     .config()
@@ -60,11 +57,7 @@ class IDAMUtils {
                 "&redirect_uri=" + idamRedirectUrl +
                 "&grant_type=authorization_code")
             .post(idamUserBaseUrl + "/oauth2/token")
-            .body();
-
-        System.out.println("Token response body is");
-        System.out.println(tokenResponseBody.print());
-        String token = tokenResponseBody.path("access_token");
+            .body().path("access_token");
 
         return "Bearer " + token;
     }
@@ -72,7 +65,7 @@ class IDAMUtils {
     private String generateClientCode(String username, String password) {
         String encoded = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
 
-        ResponseBody responseBody = RestAssured.given()
+        return RestAssured.given()
             .config(
                 RestAssured
                     .config()
@@ -82,11 +75,7 @@ class IDAMUtils {
             .header("Content-Type", ContentType.URLENC)
             .body(String.format("response_type=code&client_id=divorce&redirect_uri=%s", URLEncoder.encode(idamRedirectUrl)))
             .post("/oauth2/authorize")
-            .body();
-
-        System.out.println("Code response body is");
-        System.out.println(responseBody.print());
-        return responseBody.path("code");
+            .body().path("code");
     }
 
     void createDivorceCaseworkerUserInIdam(String username, String password) {
