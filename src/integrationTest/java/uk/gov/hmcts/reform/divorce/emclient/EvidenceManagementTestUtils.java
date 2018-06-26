@@ -20,7 +20,7 @@ public class EvidenceManagementTestUtils {
 
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAuthenticationTokenHeader() {
-        String username = String.format("simulate-delivered-divorce-emca-%s@notify.gov.uk", UUID.randomUUID().toString());
+        String username = "simulate-delivered-divorce-emca-a0b5298a@notify.gov.uk";
         String password = "L0nGRaND0m?VA1u3";
         String authenticationToken = idamUtils.getIdamTestUser(username, password);
         Map<String, Object> headers = new HashMap<>();
