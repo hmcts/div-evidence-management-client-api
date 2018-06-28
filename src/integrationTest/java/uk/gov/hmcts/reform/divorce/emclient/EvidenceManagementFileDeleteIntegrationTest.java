@@ -101,7 +101,11 @@ public class EvidenceManagementFileDeleteIntegrationTest {
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
         String fileUrl = uploadFile();
         Map<String, Object> headers = new HashMap<>();
-        headers.put(AUTHORIZATION_HEADER_NAME, "Bearer incorrect token");
+        String invalidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkw" +
+            "IiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImp0aSI6ImU4YjIwY2UxLTE3NGYtNDQ2My0" +
+            "4N2U5LWQxNGJmZTA0MmViZiIsImlhdCI6MTUzMDE4MjYwNSwiZXhwIjoxNTMwMTg2MjA1fQ.7NTzU-S" +
+            "cjcIcZ4bI8XkJkVZiFBHSwgVnW1FrcKZL1H8";
+        headers.put(AUTHORIZATION_HEADER_NAME, String.format("Bearer %s", invalidToken));
 
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
         Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
