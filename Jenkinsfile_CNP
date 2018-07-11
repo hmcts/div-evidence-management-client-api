@@ -20,7 +20,8 @@ def component = "emca"
 def channel = '#div-dev'
 
 List<LinkedHashMap<String, Object>> secrets = [
-        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET")
+        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
+        secret("idam-secret", 'IDAM_SECRET')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {

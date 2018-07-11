@@ -61,6 +61,9 @@ public class EMClientFileUploadTest {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
+    @Autowired
+    private EvidenceManagementTestUtils evidenceManagementTestUtils;
+
     private String name;
 
     private String fileType;
@@ -93,7 +96,7 @@ public class EMClientFileUploadTest {
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+                .headers(evidenceManagementTestUtils.getAuthenticationTokenHeader())
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
@@ -121,15 +124,6 @@ public class EMClientFileUploadTest {
                 .when()
                 .get(uri)
                 .andReturn();
-    }
-
-    private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
-        idamTestSupportUtil.createUserInIdam(username, password);
-        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("Authorization", authenticationToken);
-        headers.put("Content-Type", "multipart/form-data");
-        return headers;
     }
 
 }

@@ -1,59 +1,91 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.springframework.beans.factory.annotation.Value;
+import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 
+import java.net.URLEncoder;
 import java.util.Base64;
+
+import static io.restassured.config.EncoderConfig.encoderConfig;
 
 class IDAMUtils {
 
-    @Value("${auth.idam.client.baseUrl}")
-    private String idamUserBaseUrl;
+    private final String idamUserBaseUrl;
 
-    void createUserInIdam(String username, String password) {
-        String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username +
-            "\",\"surname\":\"User\",\"password\":\"" + password + "\"}";
+    private final String idamSecret;
 
-        RestAssured.given()
-                .header("Content-Type", "application/json")
-                .body(s)
-                .post(idamCreateUrl());
+    private final String idamRedirectUrl;
+
+    public IDAMUtils(String idamUserBaseUrl, String idamSecret, String idamRedirectUrl) {
+        RestAssured.defaultParser = Parser.JSON;
+        this.idamUserBaseUrl = idamUserBaseUrl;
+        this.idamSecret = idamSecret;
+        this.idamRedirectUrl = idamRedirectUrl;
     }
 
-    void createDivorceCaseworkerUserInIdam(String username, String password) {
-        String body = "{\"email\":\"" + username + "@test.com" + "\", "
-                + "\"forename\":" + "\"" + username + "\"," + "\"surname\":\"User\",\"password\":\"" + password + "\", "
-                + "\"roles\":[\"caseworker-divorce\"], \"userGroup\":{\"code\":\"caseworker\"}}";
+    public String getIdamTestUser(String username, String password) {
+        createCitizen(username, password);
+        return generateClientToken(username, password);
+    }
+
+    private void createCitizen(String username, String password) {
         RestAssured.given()
-                .header("Content-Type", "application/json")
-                .body(body)
-                .post(idamCreateUrl());
+            .header("Content-Type", "application/json")
+            .body("{\"email\":\"" + username + "\", \"forename\":\"Test\",\"surname\":\"User\",\"password\":\"" + password + "\"}")
+            .post(idamCreateUrl());
+
     }
 
     private String idamCreateUrl() {
         return idamUserBaseUrl + "/testing-support/accounts";
     }
 
-    private String loginUrl() {
-        return idamUserBaseUrl + "/oauth2/authorize?response_type=token&client_id=divorce&redirect_uri="
-                            + "https://www.preprod.ccd.reform.hmcts.net/oauth2redirect";
+    private String generateClientToken(String username, String password) {
+        String code = generateClientCode(username, password);
+
+        String token = RestAssured.given()
+            .config(
+                RestAssured
+                    .config()
+                    .encoderConfig(encoderConfig().encodeContentTypeAs("{\"mimeType\":\"application/x-www-form-urlencoded\",\"charset\":\"ISO-8859-1\"}", ContentType.URLENC)))
+            .baseUri(idamUserBaseUrl)
+            .header("Content-Type", ContentType.URLENC)
+            .body("code=" + code +
+                "&client_secret=" + idamSecret +
+                "&client_id=divorce" +
+                "&redirect_uri=" + idamRedirectUrl +
+                "&grant_type=authorization_code")
+            .post(idamUserBaseUrl + "/oauth2/token")
+            .body().path("access_token");
+
+        return "Bearer " + token;
     }
 
-    String generateUserTokenWithNoRoles(String username, String password) {
-        String userLoginDetails = String.join(":", username + "@test.com", password);
-        final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
+    private String generateClientCode(String username, String password) {
+        String encoded = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
 
-        Response response = RestAssured.given()
-                .header("Authorization", authHeader)
-                .post(loginUrl());
+        return RestAssured.given()
+            .config(
+                RestAssured
+                    .config()
+                    .encoderConfig(encoderConfig().encodeContentTypeAs("{\"mimeType\":\"application/x-www-form-urlencoded\",\"charset\":\"ISO-8859-1\"}", ContentType.URLENC)))
+            .baseUri(idamUserBaseUrl)
+            .header("Authorization", "Basic " + encoded)
+            .header("Content-Type", ContentType.URLENC)
+            .body(String.format("response_type=code&client_id=divorce&redirect_uri=%s", URLEncoder.encode(idamRedirectUrl)))
+            .post("/oauth2/authorize")
+            .body().path("code");
+    }
 
-        if (response.getStatusCode() >= 300) {
-            throw  new IDAMUtilsException("Token generation failed with code: " + response.getStatusCode() + " body: " + response.getBody().prettyPrint());
-        }
-
-        String token = response.getBody().path("access-token");
-        return "Bearer " + token;
+    void createDivorceCaseworkerUserInIdam(String username, String password) {
+        String body = "{\"email\":\"" + username + "@test.com" + "\", "
+            + "\"forename\":" + "\"" + username + "\"," + "\"surname\":\"User\",\"password\":\"" + password + "\", "
+            + "\"roles\":[\"caseworker-divorce\"], \"userGroup\":{\"code\":\"caseworker\"}}";
+        RestAssured.given()
+            .header("Content-Type", "application/json")
+            .body(body)
+            .post(idamCreateUrl());
     }
 
 }

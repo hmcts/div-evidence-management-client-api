@@ -30,7 +30,15 @@ public class ServiceContextConfiguration {
     }
 
     @Bean
-    public IDAMUtils getIDAMUtil() {
-       return new IDAMUtils();
+    public IDAMUtils getIDAMUtil(
+        @Value("${auth.idam.client.baseUrl}") final String baseUrl,
+        @Value("${auth.idam.secret}") final String secret,
+        @Value("${auth.idam.redirect.url}") final String redirectUrl) {
+       return new IDAMUtils(baseUrl, secret, redirectUrl);
+    }
+
+    @Bean
+    public EvidenceManagementTestUtils getEvidenceManagementTestUtils() {
+        return new EvidenceManagementTestUtils();
     }
 }
