@@ -10,6 +10,9 @@ class IDAMUtils {
 
     @Value("${auth.idam.client.baseUrl}")
     private String idamUserBaseUrl;
+    
+    @Value("${auth.idam.client.redirectUri}")
+    private String idamRedirectUri;
 
     void createUserInIdam(String username, String password) {
         String s = "{\"email\":\"" + username + "@test.com\", \"forename\":\"" + username +
@@ -37,7 +40,7 @@ class IDAMUtils {
 
     private String loginUrl() {
         return idamUserBaseUrl + "/oauth2/authorize?response_type=token&client_id=divorce&redirect_uri="
-                            + "https://www.preprod.ccd.reform.hmcts.net/oauth2redirect";
+                            + idamRedirectUri;
     }
 
     String generateUserTokenWithNoRoles(String username, String password) {
