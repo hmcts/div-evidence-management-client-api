@@ -5,12 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.hateoas.HypermediaAutoConfiguration;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.retry.annotation.EnableRetry;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
@@ -21,9 +19,7 @@ import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 @ComponentScan(basePackages = "uk.gov.hmcts", excludeFilters = {
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ServiceAuthHealthIndicator.class) })
 @EnableAutoConfiguration(exclude = {HypermediaAutoConfiguration.class, ServiceAuthHealthIndicator.class})
-@EnableRetry(proxyTargetClass=true)
 @EnableFeignClients(basePackageClasses = {ServiceAuthorisationApi.class, IdamApiClient.class})
-@EnableCircuitBreaker
 public class EvidenceManagementClientApplication {
 
     public static void main(String[] args) {
