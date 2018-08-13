@@ -94,7 +94,8 @@ public class EMClientFileUploadTest {
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+//                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+            .headers(getAuthenticationTokenHeader("CitizenTestUser2", "Password01"))
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
@@ -111,7 +112,7 @@ public class EMClientFileUploadTest {
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
-        idamTestSupportUtil.createDivorceCaseworkerUserInIdam("CaseWorkerTest", "password");
+        idamTestSupportUtil.createDivorceCaseworkerUserInIdam("CaseWorkerTest2", "Password01");
         Map<String, Object> headers = new HashMap<>();
         headers.put("ServiceAuthorization", authTokenGenerator.generate());
         headers.put("user-id", "CaseWorkerTest");
