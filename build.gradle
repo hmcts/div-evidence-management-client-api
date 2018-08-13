@@ -152,8 +152,10 @@ dependencies {
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
-    integrationTestCompile group: 'uk.gov.hmcts.reform.divorce', name:'div-idam-test-utils', version: '1.0.3'
+//    integrationTestCompile group: 'uk.gov.hmcts.reform.divorce', name:'div-idam-test-utils', version: '1.0.2'
 
+
+    compile group: 'uk.gov.hmcts.reform.divorce', name:'div-common-utils', version: '1.0.5'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
