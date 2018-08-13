@@ -45,7 +45,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
                                                  String authorizationToken,
                                                  String requestId) {
 
-        log.info("deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
+        log.info("Deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
         UserDetails userDetails = null;
         try{
@@ -58,7 +58,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
                 HttpMethod.DELETE,
                 httpEntity,
                 String.class);
-        log.debug("document deletion response: {}", response);
+        log.debug("Document deletion response for userId {}: {}", userDetails.getId(), response);
 
         return response;
     }
