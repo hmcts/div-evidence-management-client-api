@@ -73,7 +73,7 @@ variable "ilbIp" {}
 
 variable "vault_env" {}
 
-variable "idam_api_url" {}
+#variable "idam_api_url" {}
 
 variable "common_tags" {
   type = "map"

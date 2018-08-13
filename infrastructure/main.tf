@@ -3,6 +3,7 @@ locals {
   local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
   dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
   idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
+  idam_api_url   = "http://idam-api-idam-${local.local_env}.service.core-compute-${local.local_env}.internal"
 }
 
 module "div-emca" {
@@ -32,8 +33,10 @@ module "div-emca" {
     HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
     HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
     HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
-    IDAM_API_URL = "${var.idam_api_url}"
-    IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
+    #IDAM_API_URL                        = "${var.idam_api_url}"
+    #IDAM_API_HEALTH_URI                 = "${var.idam_api_url}/health"
+    IDAM_API_URL                        = "${local.idam_api_url}"
+    IDAM_API_HEALTH_URI                 = "${local.idam_api_url}/health"
   }
 }
 
