@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.reform.divorce.utils.IDAMUtils;
 
 import java.io.File;
 import java.util.HashMap;

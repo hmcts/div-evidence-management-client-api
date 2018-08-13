@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Lazy;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
+import uk.gov.hmcts.reform.divorce.utils.IDAMUtils;
+import uk.gov.hmcts.reform.divorce.utils.impl.IDAMUtilsImpl;
 
 @Configuration
 @Lazy
@@ -31,6 +33,6 @@ public class ServiceContextConfiguration {
 
     @Bean
     public IDAMUtils getIDAMUtil() {
-       return new IDAMUtils();
+       return new IDAMUtilsImpl();
     }
 }
