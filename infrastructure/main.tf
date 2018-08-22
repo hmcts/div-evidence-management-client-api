@@ -41,20 +41,6 @@ module "div-emca" {
   }
 }
 
-# region save DB details to Azure Key Vault
-module "key-vault" {
-  source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "${local.vaultName}"
-  product             = "${var.product}"
-  env                 = "${var.env}"
-  tenant_id           = "${var.tenant_id}"
-  object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${module.div-emca.resource_group_name}"
-
-  # dcd_cc-dev group object ID
-  product_group_object_id = "1c4f0704-a29e-403d-b719-b90c34ef14c9"
-}
-
 data "azurerm_key_vault" "div_key_vault" {
   name                = "${local.vaultName}"
   resource_group_name = "${local.vaultName}"
