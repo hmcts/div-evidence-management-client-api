@@ -6,8 +6,8 @@ variable "product" {
   type    = "string"
 }
 
-variable "raw_product" {
-  default = "div"
+variable "component" {
+  type = "string"
 }
 
 variable "tenant_id" {}
