@@ -4,8 +4,8 @@ locals {
   dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
   idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
 
-  previewVaultName = "${var.reform_team}-${var.env}"
-  nonPreviewVaultName = "${var.reform_team}-${var.reform_service_name}-${var.env}"
+  previewVaultName = "${var.reform_team}-aat"
+  nonPreviewVaultName = "${var.reform_team}-${var.env}"
   vaultName = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
 }
 
