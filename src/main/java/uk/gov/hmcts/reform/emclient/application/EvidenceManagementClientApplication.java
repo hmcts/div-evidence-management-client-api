@@ -26,7 +26,11 @@ import uk.gov.hmcts.reform.authorisation.healthcheck.ServiceAuthHealthIndicator;
 @EnableCircuitBreaker
 public class EvidenceManagementClientApplication {
 
+    @Value("${tenant.id}")
+    private String tenantId;
+
     public static void main(String[] args) {
+
         SpringApplication.run(EvidenceManagementClientApplication.class, args);
     }
 
@@ -36,6 +40,8 @@ public class EvidenceManagementClientApplication {
             @Value("${idam.auth.microservice}") final String microService,
             final ServiceAuthorisationApi serviceAuthorisationApi
     ) {
+
+        System.out.println("******** tenantid " + tenantId);
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
     }
 
