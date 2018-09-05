@@ -39,6 +39,7 @@ module "div-emca" {
     HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
     IDAM_API_URL = "${var.idam_api_url}"
     IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
+    AUTH_IDAM_CLIENT_SECRET = "${data.azurerm_key_vault_secret.idam-secret.value}"
   }
 }
 
@@ -49,5 +50,10 @@ data "azurerm_key_vault" "div_key_vault" {
 
 data "azurerm_key_vault_secret" "div_doc_s2s_auth_secret" {
   name      = "div-doc-s2s-auth-secret"
+  vault_uri = "${data.azurerm_key_vault.div_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "idam-secret" {
+  name      = "idam-secret"
   vault_uri = "${data.azurerm_key_vault.div_key_vault.vault_uri}"
 }
