@@ -29,7 +29,9 @@ import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -93,13 +95,12 @@ public class EMClientFileUploadTest {
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader("CitizenTestUser", "password"))
+                .headers(getAuthenticationTokenHeader())
                 .multiPart("file", file, fileContentType)
                 .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
                 .andReturn();
-
-        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
         assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
     }
 
@@ -111,10 +112,12 @@ public class EMClientFileUploadTest {
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
-        idamTestSupportUtil.createDivorceCaseworkerUserInIdam("CaseWorkerTest", "password");
+        String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
+        String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
+        idamTestSupportUtil.createCaseworkerUserInIdam(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put("ServiceAuthorization", authTokenGenerator.generate());
-        headers.put("user-id", "CaseWorkerTest");
+        headers.put("user-id", username);
         headers.put("user-roles", "caseworker-divorce");
         return given()
                 .contentType("application/json")
@@ -124,9 +127,8 @@ public class EMClientFileUploadTest {
                 .andReturn();
     }
 
-    private Map<String, Object> getAuthenticationTokenHeader(String username, String password) {
-        idamTestSupportUtil.createUserInIdam(username, password);
-        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
+    private Map<String, Object> getAuthenticationTokenHeader() {
+        String authenticationToken = idamTestSupportUtil.getIdamTestUser();
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");
