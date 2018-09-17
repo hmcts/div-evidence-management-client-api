@@ -25,6 +25,10 @@ variable "reform_team" {
   default = "div"
 }
 
+variable "capacity" {
+  default = "1"
+}
+
 variable "env" {
   type = "string"
 }
@@ -70,3 +74,7 @@ variable "ilbIp" {}
 variable "vault_env" {}
 
 variable "idam_api_url" {}
+
+variable "common_tags" {
+  type = "map"
+}

@@ -28,9 +28,4 @@ public class ServiceContextConfiguration {
     ) {
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
     }
-
-    @Bean
-    public IDAMUtils getIDAMUtil() {
-       return new IDAMUtils();
-    }
 }

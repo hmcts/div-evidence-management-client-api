@@ -2,8 +2,6 @@ package uk.gov.hmcts.reform.emclient.functional;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.jayway.jsonpath.JsonPath;
-import com.netflix.loadbalancer.Server;
-import com.netflix.loadbalancer.ServerList;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.cloud.netflix.ribbon.StaticServerList;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -60,7 +55,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
     "feign.hystrix.enabled=true",
     "eureka.client.enabled=false"
     })
-public class HealthCheckFunctionalTest {
+public class HealthCheckFunctionalTest extends BaseFunctionalTest{
 
     @LocalServerPort
     private int port;
@@ -174,11 +169,5 @@ public class HealthCheckFunctionalTest {
                 .withBody(responseBody)));
     }
 
-    @TestConfiguration
-    public static class LocalRibbonClientConfiguration {
-        @Bean
-        public ServerList<Server> ribbonServerList(@Value("${auth.provider.service.client.port}") int serverPort) {
-            return new StaticServerList<>(new Server("localhost", serverPort));
-        }
-    }
+
 }

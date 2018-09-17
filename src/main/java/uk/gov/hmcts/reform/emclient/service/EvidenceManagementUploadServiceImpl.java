@@ -56,7 +56,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
                 .path("_embedded").path("documents");
-        log.info("For Request Id {} : File upload response from Evidence Management service is {}", requestId, documents);
+        log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}", requestId, userDetails.getId(), documents);
         return toUploadResponse(documents);
     }
 
@@ -94,5 +94,5 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.set("user-id", userId);
         return headers;
     }
-    
+
 }
