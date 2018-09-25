@@ -20,7 +20,6 @@ def component = "emca"
 def channel = '#div-dev'
 
 List<LinkedHashMap<String, Object>> secrets = [
-        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
         secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
         secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
 ]
@@ -42,6 +41,10 @@ withPipeline(type, product, component) {
 
     after('checkout') {
         echo '${product}-${component} checked out'
+    }
+    
+    before('functionalTest:preview') {
+        sh 'env'   
     }
     
     after('functionalTest:aat') {
