@@ -18,6 +18,7 @@ data:
   REFORM_SERVICE_NAME : "emca"
   IDAM_API_URL : "https://preprod-idamapi.reform.hmcts.net:3511"
   REFORM_TEAM : "div"
+  AUTH_PROVIDER_SERVICE_CLIENT_KEY : ${AUTH_PROVIDER_SERVICE_CLIENT_KEY}
   APPINSIGHTS_INSTRUMENTATIONKEY : "63c30ef9-a27b-4d38-8afc-4c180fb6ac33"
   EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL : "http://dm-store-aat.service.core-compute-aat.internal/documents"
   AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS : "900"
