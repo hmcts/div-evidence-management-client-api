@@ -30,7 +30,9 @@ spec:
         envFrom:
           - configMapRef:
               name: ${SERVICE_NAME}-config
- 
+        env:
+          - name: AUTH_PROVIDER_SERVICE_CLIENT_KEY
+          - value: ${AUTH_PROVIDER_SERVICE_CLIENT_KEY}
         # These may be adjusted, but be mindful please
         resources:
           requests:
