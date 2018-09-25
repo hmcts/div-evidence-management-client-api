@@ -20,6 +20,7 @@ def component = "emca"
 def channel = '#div-dev'
 
 List<LinkedHashMap<String, Object>> secrets = [
+        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
         secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
         secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
 ]
@@ -44,7 +45,10 @@ withPipeline(type, product, component) {
     }
     
     before('functionalTest:preview') {
-        sh 'env'   
+        env.IDAM_AUTH_SECRET = 'NI552ZABLX3ANC7G'
+        env.AUTH_IDAM_CLIENT_SECRET = 'thUphEveC2Ekuqedaneh4jEcRuba4t2t'
+        env.AUTH_PROVIDER_SERVICE_CLIENT_KEY = 'NI552ZABLX3ANC7G'
+        sh 'env'
     }
     
     after('functionalTest:aat') {
