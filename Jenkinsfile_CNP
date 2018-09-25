@@ -20,7 +20,9 @@ def component = "emca"
 def channel = '#div-dev'
 
 List<LinkedHashMap<String, Object>> secrets = [
-        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET")
+        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
+        secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
+        secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -33,11 +35,20 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline(type, product, component) {
-
+    enableDockerBuild()
+    enableDeployToAKS()
     loadVaultSecrets(secrets)
+    setVaultName('div')
 
     after('checkout') {
         echo '${product}-${component} checked out'
+    }
+    
+    before('functionalTest:preview') {
+        env.IDAM_AUTH_SECRET = 'NI552ZABLX3ANC7G'
+        env.AUTH_IDAM_CLIENT_SECRET = 'thUphEveC2Ekuqedaneh4jEcRuba4t2t'
+        env.AUTH_PROVIDER_SERVICE_CLIENT_KEY = 'NI552ZABLX3ANC7G'
+        sh 'env'
     }
     
     after('functionalTest:aat') {
@@ -45,6 +56,7 @@ withPipeline(type, product, component) {
     }
     
     after('functionalTest:preview') {
+        sh 'env'
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 

@@ -88,6 +88,11 @@ public class EMClientFileUploadTest {
 
     @Test
     public void uploadFile() {
+        StringBuffer buffer =new StringBuffer();
+        buffer.append("AUTH_IDAM_CLIENT_SECRET "+ System.getenv("AUTH_IDAM_CLIENT_SECRET"));
+        buffer.append("IDAM_AUTH_SECRET "+ System.getenv("IDAM_AUTH_SECRET"));
+        buffer.append("idam_s2s_url "+ System.getenv("idam_s2s_url"));
+        System.out.println(" ***** properties \n" + buffer.toString());
         uploadFileToEMStore(this.name, this.fileType);
     }
 
