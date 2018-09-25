@@ -52,6 +52,7 @@ withPipeline(type, product, component) {
     }
     
     after('functionalTest:preview') {
+        sh 'env'
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 
