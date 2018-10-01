@@ -10,7 +10,7 @@ output "idam_s2s_url" {
   value = "${local.idam_s2s_url}"
 }
 
-output "test_environment" {
+output "environment_name" {
   value = "${local.local_env}"
 }
 
