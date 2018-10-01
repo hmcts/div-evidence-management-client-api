@@ -1,3 +1,3 @@
 vault_env = "prod"
-idam_api_url = "https://prod-idamapi.reform.hmcts.net:3511"
+idam_api_url = "https://idam-api.platform.hmcts.net"
 capacity = "2"
