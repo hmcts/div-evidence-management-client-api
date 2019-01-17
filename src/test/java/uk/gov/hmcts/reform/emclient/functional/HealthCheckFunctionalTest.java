@@ -14,6 +14,7 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -70,6 +71,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
     public static WireMockClassRule serviceAuthServer = new WireMockClassRule(4502);
 
     @Autowired
+    @Qualifier("healthCheckRestTemplate")
     private RestTemplate restTemplate;
 
     private String healthUrl;
