@@ -1,4 +1,7 @@
 buildscript {
+    ext {
+        springBootVersion = '2.1.2.RELEASE'
+    }
     repositories {
         mavenLocal()
         jcenter()
@@ -19,7 +22,7 @@ plugins {
     id 'jacoco'
     id 'org.owasp.dependencycheck' version '3.1.2'
     id 'org.sonarqube' version '2.6.2'
-    id 'org.springframework.boot' version '1.5.14.RELEASE'
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
     id 'pmd'
 }
 
@@ -112,12 +115,14 @@ def versions = [
         commonsIo: '2.5',
         commonsLang3: '3.0',
         hibernate: '6.0.5.Final',
-        jacksonCore: '2.9.5',
+        jacksonCore: '2.9.8',
+        jacksonDatabind: '2.9.8',
         javaxValidation: '2.0.0.Final',
         jaywayJsonPath: '2.2.0',
         jsr305: '3.0.2',
         junit: '4.12',
         lombok: '1.16.16',
+        orgSpringframework: '5.1.4.RELEASE',
         puppyCrawl: '7.6',
         reformsJavaLogging: '2.1.1',
         reformsHttpProxySpringBootAutoconfigure: '1.1.0',
@@ -176,6 +181,16 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
+
+    compile group: 'org.springframework', name: 'spring-context-support', version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-webmvc',  version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-web',  version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-aop' , version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-beans' , version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-expression' , version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-core' , version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-jcl' , version: versions.orgSpringframework
+    compile group: 'org.springframework', name: 'spring-context' , version: versions.orgSpringframework
 
     compile (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
         exclude group: 'io.reactivex', module: 'io.reactivex'
