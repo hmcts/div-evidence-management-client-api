@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class EvidenceManagementTestUtils {
 
@@ -18,11 +19,14 @@ public class EvidenceManagementTestUtils {
     @SuppressWarnings("unchecked")
     public Map<String, Object> getAuthenticationTokenHeader(String username, String password,
                                                             IDAMUtils idamTestSupportUtil) {
-        idamTestSupportUtil.createUserInIdam(username, password);
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
         return headers;
+    }
+
+    public void deleteUserInIdam(String username, IDAMUtils idamTestSupportUtil) {
+        idamTestSupportUtil.deleteUserInIdam(username);
     }
 
 
@@ -55,9 +59,15 @@ public class EvidenceManagementTestUtils {
      */
     @SuppressWarnings("unchecked")
     public String uploadFileToEvidenceManagement(String filePath,
-                                                 String fileContentType, String username,
-                                                 String password, String evidenceManagementClientApiBaseUrl,
-                                                 String documentManagementURL, IDAMUtils idamTestSupportUtil) {
+                                                 String fileContentType,
+                                                 String evidenceManagementClientApiBaseUrl,
+                                                 String documentManagementURL,
+                                                 IDAMUtils idamTestSupportUtil) {
+
+        // Create Test User
+        String username = "simulate-delivered-" + UUID.randomUUID() + "@notifications.service.gov.uk";
+        String password = "genericPassword1";
+        idamTestSupportUtil.createUserInIdam(username, password);
 
         File file = new File(filePath);
         Response response = SerenityRest.given()
@@ -67,6 +77,10 @@ public class EvidenceManagementTestUtils {
                 .andReturn();
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+
+        // Delete Test User
+        deleteUserInIdam(username, idamTestSupportUtil);
+
         return getDocumentStoreURI(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementURL);
     }
 }

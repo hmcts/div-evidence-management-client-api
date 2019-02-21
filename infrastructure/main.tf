@@ -39,12 +39,14 @@ module "div-emca" {
     DOCUMENT_MANAGEMENT_STORE_URL       = "${local.dm_store_url}"
     EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL = "${local.dm_store_url}/documents"
     EVIDENCE_MANAGEMENT_HEALTH_URL      = "${local.dm_store_url}/health"
-    HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
-    HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
-    HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
+
     IDAM_API_URL = "${var.idam_api_url}"
     IDAM_API_HEALTH_URI = "${var.idam_api_url}/health"
     AUTH_IDAM_CLIENT_SECRET = "${data.azurerm_key_vault_secret.idam-secret.value}"
+
+    HTTP_CONNECT_TIMEOUT                = "${var.http_connect_timeout}"
+    HTTP_CONNECT_REQUEST_TIMEOUT        = "${var.http_connect_request_timeout}"
+    HTTP_CONNECT_SOCKET_TIMEOUT         = "${var.http_connect_socket_timeout}"
   }
 }
 

@@ -9,6 +9,7 @@ buildscript {
         }
         classpath ('org.pitest:pitest-command-line:0.33')
         classpath("org.springframework.boot:spring-boot-gradle-plugin:versions.springBoot")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:1.5.2")
     }
 }
 
@@ -22,6 +23,8 @@ plugins {
     id 'org.springframework.boot' version '1.5.14.RELEASE'
     id 'pmd'
 }
+
+apply plugin: 'net.serenity-bdd.aggregator'
 
 pmd {
     toolVersion = '6.11.0'
@@ -220,6 +223,8 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
+
+        finalizedBy aggregate
 }
 
 task printVersion {
