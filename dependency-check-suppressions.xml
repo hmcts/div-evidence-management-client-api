@@ -12,10 +12,6 @@
         <cve>CVE-2018-10237</cve>
     </suppress>
     <suppress>
-        <gav regex="true">.*</gav>
-        <cve>CVE-2019-7722</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[
             file name: spring-security-rsa-1.0.8.RELEASE.jar
             This has been updated, but it still shown some vulnerabilities that shouldn't be there
