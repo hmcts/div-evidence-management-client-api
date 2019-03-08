@@ -11,6 +11,7 @@
         <cpe>cpe:/a:google:guava:20.0</cpe>
         <cve>CVE-2018-10237</cve>
     </suppress>
+
     <suppress>
         <notes><![CDATA[
             file name: spring-security-rsa-1.0.8.RELEASE.jar
