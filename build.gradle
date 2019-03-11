@@ -242,7 +242,6 @@ pmd {
     ignoreFailures = true
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$project.buildDir/reports/pmd")
-    ruleSetFiles = files("ruleset.xml")
 }
 
 def sonarExclusions = [

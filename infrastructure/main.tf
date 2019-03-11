@@ -1,5 +1,5 @@
 locals {
-  aseName = "core-compute-${var.env}"
+  aseName        = "core-compute-${var.env}"
   local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
   dm_store_url   = "http://dm-store-${local.local_env}.service.core-compute-${local.local_env}.internal"
   idam_s2s_url   = "http://${var.idam_s2s_url_prefix}-${local.local_env}.service.core-compute-${local.local_env}.internal"
