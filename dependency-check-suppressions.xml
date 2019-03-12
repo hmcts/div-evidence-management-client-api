@@ -42,4 +42,15 @@
         <cpe>cpe:/a:oracle:oracle_client:1.19.1</cpe>
         <cve>CVE-2006-0550</cve>
     </suppress>
+
+    <suppress>
+        <notes>
+            <![CDATA[
+            pmd-java and pmd-core showing vulnerabilities even when updated to latest version
+            ]]>
+        </notes>
+        <cpe>cpe:/a:pmd_project:pmd:5.6.1</cpe>
+        <cve>CVE-2019-7722</cve>
+        <cve>CVE-2019-7722</cve>
+    </suppress>
 </suppressions>
