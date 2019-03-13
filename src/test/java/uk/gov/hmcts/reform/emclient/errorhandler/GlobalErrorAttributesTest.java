@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.web.context.request.WebRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalErrorAttributesTest {
