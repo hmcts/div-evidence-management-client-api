@@ -23,6 +23,10 @@ plugins {
     id 'pmd'
 }
 
+pmd {
+    toolVersion = '6.11.0'
+}
+
 group = 'uk.gov.hmcts.reform.divorce'
 version = '3.0.0'
 sourceCompatibility = 1.8
@@ -35,6 +39,7 @@ jar {
                 'Implementation-Version': project.version
     }
 }
+
 
 
 sourceSets {
