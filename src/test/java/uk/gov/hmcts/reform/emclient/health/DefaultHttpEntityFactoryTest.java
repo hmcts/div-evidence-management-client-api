@@ -1,13 +1,13 @@
 package uk.gov.hmcts.reform.emclient.health;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultHttpEntityFactoryTest {
@@ -16,7 +16,7 @@ public class DefaultHttpEntityFactoryTest {
     private DefaultHttpEntityFactory httpEntityFactory;
 
     @Test
-    public void shouldReturnEntityWithJsonAcceptHeadersWhenCallingCreateEntityForHealthCheck() throws Exception {
+    public void shouldReturnEntityWithJsonAcceptHeadersWhenCallingCreateEntityForHealthCheck() {
         HttpEntity<Object> httpEntity = httpEntityFactory.createRequestEntityForHealthCheck();
 
         assertThat(httpEntity.getHeaders().size()).isEqualTo(1);
