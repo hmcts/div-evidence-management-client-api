@@ -16,8 +16,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.request.RequestContextHolder;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     // BAD_REQUEST(400),UNAUTHORIZED(401),FORBIDDEN(403),NOT_FOUND(404),METHOD_NOT_ALLOWED(405)...
     public ResponseEntity<Object> handleClientException(
             HttpClientErrorException clientErrorException,
-            HttpServletRequest request,
+            WebRequest request,
             HttpServletResponse response) {
 
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), clientErrorException.getMessage());
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {ResourceAccessException.class, HttpServerErrorException.class})
-    public ResponseEntity<Object> handleMaxUploadException(RestClientException restClientException, HttpServletRequest request) {
+    public ResponseEntity<Object> handleMaxUploadException(RestClientException restClientException, WebRequest request) {
 
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), restClientException.getMessage());
 
@@ -51,15 +51,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationException(ConstraintViolationException exception, HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> handleValidationException(ConstraintViolationException exception, WebRequest webRequest) {
         /**
          * This is a temporary solution because of an nginx configuration which requires a status code 200 to be returned.
          */
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        requestAttributes.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(), RequestAttributes.SCOPE_REQUEST);
-        requestAttributes.setAttribute("javax.servlet.error.error_code", "invalidFileType", RequestAttributes.SCOPE_REQUEST);
-        requestAttributes.setAttribute("javax.servlet.error.request_uri", request.getRequestURI(), RequestAttributes.SCOPE_REQUEST);
-        Map<String, Object> errorAttributes = new GlobalErrorAttributes().getErrorAttributes(requestAttributes, false);
+        webRequest.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(), WebRequest.SCOPE_REQUEST);
+        webRequest.setAttribute("javax.servlet.error.error_code", "invalidFileType", WebRequest.SCOPE_REQUEST);
+        webRequest.setAttribute("javax.servlet.error.request_uri", ((ServletWebRequest)webRequest).getRequest().getRequestURL().toString(), WebRequest.SCOPE_REQUEST);
+        Map<String, Object> errorAttributes = new GlobalErrorAttributes().getErrorAttributes(webRequest, false);
 
         if (!exception.getConstraintViolations().isEmpty()) {
             errorAttributes.put("message", exception.getConstraintViolations().iterator().next().getMessage());

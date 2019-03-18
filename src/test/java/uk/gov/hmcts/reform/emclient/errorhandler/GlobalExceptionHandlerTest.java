@@ -23,6 +23,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -30,9 +31,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 public class GlobalExceptionHandlerTest {
 
     @Mock
-    private RequestAttributes mockRequestAttributes;
+    private WebRequest mockRequestAttributes;
 
-    private HttpServletRequest mockHttpServletRequest;
+    private WebRequest mockHttpServletRequest;
     private HttpServletResponse mockHttpServletResponse;
 
     private GlobalExceptionHandler underTest;
@@ -43,7 +44,7 @@ public class GlobalExceptionHandlerTest {
         RequestContextHolder.setRequestAttributes(mockRequestAttributes);
 
         underTest = new GlobalExceptionHandler();
-        mockHttpServletRequest = new MockHttpServletRequest();
+        mockHttpServletRequest = new ServletWebRequest(new MockHttpServletRequest());
         mockHttpServletResponse = new MockHttpServletResponse();
     }
 

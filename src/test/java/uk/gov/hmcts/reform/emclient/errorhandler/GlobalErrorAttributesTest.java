@@ -21,7 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 public class GlobalErrorAttributesTest {
 
     @Mock
-    private RequestAttributes mockRequestAttributes;
+    private WebRequest mockWebRequest;
 
     private GlobalErrorAttributes underTest;
 
@@ -32,13 +32,13 @@ public class GlobalErrorAttributesTest {
 
     @Test
     public void getErrorAttributesShouldIncludeAllAttributesFromDefaultErrorAttributes() {
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.status_code", 0))
+        given(mockWebRequest.getAttribute("javax.servlet.error.status_code", 0))
                 .willReturn(400);
-        given(mockRequestAttributes.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
+        given(mockWebRequest.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
                 .willReturn(new ValidationException("Value is invalid"));
 
         Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockRequestAttributes, false);
+                underTest.getErrorAttributes(mockWebRequest, false);
 
         assertNotNull(errorAttributes.get("timestamp"));
         assertEquals(400, errorAttributes.get("status"));
@@ -49,15 +49,15 @@ public class GlobalErrorAttributesTest {
 
     @Test
     public void getErrorAttributesShouldReturnErrorCodeWhenCorrectRequestAttributeIsSet() {
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.status_code", 0))
+        given(mockWebRequest.getAttribute("javax.servlet.error.status_code", 0))
                 .willReturn(400);
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.error_code", 0))
+        given(mockWebRequest.getAttribute("javax.servlet.error.error_code", 0))
                 .willReturn("validationFailure");
-        given(mockRequestAttributes.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
+        given(mockWebRequest.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
                 .willReturn(new ValidationException("Value is invalid"));
 
         Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockRequestAttributes, false);
+                underTest.getErrorAttributes(mockWebRequest, false);
 
         assertEquals("validationFailure", errorAttributes.get("errorCode"));
 
@@ -65,13 +65,13 @@ public class GlobalErrorAttributesTest {
 
     @Test
     public void getErrorAttributesShouldNotReturnErrorCodeWhenTheErrorCodeRequestAttributeIsMissing() {
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.status_code", 0))
+        given(mockWebRequest.getAttribute("javax.servlet.error.status_code", 0))
                 .willReturn(400);
-        given(mockRequestAttributes.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
+        given(mockWebRequest.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
                 .willReturn(new ValidationException("Value is invalid"));
 
         Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockRequestAttributes, false);
+                underTest.getErrorAttributes(mockWebRequest, false);
 
         assertNull( errorAttributes.get("errorCode"));
 
