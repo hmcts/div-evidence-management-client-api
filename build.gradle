@@ -130,7 +130,7 @@ def versions = [
         restAssured: '3.0.3',
         serenity: '1.5.2',
         serenityCucumber: '1.1.3',
-        serviceTokenGenerator: '0.6.0',
+        serviceTokenGenerator: '2.0.1',
         skyscreamer: '1.2.3',
         spring_security_rsa: '1.0.8.RELEASE',
         springCloud: '1.2.5.RELEASE',
@@ -160,7 +160,6 @@ dependencies {
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
-    //integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-java-client', version: versions.serviceTokenGenerator
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
@@ -177,7 +176,12 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.sprintBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.sprintBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.sprintBoot
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: versions.springCloud
+    compile (group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: versions.springCloud) {
+        force = true
+    }
+//    compile (group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.0.1') {
+//        force = true
+//    }
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
     compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
