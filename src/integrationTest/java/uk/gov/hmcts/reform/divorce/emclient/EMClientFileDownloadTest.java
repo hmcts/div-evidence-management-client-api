@@ -17,7 +17,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.emclient.application.ProxyUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,10 +51,6 @@ public class EMClientFileDownloadTest {
 
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
-
-    public EMClientFileDownloadTest() {
-        ProxyUtils.useProxy();
-    }
 
     @Test
     public void downloadFileTest()throws Exception {
