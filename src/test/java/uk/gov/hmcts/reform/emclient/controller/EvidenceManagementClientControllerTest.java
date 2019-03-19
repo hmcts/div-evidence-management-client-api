@@ -37,7 +37,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -80,7 +80,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(prepareFileUploadResponse());
 
-        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -104,7 +104,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(MockMvcRequestBuilders.multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -116,7 +116,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -147,7 +147,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(MockMvcRequestBuilders.multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -159,7 +159,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -266,7 +266,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(MockMvcRequestBuilders.multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
