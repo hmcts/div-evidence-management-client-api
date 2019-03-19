@@ -86,20 +86,13 @@ public class GlobalExceptionHandlerTest {
     public void handleValidationExceptionShouldReturnErrorAttributes() {
         ConstraintViolationException mockException = mock(ConstraintViolationException.class);
 
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.status_code", 0))
-                .willReturn(HttpStatus.BAD_REQUEST.value());
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.error_code", 0))
-                .willReturn("invalidFileType");
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.request_uri", 0))
-                .willReturn("/path/to/resource");
-
         ResponseEntity<Map<String, Object>> responseEntity =
                 underTest.handleValidationException(mockException, mockHttpServletRequest);
 
         Map<String, Object> body = responseEntity.getBody();
         assertEquals(400, body.get("status"));
         assertEquals("invalidFileType", body.get("errorCode"));
-        assertEquals("/path/to/resource", body.get("path"));
+        assertEquals("http://localhost", body.get("path"));
     }
 
     @Test

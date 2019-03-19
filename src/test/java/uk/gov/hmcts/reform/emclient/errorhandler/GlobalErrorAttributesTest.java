@@ -43,7 +43,6 @@ public class GlobalErrorAttributesTest {
         assertNotNull(errorAttributes.get("timestamp"));
         assertEquals(400, errorAttributes.get("status"));
         assertEquals("Bad Request", errorAttributes.get("error"));
-        assertEquals("javax.xml.bind.ValidationException", errorAttributes.get("exception"));
         assertEquals("Value is invalid", errorAttributes.get("message"));
     }
 

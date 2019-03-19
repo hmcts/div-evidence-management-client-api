@@ -6,7 +6,6 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.hateoas.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,7 +31,6 @@ import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
 
 @Service
 @Slf4j
-@EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUploadService {
 
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
