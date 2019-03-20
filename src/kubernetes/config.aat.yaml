@@ -7,7 +7,7 @@ data:
   EVIDENCE_MANAGEMENT_HEALTH_URL : "http://dm-store-aat.service.core-compute-aat.internal/health"
   HTTP_CONNECT_REQUEST_TIMEOUT : "60000"
   DOCUMENT_MANAGEMENT_STORE_URL : "http://dm-store-aat.service.core-compute-aat.internal"
-  IDAM_API_HEALTH_URI : "https://preprod-idamapi.reform.hmcts.net:3511/health"
+  IDAM_API_HEALTH_URI : "https://idam-api.aat.platform.hmcts.net/health"
   HTTP_CONNECT_TIMEOUT : "60000"
   APPLICATION_INSIGHTS_IKEY : "63c30ef9-a27b-4d38-8afc-4c180fb6ac33"
   HTTP_CONNECT_SOCKET_TIMEOUT : "1000"
