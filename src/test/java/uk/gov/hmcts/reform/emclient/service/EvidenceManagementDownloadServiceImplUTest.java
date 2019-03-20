@@ -28,9 +28,8 @@ public class EvidenceManagementDownloadServiceImplUTest {
 
     private static  final String TEST_FILE_ID = "testFileId";
     private static  final String TEST_AUTH_TOKEN = "testAuthToken";
-    private static  final String TEST_REQUEST_ID = "testRequestId";
     private static  final String DM_STORE_URL = "http://dmstore.url";
-    private static  final String SERVICE_TOKE = "serviceToken";
+    private static  final String SERVICE_TOKEN = "serviceToken";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -53,16 +52,17 @@ public class EvidenceManagementDownloadServiceImplUTest {
     }
 
     @Test
-    public void givenDocumentId_whenDownloadFile_thenDMStoreServiceIsCalled(){
+    public void givenFile_whenDownloadFile_thenDMStoreServiceIsCalled(){
         ResponseEntity<byte[]> expectedResponse = mock(ResponseEntity.class);
 
         when(userService.getUserDetails(TEST_AUTH_TOKEN)).thenReturn(UserDetails.builder().build());
-        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKE);
+        when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
 
         String url = DM_STORE_URL+"/"+TEST_FILE_ID+"/binary";
         when(restTemplate.exchange(eq(url), eq(HttpMethod.GET), any(HttpEntity.class), eq(byte[].class)))
                 .thenReturn(expectedResponse);
-        ResponseEntity<byte[]> response = classToTest.downloadFile(TEST_FILE_ID, TEST_AUTH_TOKEN, TEST_REQUEST_ID);
+        ResponseEntity<byte[]> response = classToTest.downloadFile(TEST_FILE_ID, TEST_AUTH_TOKEN);
+
         assertEquals(expectedResponse, response);
     }
 

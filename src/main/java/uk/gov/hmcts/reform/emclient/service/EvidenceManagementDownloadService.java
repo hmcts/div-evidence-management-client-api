@@ -4,7 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface EvidenceManagementDownloadService {
 
-    ResponseEntity<byte[]> downloadFile(String fileUrl,
-                                 String authorizationToken,
-                                 String requestId);
+    ResponseEntity<byte[]> downloadFile(String fileId, String authorizationToken);
 }

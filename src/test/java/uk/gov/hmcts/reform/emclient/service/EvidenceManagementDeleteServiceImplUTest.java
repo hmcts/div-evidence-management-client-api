@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class EvidenceManagementDeleteServiceImplTest {
+public class EvidenceManagementDeleteServiceImplUTest {
 
     private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
 

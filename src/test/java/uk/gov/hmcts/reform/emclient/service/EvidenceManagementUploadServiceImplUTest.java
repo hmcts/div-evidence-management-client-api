@@ -35,7 +35,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EvidenceManagementUploadServiceImplTest {
+public class EvidenceManagementUploadServiceImplUTest {
     @Mock
     private RestTemplate restTemplate;
 

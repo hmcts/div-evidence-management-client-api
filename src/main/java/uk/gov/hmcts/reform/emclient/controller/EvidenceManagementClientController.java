@@ -51,12 +51,11 @@ public class EvidenceManagementClientController {
 
     @GetMapping(value = "/version/1/download/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseBody
-    public ResponseEntity<byte[]>  getDocument(
-            @RequestHeader(value = "Authorization", required = false) String authorizationToken,
-            @RequestHeader(value = "requestId", required = false) String requestId,
+    public ResponseEntity<byte[]> getFile(
+            @RequestHeader(value = "Authorization") String authorizationToken,
             @PathVariable("fileId") String fileId) {
 
-        return emDownloadService.downloadFile(fileId, authorizationToken, requestId);
+        return emDownloadService.downloadFile(fileId, authorizationToken);
 
     }
 }

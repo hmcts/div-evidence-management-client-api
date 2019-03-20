@@ -31,17 +31,17 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     private UserService userService;
 
     @Override
-    public ResponseEntity<byte[]> downloadFile(String fileId, String authorizationToken, String requestId) {
+    public ResponseEntity<byte[]> downloadFile(String fileId, String authorizationToken) {
         userService.getUserDetails(authorizationToken);
 
-        HttpHeaders headers = downloadHeaders();
+        HttpHeaders headers = createDownloadHeaders();
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         String url = evidenceManagementStoreUrl + "/"+ fileId+"/binary";
 
         return template.exchange(url, HttpMethod.GET, httpEntity, byte[].class);
     }
 
-    private HttpHeaders downloadHeaders() {
+    private HttpHeaders createDownloadHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(SERVICE_AUTHORIZATION_HEADER, authTokenGenerator.generate());
         headers.set(USER_ROLE_HEADER, DIVORCE_CASEWORKER_ROLE);
