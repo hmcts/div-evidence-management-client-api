@@ -18,7 +18,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -104,7 +103,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -147,7 +146,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.multipart(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -266,7 +265,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.multipart(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)

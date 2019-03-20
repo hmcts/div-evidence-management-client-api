@@ -15,7 +15,6 @@ import uk.gov.hmcts.reform.authorisation.ServiceAuthAutoConfiguration;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 
-
 @Configuration
 @Lazy
 @ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class, ServiceAuthAutoConfiguration.class})
