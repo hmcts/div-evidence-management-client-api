@@ -1,15 +1,15 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import net.serenitybdd.rest.SerenityRest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.reform.divorce.emclient.model.CreateUserRequest;
 import uk.gov.hmcts.reform.divorce.emclient.model.UserCode;
 
 import java.util.Base64;
-import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -30,13 +30,16 @@ public class IDAMUtils {
 
     private String testUserJwtToken;
 
-    private String testCaseworkerJwtToken;
+    private String citizenUserAuthToken;
 
     public String generateNewUserAndReturnToken() {
-        String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-        String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
-        createUserInIdam(username, password);
-        return generateUserTokenWithNoRoles(username, password);
+        if (citizenUserAuthToken == null) {
+            String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
+            String password = "genericPassword123";
+            createUserInIdam(username, password);
+            citizenUserAuthToken = generateUserTokenWithNoRoles(username, password);
+        }
+        return citizenUserAuthToken;
     }
 
     public synchronized String getIdamTestUser() {
@@ -51,17 +54,6 @@ public class IDAMUtils {
         testUserJwtToken = generateUserTokenWithNoRoles(idamUsername, idamPassword);
     }
 
-    public synchronized String getIdamTestCaseWorkerUser() {
-        if (StringUtils.isBlank(testCaseworkerJwtToken)) {
-            String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-            String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
-            createCaseworkerUserInIdam(username, password);
-            testCaseworkerJwtToken = generateUserTokenWithNoRoles(username, password);
-        }
-
-        return testCaseworkerJwtToken;
-    }
-
     public void createUserInIdam(String username, String password) {
         CreateUserRequest userRequest = CreateUserRequest.builder()
                 .email(username)
@@ -69,10 +61,10 @@ public class IDAMUtils {
                 .forename("Test")
                 .surname("User")
                 .roles(new UserCode[] { UserCode.builder().code("citizen").build() })
-                .userGroup(UserCode.builder().code("divorce-private-beta").build())
+                .userGroup(UserCode.builder().code("citizens").build())
                 .build();
 
-        RestAssured.given()
+        SerenityRest.given()
                 .header("Content-Type", "application/json")
                 .body(ResourceLoader.objectToJson(userRequest))
                 .post(idamCreateUrl());
@@ -80,7 +72,7 @@ public class IDAMUtils {
 
     private void createUserInIdam() {
         idamUsername = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-        idamPassword = UUID.randomUUID().toString();
+        idamPassword = "genericPassword123";
 
         createUserInIdam(idamUsername, idamPassword);
     }
@@ -95,7 +87,7 @@ public class IDAMUtils {
                 .userGroup(UserCode.builder().code("caseworker").build())
                 .build();
 
-        RestAssured.given()
+        SerenityRest.given()
                 .header("Content-Type", "application/json")
                 .body(ResourceLoader.objectToJson(userRequest))
                 .post(idamCreateUrl());
@@ -109,8 +101,9 @@ public class IDAMUtils {
         String userLoginDetails = String.join(":", username, password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
-        Response response = RestAssured.given()
+        Response response = SerenityRest.given()
                 .header("Authorization", authHeader)
+                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .relaxedHTTPSValidation()
                 .post(idamCodeUrl());
 
@@ -119,7 +112,8 @@ public class IDAMUtils {
                     + " body: " + response.getBody().prettyPrint());
         }
 
-        response = RestAssured.given()
+        response = SerenityRest.given()
+                .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(response.getBody().path("code")));
 
