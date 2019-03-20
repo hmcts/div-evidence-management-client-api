@@ -13,8 +13,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -34,12 +32,6 @@ public class EvidenceManagementDownloadServiceImplUTest {
 
     @Mock
     private RestTemplate restTemplate;
-
-    @Mock
-    UserService userService;
-
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
 
     @InjectMocks
     private EvidenceManagementDownloadServiceImpl classToTest;

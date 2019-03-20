@@ -42,15 +42,9 @@ public class EMClientFileDownloadTest {
 
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
-
-    @Value("${evidence.management.client.api.endpoint.uploadwiths2stoken}")
-    private String emClientApiUploadEndpoint;
-
+    =
     @Autowired
     private IDAMUtils idamTestSupportUtil;
-
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
 
     @Test
     public void downloadFileTest()throws Exception {
