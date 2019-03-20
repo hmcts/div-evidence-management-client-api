@@ -1,7 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '2.1.3.RELEASE'
-    }
     repositories {
         mavenLocal()
         mavenCentral()
@@ -14,7 +11,8 @@ buildscript {
             exclude(group: 'org.pitest')
         }
         classpath ('org.pitest:pitest-command-line:0.33')
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:versions.springBoot")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:1.5.2")
     }
 }
 
@@ -30,6 +28,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'net.serenity-bdd.aggregator'
 
 pmd {
     toolVersion = '6.11.0'
@@ -230,6 +229,8 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
+
+        finalizedBy aggregate
 }
 
 task printVersion {
