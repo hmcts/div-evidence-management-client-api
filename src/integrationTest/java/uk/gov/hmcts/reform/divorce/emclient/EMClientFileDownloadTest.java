@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
