@@ -16,7 +16,7 @@ data:
   REFORM_ENVIRONMENT : "aat"
   AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE : "divorce_document_generator"
   REFORM_SERVICE_NAME : "emca"
-  IDAM_API_URL : "https://preprod-idamapi.reform.hmcts.net:3511"
+  IDAM_API_URL : "https://idam-api.aat.platform.hmcts.net"
   REFORM_TEAM : "div"
   AUTH_PROVIDER_SERVICE_CLIENT_KEY : ${AUTH_PROVIDER_SERVICE_CLIENT_KEY}
   APPINSIGHTS_INSTRUMENTATIONKEY : "63c30ef9-a27b-4d38-8afc-4c180fb6ac33"
