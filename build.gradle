@@ -184,7 +184,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
     compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
