@@ -237,13 +237,6 @@ task developAddReleaseSuffix() {
     version = "${version}-SNAPSHOT"
 }
 
-pmd {
-    toolVersion = "6.11.0"
-    ignoreFailures = true
-    sourceSets = [sourceSets.main, sourceSets.test]
-    reportsDir = file("$project.buildDir/reports/pmd")
-}
-
 def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/exception/*',
         '**uk/gov/hmcts/reform/emclient/configuration/*',
