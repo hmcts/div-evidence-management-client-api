@@ -42,7 +42,7 @@ public class EMClientFileDownloadTest {
 
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
-    =
+
     @Autowired
     private IDAMUtils idamTestSupportUtil;
 
