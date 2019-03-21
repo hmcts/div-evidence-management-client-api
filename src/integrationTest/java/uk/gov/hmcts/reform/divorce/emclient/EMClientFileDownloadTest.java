@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
