@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -23,7 +23,7 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -147,8 +147,8 @@ public class EvidenceManagementDeleteServiceImplUTest {
                 .when(restTemplate)
                 .exchange(Mockito.eq(fileUrl),
                         Mockito.eq(HttpMethod.DELETE),
-                        Matchers.<HttpEntity<String>>any(),
-                        Matchers.<Class<Resource>>any());
+                        ArgumentMatchers.<HttpEntity<String>>any(),
+                        ArgumentMatchers.<Class<Resource>>any());
 
         deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
 
@@ -172,7 +172,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
                 .when(restTemplate)
                 .exchange(Mockito.eq(fileUrl),
                         Mockito.eq(HttpMethod.DELETE),
-                        Matchers.<HttpEntity<String>>any(),
-                        Matchers.<Class<Resource>>any());
+                        ArgumentMatchers.<HttpEntity<String>>any(),
+                        ArgumentMatchers.<Class<Resource>>any());
     }
 }
