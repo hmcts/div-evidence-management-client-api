@@ -24,12 +24,11 @@ import java.util.Map;
 
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
-
 @Lazy
 @RunWith(SerenityRunner.class)
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
-@ImportAutoConfiguration({FeignRibbonClientAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
-        FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@ImportAutoConfiguration({FeignRibbonClientAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+        FeignAutoConfiguration.class})
 @ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
@@ -49,11 +48,9 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
     private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
-
     private static final String FILE_PATH = "src/integrationTest/resources/FileTypes/PNGFile.png";
     private static final String IMAGE_FILE_CONTENT_TYPE = "image/png";
     private static final String DELETE_ENDPOINT = "/deleteFile?fileUrl=";
-
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
@@ -61,7 +58,6 @@ public class EvidenceManagementFileDeleteIntegrationTest {
         Response response = deleteFileFromEvidenceManagement(fileUrl, evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
         Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
-
 
     @Test
     public void verifyDeleteRequestForNonExistentDocumentIs404NotFound() {
@@ -72,7 +68,6 @@ public class EvidenceManagementFileDeleteIntegrationTest {
         Assert.assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
     }
 
-
     @Test
     public void verifyDeleteRequestWithMissingDocumentIdIsNotAllowed() {
         String fileUrl = uploadFile();
@@ -81,7 +76,6 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
         Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
     }
-
 
     @Test
     public void verifyDeleteRequestWithInvalidAuthTokenIsForbidden() {
@@ -93,7 +87,6 @@ public class EvidenceManagementFileDeleteIntegrationTest {
 
         Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
     }
-
 
     @Test
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
