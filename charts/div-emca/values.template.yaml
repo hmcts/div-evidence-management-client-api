@@ -4,6 +4,17 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    REFORM_SERVICE_NAME: "emca"
     REFORM_TEAM: "div"
+    REFORM_SERVICE_NAME: "emca"
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${AUTH_PROVIDER_SERVICE_CLIENT_KEY}
+    AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE: "divorce_document_generator"
+    AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS: "900"
+    HTTP_CONNECT_SOCKET_TIMEOUT: "1000"
+    HTTP_CONNECT_TIMEOUT: "60000"
+    HTTP_CONNECT_REQUEST_TIMEOUT: "60000"
     SLOT: "PRODUCTION"
+keyVaults:
+  "div":
+    resourceGroup: div
+    secrets:
+      - div-emca-s2s-auth-secret
