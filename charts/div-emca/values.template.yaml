@@ -1,0 +1,9 @@
+java:
+  applicationPort: 4006
+  # Don't modify below here
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+  environment:
+    REFORM_SERVICE_NAME: "emca"
+    REFORM_TEAM: "div"
+    SLOT: "PRODUCTION"
