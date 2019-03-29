@@ -17,4 +17,4 @@ keyVaults:
   "div":
     resourceGroup: div
     secrets:
-      - div-emca-s2s-auth-secret
+      - div-doc-s2s-auth-secret
