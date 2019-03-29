@@ -12,8 +12,8 @@ java:
     HTTP_CONNECT_TIMEOUT: "60000"
     HTTP_CONNECT_REQUEST_TIMEOUT: "60000"
     SLOT: "PRODUCTION"
-keyVaults:
-  "div":
-    resourceGroup: div
-    secrets:
-      - div-doc-s2s-auth-secret
+  keyVaults:
+    "div":
+      resourceGroup: div
+      secrets:
+        - div-doc-s2s-auth-secret
