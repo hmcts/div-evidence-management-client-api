@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -16,23 +15,24 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalExceptionHandlerTest {
 
     @Mock
-    private RequestAttributes mockRequestAttributes;
+    private WebRequest mockRequestAttributes;
 
-    private HttpServletRequest mockHttpServletRequest;
+    private WebRequest mockHttpServletRequest;
     private HttpServletResponse mockHttpServletResponse;
 
     private GlobalExceptionHandler underTest;
@@ -43,7 +43,7 @@ public class GlobalExceptionHandlerTest {
         RequestContextHolder.setRequestAttributes(mockRequestAttributes);
 
         underTest = new GlobalExceptionHandler();
-        mockHttpServletRequest = new MockHttpServletRequest();
+        mockHttpServletRequest = new ServletWebRequest(new MockHttpServletRequest());
         mockHttpServletResponse = new MockHttpServletResponse();
     }
 
@@ -85,20 +85,13 @@ public class GlobalExceptionHandlerTest {
     public void handleValidationExceptionShouldReturnErrorAttributes() {
         ConstraintViolationException mockException = mock(ConstraintViolationException.class);
 
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.status_code", 0))
-                .willReturn(HttpStatus.BAD_REQUEST.value());
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.error_code", 0))
-                .willReturn("invalidFileType");
-        given(mockRequestAttributes.getAttribute("javax.servlet.error.request_uri", 0))
-                .willReturn("/path/to/resource");
-
         ResponseEntity<Map<String, Object>> responseEntity =
                 underTest.handleValidationException(mockException, mockHttpServletRequest);
 
         Map<String, Object> body = responseEntity.getBody();
         assertEquals(400, body.get("status"));
         assertEquals("invalidFileType", body.get("errorCode"));
-        assertEquals("/path/to/resource", body.get("path"));
+        assertEquals("http://localhost", body.get("path"));
     }
 
     @Test

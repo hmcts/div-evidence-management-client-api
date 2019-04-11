@@ -5,11 +5,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.netflix.feign.FeignAutoConfiguration;
-import org.springframework.cloud.netflix.feign.ribbon.FeignRibbonClientAutoConfiguration;
+import org.springframework.cloud.openfeign.FeignAutoConfiguration;
+import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +18,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -37,9 +36,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -56,7 +53,7 @@ public class EvidenceManagementClientControllerTest {
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
 
-    private static final String EM_CLIENT_UPLOAD_URL = "/emclientapi/version/1/upload";
+    private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
     public static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
 
@@ -82,7 +79,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(prepareFileUploadResponse());
 
-        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -106,7 +103,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -118,7 +115,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -127,7 +124,6 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.error", is("Bad Request")))
                 .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
-                .andExpect(jsonPath("$.exception", is("javax.validation.ConstraintViolationException")))
                 .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
@@ -150,7 +146,7 @@ public class EvidenceManagementClientControllerTest {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
 
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, INVALID_AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -162,7 +158,7 @@ public class EvidenceManagementClientControllerTest {
 
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
-        mockMvc.perform(fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)
@@ -171,7 +167,6 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.error", is("Bad Request")))
                 .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
-                .andExpect(jsonPath("$.exception", is("javax.validation.ConstraintViolationException")))
                 .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
@@ -270,7 +265,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload(EM_CLIENT_UPLOAD_URL)
+        mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(jpegMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID)

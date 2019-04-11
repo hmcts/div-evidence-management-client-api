@@ -12,7 +12,7 @@ public class ResourceLoader {
         return new String(loadResource(filePath), Charset.forName("utf-8"));
     }
 
-    private static byte[] loadResource(final String filePath) throws Exception {
+    public static byte[] loadResource(final String filePath) throws Exception {
         URL url = ResourceLoader.class.getClassLoader().getResource(filePath);
 
         if (url == null) {

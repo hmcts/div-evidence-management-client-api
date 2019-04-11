@@ -29,6 +29,7 @@
         <cve>CVE-2011-2732</cve>
         <cve>CVE-2012-5055</cve>
         <cve>CVE-2018-1260</cve>
+        <cve>CVE-2018-1258</cve>
     </suppress>
 
     <suppress>
@@ -41,5 +42,16 @@
         <gav regex="true">.*</gav>
         <cpe>cpe:/a:oracle:oracle_client:1.19.1</cpe>
         <cve>CVE-2006-0550</cve>
+    </suppress>
+
+    <suppress>
+        <notes>
+            <![CDATA[
+            pmd-java and pmd-core showing vulnerabilities even when updated to latest version
+            ]]>
+        </notes>
+        <cpe>cpe:/a:pmd_project:pmd:5.6.1</cpe>
+        <cve>CVE-2019-7722</cve>
+        <cve>CVE-2019-7722</cve>
     </suppress>
 </suppressions>
