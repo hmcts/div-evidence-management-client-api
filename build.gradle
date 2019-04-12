@@ -148,7 +148,8 @@ def versions = [
         springRetry                             : '1.2.1.RELEASE',
         spring_security_rsa                     : '1.0.8.RELEASE',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.8.0'
+        wiremockVersion                         : '2.8.0',
+        springSecurityCrypto                    : '5.1.5.RELEASE'
 ]
 
 dependencies {
@@ -210,6 +211,10 @@ dependencies {
     }
 
     compile (group:  'org.springframework.security', name: 'spring-security-rsa', version: versions.spring_security_rsa) {
+        force = true
+    }
+
+    compile (group: 'org.springframework.security', name:'spring-security-crypto', version: versions.springSecurityCrypto) {
         force = true
     }
 
