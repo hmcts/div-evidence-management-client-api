@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.errorhandler;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
