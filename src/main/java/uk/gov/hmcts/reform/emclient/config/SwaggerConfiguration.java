@@ -11,7 +11,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
+import uk.gov.hmcts.reform.emclient.controller.EvidenceManagementClientController;
 
 @Configuration
 @EnableSwagger2
@@ -24,7 +24,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(EvidenceManagementClientApplication.class.getPackage().getName()))
+                .apis(RequestHandlerSelectors.basePackage(EvidenceManagementClientController.class.getPackage().getName()))
                 .build()
                 .useDefaultResponseMessages(true)
                 .apiInfo(apiInfo());
