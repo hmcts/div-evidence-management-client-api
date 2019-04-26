@@ -176,6 +176,8 @@ dependencies {
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
     compile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
     compile group: 'commons-io', name: 'commons-io', version: versions.commonsIo
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
     compile group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     compile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
