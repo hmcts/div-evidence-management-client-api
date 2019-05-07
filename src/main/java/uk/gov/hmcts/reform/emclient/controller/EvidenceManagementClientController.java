@@ -1,6 +1,9 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
-
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,29 +34,46 @@ public class EvidenceManagementClientController {
 
     @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-
+    @ApiOperation(value = "Upload a file")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "File successfully uploaded",
+            response = FileUploadResponse.class),
+        @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     @ResponseBody
     public List<FileUploadResponse> upload(
             @RequestHeader(value = "Authorization", required = false) String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
-            @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
+            @RequestParam("file") @ApiParam("Files to upload") List<@EvidenceFile MultipartFile> files) {
 
         return emUploadService.upload(files, authorizationToken, requestId);
     }
 
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "Delete a file")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "File successfully deleted",
+            response = FileUploadResponse.class),
+        @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     @ResponseBody
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
-                                        @RequestParam("fileUrl") String fileUrl) {
+                                        @RequestParam("fileUrl") @ApiParam("File url to delete") String fileUrl) {
         return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
     }
 
     @GetMapping(value = "/version/1/download/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ApiOperation(value = "Download a file")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "File successfully downloaded",
+            response = FileUploadResponse.class),
+        @ApiResponse(code = 500, message = "Internal Server Error")
+    })
     @ResponseBody
     public ResponseEntity<byte[]> getFile(
             @RequestHeader(value = "Authorization") String authorizationToken,
-            @PathVariable("fileId") String fileId) {
+            @PathVariable("fileId") @ApiParam("File ID to download") String fileId) {
 
         return emDownloadService.downloadFile(fileId, authorizationToken);
 
