@@ -27,7 +27,7 @@ import com.google.common.collect.ImmutableList;
 
 @SpringBootTest(classes = {EvidenceManagementClientApplication.class})
 @RunWith(SpringRunner.class)
-@TestPropertySource(value="classpath:application.properties")
+@TestPropertySource(value="classpath:application.yml")
 public class EvidenceFileValidatorTest {
 
     @Resource
@@ -87,7 +87,7 @@ public class EvidenceFileValidatorTest {
 
         assertTrue(constraintViolations.isEmpty());
     }
-    
+
     @Test
     public void testPdfFileSuccessValidation() {
         MockMultipartFile pdfFile = new MockMultipartFile("test.pdf", "test.pdf", "application/pdf", "data".getBytes());
@@ -110,7 +110,7 @@ public class EvidenceFileValidatorTest {
         assertEquals("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)",
                 constraintViolations.iterator().next().getMessage());
     }
-    
+
     @Test
     public void testMimeTypeFailValidation() {
         MockMultipartFile jpgFile = new MockMultipartFile("test.jpg", "test.jpg", "application/octet-stream", "data".getBytes());
