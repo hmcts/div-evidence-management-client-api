@@ -58,7 +58,7 @@ def versions = [
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.8.0',
         springSecurityCrypto                    : '5.1.5.RELEASE',
-        tomcat                                  : '9.0..22'
+        tomcat                                  : '9.0.22'
 ]
 
 
