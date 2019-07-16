@@ -32,7 +32,7 @@ def versions = [
         commonsLang3                            : '3.0',
         guava                                   : '27.0.1-jre',
         hibernate                               : '6.0.5.Final',
-        jacksonCore                             : '2.9.9',
+        jacksonCore                             : '2.9.9.1',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
         jsr305                                  : '3.0.2',
@@ -58,7 +58,7 @@ def versions = [
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.8.0',
         springSecurityCrypto                    : '5.1.5.RELEASE',
-        tomcat                                  : '9.0.19'
+        tomcat                                  : '9.0..22'
 ]
 
 
