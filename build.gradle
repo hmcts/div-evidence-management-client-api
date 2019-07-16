@@ -33,6 +33,7 @@ def versions = [
         guava                                   : '27.0.1-jre',
         hibernate                               : '6.0.5.Final',
         jacksonCore                             : '2.9.9',
+        jacksonDatabind                         : '2.9.9.1',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
         jsr305                                  : '3.0.2',
@@ -58,7 +59,7 @@ def versions = [
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.8.0',
         springSecurityCrypto                    : '5.1.5.RELEASE',
-        tomcat                                  : '9.0.19'
+        tomcat                                  : '9.0.22'
 ]
 
 
@@ -180,7 +181,7 @@ dependencies {
     integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonCore
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
     compile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
