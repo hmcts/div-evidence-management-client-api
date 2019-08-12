@@ -33,7 +33,7 @@ def versions = [
         guava                                   : '27.0.1-jre',
         hibernate                               : '6.0.5.Final',
         jacksonCore                             : '2.9.9',
-        jacksonDatabind                         : '2.9.9.1',
+        jacksonDatabind                         : '2.9.9.3',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
         jsr305                                  : '3.0.2',
