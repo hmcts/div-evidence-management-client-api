@@ -17,12 +17,12 @@ def type = "java"
 def product = "div"
 def component = "emca"
 
-def channel = '#div-dev'
-
 List<LinkedHashMap<String, Object>> secrets = [
-        secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
-        secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
-        secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
+        'div-${env}': [
+                secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
+                secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
+                secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
+        ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -39,14 +39,12 @@ withPipeline(type, product, component) {
         enableDockerBuild()
         installCharts()
     }
-    
     loadVaultSecrets(secrets)
-    setVaultName('div')
 
     after('checkout') {
         echo '${product}-${component} checked out'
     }
-    
+
     after('functionalTest:aat') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
@@ -58,9 +56,5 @@ withPipeline(type, product, component) {
 
     after('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    }
-
-    onMaster {
-        enableSlackNotifications(channel)
     }
 }
