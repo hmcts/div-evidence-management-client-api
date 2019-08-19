@@ -8,4 +8,4 @@ COPY build/libs/$APP /opt/app/
 
 EXPOSE 4006
 
-CMD ["${APP}"]
+CMD ["div-evidence-management-client-api.jar"]
