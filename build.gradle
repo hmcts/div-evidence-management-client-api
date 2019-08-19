@@ -43,7 +43,7 @@ def versions = [
         reformHealth                            : '0.0.3',
         reformPropertiesVolume                  : '0.0.4',
         reformsHttpProxySpringBootAutoconfigure : '1.1.0',
-        reformsJavaLogging                      : '4.0.1',
+        reformsJavaLogging                      : '5.0.1',
         restAssured                             : '3.3.0',
         serenity                                : '2.0.41',
         serenityCucumber                        : '1.9.31',
