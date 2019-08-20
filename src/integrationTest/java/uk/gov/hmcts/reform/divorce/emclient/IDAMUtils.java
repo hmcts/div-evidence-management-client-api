@@ -64,10 +64,12 @@ public class IDAMUtils {
                 .userGroup(UserCode.builder().code("citizens").build())
                 .build();
 
-        SerenityRest.given()
+        Response createUserResponse = SerenityRest.given()
                 .header("Content-Type", "application/json")
                 .body(ResourceLoader.objectToJson(userRequest))
                 .post(idamCreateUrl());
+
+        throwExceptionOnErrorResponse(createUserResponse);
     }
 
     private void createUserInIdam() {
