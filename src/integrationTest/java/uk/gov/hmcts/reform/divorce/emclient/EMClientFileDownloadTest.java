@@ -15,7 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +27,9 @@ import static org.junit.Assert.assertThat;
 @RunWith(SerenityRunner.class)
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
 @ImportAutoConfiguration({HttpMessageConvertersAutoConfiguration.class})
-@ContextConfiguration(classes = {ServiceContextConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
-public class EMClientFileDownloadTest {
+public class EMClientFileDownloadTest extends IntegrationTest {
 
     private static final String FILE_TO_DOWNLOAD = "ce377eb6-baa8-4b80-b183-e9f90a71ccf9";
     private static final String TEST_FILE = "documents/testDocument.pdf";

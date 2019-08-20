@@ -107,18 +107,24 @@ public class IDAMUtils {
                 .relaxedHTTPSValidation()
                 .post(idamCodeUrl());
 
-        if (response.getStatusCode() >= 300) {
-            throw new IllegalStateException("Token generation failed with code: " + response.getStatusCode()
-                    + " body: " + response.getBody().prettyPrint());
-        }
+        throwExceptionOnErrorResponse(response);
 
         response = SerenityRest.given()
                 .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(response.getBody().path("code")));
 
+        throwExceptionOnErrorResponse(response);
+
         String token = response.getBody().path("access_token");
         return "Bearer " + token;
+    }
+
+    private void throwExceptionOnErrorResponse(Response response) {
+        if (response.getStatusCode() >= 300 || response.statusCode() < 200) {
+            throw new IllegalStateException("Token generation failed with code: " + response.getStatusCode()
+                    + " body: " + response.getBody());
+        }
     }
 
     private String idamCodeUrl() {

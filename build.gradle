@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.run.BootRun
+
 buildscript {
     repositories {
         mavenLocal()
@@ -264,6 +266,14 @@ task smoke(type: Test, description: 'Runs the smoke tests.', group: 'Verificatio
     }
 }
 
+task bootRunAat(type: BootRun, description: 'Runs the app using AAT config', dependsOn: 'classes', group: 'Application') {
+    environment "http_proxy", "http://proxyout.reform.hmcts.net:8080"
+    doFirst() {
+        main = bootJar.mainClassName
+        classpath = sourceSets.main.runtimeClasspath
+        systemProperty 'spring.profiles.active', 'aat'
+    }
+}
 
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
