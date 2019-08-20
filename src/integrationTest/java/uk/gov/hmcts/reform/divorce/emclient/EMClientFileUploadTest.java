@@ -34,13 +34,7 @@ import java.util.stream.IntStream;
 
 import static net.serenitybdd.rest.SerenityRest.given;
 
-@Lazy
 @RunWith(SerenityParameterizedRunner.class)
-@ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
-@ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
-        FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-${env}.properties")
 public class EMClientFileUploadTest extends IntegrationTest {
 
     @Rule
