@@ -35,11 +35,10 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline(type, product, component) {
-    if (env.CHANGE_TITLE && !env.CHANGE_TITLE.startsWith('[PREVIEW]')) {
-        enableDockerBuild()
-        installCharts()
-    }
+    enableDockerBuild()
+    installCharts()
     loadVaultSecrets(secrets)
+    enableAksStagingDeployment()
 
     after('checkout') {
         echo '${product}-${component} checked out'
@@ -57,6 +56,4 @@ withPipeline(type, product, component) {
     after('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
-
-    enableAksStagingDeployment()
 }
