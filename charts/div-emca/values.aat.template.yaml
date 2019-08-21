@@ -1,5 +1,6 @@
 java:
   environment:
+    AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY: "63c30ef9-a27b-4d38-8afc-4c180fb6ac33"
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     DOCUMENT_MANAGEMENT_STORE_URL: "http://dm-store-aat.service.core-compute-aat.internal"
     ENVIRONMENT_NAME: "aat"

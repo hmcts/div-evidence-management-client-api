@@ -1,5 +1,6 @@
 java:
   environment:
+    AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY: "we-dont-want-logs-in-azure-for-preview"
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     DOCUMENT_MANAGEMENT_STORE_URL: "http://dm-store-aat.service.core-compute-aat.internal"
     ENVIRONMENT_NAME: "aat"
