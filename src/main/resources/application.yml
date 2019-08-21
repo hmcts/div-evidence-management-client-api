@@ -5,8 +5,6 @@ auth:
     service:
       client:
         port: 4502
-azure:
-  app_insights_key: ${AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:false}
 documentation:
   swagger:
     enabled: true
