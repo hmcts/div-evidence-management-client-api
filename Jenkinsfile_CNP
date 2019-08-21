@@ -44,6 +44,10 @@ withPipeline(type, product, component) {
         echo '${product}-${component} checked out'
     }
 
+    before('functionalTest:aat') {
+        env.test_environment = 'aat'
+    }
+
     after('functionalTest:aat') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
