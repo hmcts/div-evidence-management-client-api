@@ -48,7 +48,6 @@ public class EMClientFileDownloadTest extends IntegrationTest {
 
     private Map<String, Object> getDownloadAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
-        System.out.println(authenticationToken);
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         return headers;
