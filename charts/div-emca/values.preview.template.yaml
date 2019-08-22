@@ -1,6 +1,5 @@
 java:
   environment:
-    APPINSIGHTS_INSTRUMENTATIONKEY: "dummykey"
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     DOCUMENT_MANAGEMENT_STORE_URL: "https://dm-store-aat.service.aat.platform.hmcts.net"
     ENVIRONMENT_NAME: "aat"

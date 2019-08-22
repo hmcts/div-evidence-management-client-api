@@ -1,0 +1,21 @@
+evidence:
+  management:
+    health:
+      url: ${EVIDENCE_MANAGEMENT_HEALTH_URL:http://dm-store-aat.service.core-compute-aat.internal/health}
+    store:
+      health:
+        url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://dm-store-aat.service.core-compute-aat.internal}/health
+      upload:
+        file:
+          url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://dm-store-aat.service.core-compute-aat.internal}/documents
+    upload:
+      file:
+        url: ${EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL:http://dm-store-aat.service.core-compute-aat.internal/documents}
+idam:
+  api:
+    url: ${IDAM_API_URL:https://idam-api.aat.platform.hmcts.net}
+  auth:
+    microservice: ${AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE:divorce_document_generator}
+    secret: ${AUTH_PROVIDER_SERVICE_CLIENT_KEY:replace_me}
+  s2s-auth:
+    url: ${AUTH_PROVIDER_SERVICE_CLIENT_BASEURL:http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}

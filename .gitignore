@@ -12,3 +12,6 @@ classes/
 Jacobo.exec
 .idea
 *.iml
+application-*.yml
+application-*.yaml
+application-local.properties

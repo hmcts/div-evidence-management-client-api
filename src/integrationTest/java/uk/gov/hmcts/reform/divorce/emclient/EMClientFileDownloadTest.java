@@ -9,13 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,14 +18,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-@Lazy
 @RunWith(SerenityRunner.class)
-@ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
-@ImportAutoConfiguration({HttpMessageConvertersAutoConfiguration.class})
-@ContextConfiguration(classes = {ServiceContextConfiguration.class})
-@PropertySource("classpath:application.properties")
-@PropertySource("classpath:application-${env}.properties")
-public class EMClientFileDownloadTest {
+public class EMClientFileDownloadTest extends IntegrationTest {
 
     private static final String FILE_TO_DOWNLOAD = "ce377eb6-baa8-4b80-b183-e9f90a71ccf9";
     private static final String TEST_FILE = "documents/testDocument.pdf";
@@ -60,7 +48,6 @@ public class EMClientFileDownloadTest {
 
     private Map<String, Object> getDownloadAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.getIdamTestUser();
-        System.out.println(authenticationToken);
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         return headers;
