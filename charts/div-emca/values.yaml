@@ -1,8 +1,10 @@
 java:
   applicationPort: 4006
   environment:
-    REFORM_TEAM: "div"
-    REFORM_SERVICE_NAME: "emca"
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+    DOCUMENT_MANAGEMENT_STORE_URL: "http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+    EVIDENCE_MANAGEMENT_HEALTH_URL: "http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/health"
+    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL: "http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/documents"
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE: "divorce_document_generator"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS: "900"
     HTTP_CONNECT_REQUEST_TIMEOUT: "60000"
