@@ -27,6 +27,7 @@ module "div-emca" {
   asp_name                        = "${local.asp_name}"
   asp_rg                          = "${local.asp_rg}"
   instance_size                   = "${var.instance_size}"
+  enable_ase                      = false
 
   app_settings = {
     REFORM_SERVICE_NAME                                   = "${var.reform_service_name}"
