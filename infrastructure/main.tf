@@ -27,3 +27,4 @@ data "azurerm_key_vault_secret" "idam-secret" {
   name      = "idam-secret"
   vault_uri = "${data.azurerm_key_vault.div_key_vault.vault_uri}"
 }
+
