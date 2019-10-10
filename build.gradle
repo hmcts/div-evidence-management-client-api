@@ -35,7 +35,7 @@ def versions = [
         guava                                   : '27.0.1-jre',
         hibernate                               : '6.0.5.Final',
         jacksonCore                             : '2.9.9',
-        jacksonDatabind                         : '2.9.9.3',
+        jacksonDatabind                         : '2.10.0',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.2.0',
         jsr305                                  : '3.0.2',
@@ -253,6 +253,18 @@ dependencies {
     testCompile group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
+    }
+}
+
+dependencyManagement {
+    dependencies {
+        dependencySet(
+                group: 'com.fasterxml.jackson.core',
+                version: '2.10.0'
+        ) {
+            entry 'jackson-core'
+            entry 'jackson-databind'
+        }
     }
 }
 
