@@ -32,7 +32,7 @@ public class IDAMUtils {
 
     private String citizenUserAuthToken;
 
-    public String generateNewUserAndReturnToken() {
+    String generateNewUserAndReturnToken() {
         if (citizenUserAuthToken == null) {
             String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
             String password = "genericPassword123";
@@ -42,19 +42,19 @@ public class IDAMUtils {
         return citizenUserAuthToken;
     }
 
-    public synchronized String getIdamTestUser() {
+    synchronized String getIdamTestUser() {
         if (StringUtils.isBlank(testUserJwtToken)) {
             createUserAndToken();
         }
         return testUserJwtToken;
     }
 
-    protected void createUserAndToken() {
+    private void createUserAndToken() {
         createUserInIdam();
         testUserJwtToken = generateUserTokenWithNoRoles(idamUsername, idamPassword);
     }
 
-    public void createUserInIdam(String username, String password) {
+    private void createUserInIdam(String username, String password) {
         CreateUserRequest userRequest = CreateUserRequest.builder()
                 .email(username)
                 .password(password)
@@ -64,10 +64,12 @@ public class IDAMUtils {
                 .userGroup(UserCode.builder().code("citizens").build())
                 .build();
 
-        SerenityRest.given()
+        Response createUserResponse = SerenityRest.given()
                 .header("Content-Type", "application/json")
                 .body(ResourceLoader.objectToJson(userRequest))
                 .post(idamCreateUrl());
+
+        throwExceptionOnErrorResponse(createUserResponse);
     }
 
     private void createUserInIdam() {
@@ -77,7 +79,7 @@ public class IDAMUtils {
         createUserInIdam(idamUsername, idamPassword);
     }
 
-    public void createCaseworkerUserInIdam(String username, String password) {
+    void createCaseworkerUserInIdam(String username, String password) {
         CreateUserRequest userRequest = CreateUserRequest.builder()
                 .email(username)
                 .password(password)
@@ -97,7 +99,7 @@ public class IDAMUtils {
         return idamUserBaseUrl + "/testing-support/accounts";
     }
 
-    public String generateUserTokenWithNoRoles(String username, String password) {
+    private String generateUserTokenWithNoRoles(String username, String password) {
         String userLoginDetails = String.join(":", username, password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
@@ -107,18 +109,24 @@ public class IDAMUtils {
                 .relaxedHTTPSValidation()
                 .post(idamCodeUrl());
 
-        if (response.getStatusCode() >= 300) {
-            throw new IllegalStateException("Token generation failed with code: " + response.getStatusCode()
-                    + " body: " + response.getBody().prettyPrint());
-        }
+        throwExceptionOnErrorResponse(response);
 
         response = SerenityRest.given()
                 .header("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .relaxedHTTPSValidation()
                 .post(idamTokenUrl(response.getBody().path("code")));
 
+        throwExceptionOnErrorResponse(response);
+
         String token = response.getBody().path("access_token");
         return "Bearer " + token;
+    }
+
+    private void throwExceptionOnErrorResponse(Response response) {
+        if (response.getStatusCode() >= 300) {
+            throw new IllegalStateException("Token generation failed with code: " + response.getStatusCode()
+                    + " body: " + response.getBody().asString());
+        }
     }
 
     private String idamCodeUrl() {

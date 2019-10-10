@@ -1,15 +1,10 @@
 java:
   environment:
-    APPINSIGHTS_INSTRUMENTATIONKEY: "dummykey"
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    DOCUMENT_MANAGEMENT_STORE_URL: "http://dm-store-aat.service.core-compute-aat.internal"
-    ENVIRONMENT_NAME: "aat"
-    EVIDENCE_MANAGEMENT_HEALTH_URL: "http://dm-store-aat.service.core-compute-aat.internal/health"
-    EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL: "http://dm-store-aat.service.core-compute-aat.internal/documents"
     IDAM_API_HEALTH_URI: "https://idam-api.aat.platform.hmcts.net/health"
     IDAM_API_URL: "https://idam-api.aat.platform.hmcts.net"
-    REFORM_ENVIRONMENT: "aat"
 
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+
+  aadIdentityName: divorce
