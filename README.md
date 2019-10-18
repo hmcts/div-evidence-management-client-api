@@ -52,11 +52,6 @@ This will output
 docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest
 ```
 
-* This command will create a dependency check report to identify the use of known vulnerable components.
-```
-./gradlew dependencyCheckAnalyze
-   ```
-
 * This command will generate sonar reports and update it into local sonarqube instance.
 ```
 ./gradlew sonarqube -Dsonar.host.url=http://localhost:9000

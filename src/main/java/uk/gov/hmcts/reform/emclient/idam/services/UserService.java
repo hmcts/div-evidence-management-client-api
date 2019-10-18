@@ -9,7 +9,7 @@ import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 @Component
 public class UserService {
 
-    private static String BEARER = "Bearer";
+    private static final String BEARER = "Bearer";
 
     private final IdamApiClient idamApiClient;
 
@@ -24,5 +24,4 @@ public class UserService {
                 : String.format("%s %s", BEARER, authorisation);
         return idamApiClient.retrieveUserDetails(authToken);
     }
-
 }
