@@ -25,23 +25,14 @@ public class EvidenceFileValidator implements ConstraintValidator<EvidenceFile, 
 
     @Override
     public boolean isValid(MultipartFile file, ConstraintValidatorContext constraintValidatorContext) {
-        if (!validFile(file.getOriginalFilename()) || !validMimeType(file.getContentType())) {
-            return false;
-        }
-        return true;
+        return validFile(file.getOriginalFilename()) && validMimeType(file.getContentType());
     }
 
     private boolean validMimeType(final String mimeType) {
-        if (!StringUtils.containsIgnoreCase(allowedMimeTypes, mimeType)) {
-            return false;
-        }
-        return true;
+        return StringUtils.containsIgnoreCase(allowedMimeTypes, mimeType);
     }
 
     private boolean validFile(final String filename) {
-        if (!StringUtils.containsIgnoreCase(allowedFileExtensions, FilenameUtils.getExtension(filename))) {
-            return false;
-        }
-        return true;
+        return StringUtils.containsIgnoreCase(allowedFileExtensions, FilenameUtils.getExtension(filename));
     }
 }
