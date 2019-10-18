@@ -105,7 +105,6 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl, serviceAuthApiUrl);
         assertStatus(EntityUtils.toString(getHealth().getEntity()), "UP",
                 "evidenceManagementStoreAPI", "serviceAuthProviderHealthCheck");
-
     }
 
     @Test
@@ -170,6 +169,4 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE)
                 .withBody(responseBody)));
     }
-
-
 }

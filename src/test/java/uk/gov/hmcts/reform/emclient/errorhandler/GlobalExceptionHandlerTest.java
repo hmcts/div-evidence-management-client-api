@@ -37,7 +37,6 @@ public class GlobalExceptionHandlerTest {
 
     private GlobalExceptionHandler underTest;
 
-
     @Before
     public void setUp() {
         RequestContextHolder.setRequestAttributes(mockRequestAttributes);

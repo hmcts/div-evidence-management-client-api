@@ -65,6 +65,4 @@ public class EvidenceManagementDownloadServiceImplUTest {
 
         assertEquals(expectedResponse, response);
     }
-
-
 }

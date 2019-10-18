@@ -51,7 +51,6 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     @Value("${evidence.management.client.api.service.port}")
     private String serverPort;
 
-
     @Autowired
     private RestTemplate restTemplate;
     private String docUri = "http://doc-store/1";
@@ -62,6 +61,7 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
 
     }
+
     @Test
     public void givenDocServiceReturnsForbiddenForBadS2SToken_thenReturn() throws Exception {
 
@@ -72,7 +72,6 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
                 .content(""))
                 .andExpect(status().isForbidden())
                 .andReturn();
-
 
         mockRestServiceServer.verify();
     }
@@ -88,7 +87,6 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
                 .andExpect(status().isMethodNotAllowed())
                 .andReturn();
 
-
         mockRestServiceServer.verify();
     }
 
@@ -96,13 +94,11 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     public void givenAllGoesWell_thenReturn() throws Exception {
         mockDocumentService(HttpStatus.NO_CONTENT, docUri);
 
-
         MvcResult result = webClient.perform(delete(getAppBaseUrl(serverPort)+ API_URL + docUri)
                 .header(AUTHORIZATION_HEADER_NAME, authToken())
                 .content(""))
                 .andExpect(status().isNoContent())
                 .andReturn();
-
 
         mockRestServiceServer.verify();
     }

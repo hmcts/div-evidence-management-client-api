@@ -63,7 +63,6 @@ public class EvidenceManagementClientControllerTest {
     @MockBean
     private EvidenceManagementDeleteService emDeleteService;
 
-
     private MockMvc mockMvc;
 
     @Autowired
@@ -128,7 +127,6 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
-
     @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEMStoreThrowsHttpServerException()
             throws Exception {
@@ -192,7 +190,6 @@ public class EvidenceManagementClientControllerTest {
 
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
-
 
     @Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {

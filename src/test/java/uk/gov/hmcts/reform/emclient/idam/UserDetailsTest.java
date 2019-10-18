@@ -30,5 +30,4 @@ public class UserDetailsTest {
         assertThat(UserDetails.builder().toString()).isEqualTo("UserDetails.UserDetailsBuilder(id=null, email=null,"
                 + " forename=null, surname=null, roles=null)");
     }
-
 }

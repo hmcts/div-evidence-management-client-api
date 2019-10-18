@@ -60,7 +60,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruDocumentDeletedSuccessfullyState() {
+    public void shouldPassThroughDocumentDeletedSuccessfullyState() {
 
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.OK);
@@ -80,7 +80,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruNoDocumentIdIsPassedState() {
+    public void shouldPassThroughNoDocumentIdIsPassedState() {
 
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.NO_CONTENT);
@@ -100,7 +100,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruNotAuthorisedAuthTokenState() {
+    public void shouldPassThroughNotAuthorisedAuthTokenState() {
 
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.UNAUTHORIZED);
@@ -120,7 +120,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruNotAuthenticatedAuthTokenState() {
+    public void shouldPassThroughNotAuthenticatedAuthTokenState() {
 
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.FORBIDDEN);
@@ -139,7 +139,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test(expected = ResourceAccessException.class)
-    public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
+    public void shouldPassThroughExceptionThrownWhenEvidenceManagementServiceNotFound() {
 
         String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
 
@@ -164,8 +164,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
      * @param httpStatus an HttpStatus enum representing the http status value to be returned from the mock endpoint
      */
 
-    private void setupMockEvidenceManagementService(String fileUrl,
-                                                    HttpStatus httpStatus) {
+    private void setupMockEvidenceManagementService(String fileUrl, HttpStatus httpStatus) {
         when(authTokenGenerator.generate()).thenReturn("xxxx");
 
         doReturn(new ResponseEntity<>(httpStatus))

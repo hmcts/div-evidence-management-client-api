@@ -37,8 +37,7 @@ public class GlobalErrorAttributesTest {
         given(mockWebRequest.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
                 .willReturn(new ValidationException("Value is invalid"));
 
-        Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockWebRequest, false);
+        Map<String, Object> errorAttributes = underTest.getErrorAttributes(mockWebRequest, false);
 
         assertNotNull(errorAttributes.get("timestamp"));
         assertEquals(400, errorAttributes.get("status"));
@@ -55,8 +54,7 @@ public class GlobalErrorAttributesTest {
         given(mockWebRequest.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
                 .willReturn(new ValidationException("Value is invalid"));
 
-        Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockWebRequest, false);
+        Map<String, Object> errorAttributes = underTest.getErrorAttributes(mockWebRequest, false);
 
         assertEquals("validationFailure", errorAttributes.get("errorCode"));
 
@@ -69,10 +67,8 @@ public class GlobalErrorAttributesTest {
         given(mockWebRequest.getAttribute(DefaultErrorAttributes.class.getName() + ".ERROR", 0))
                 .willReturn(new ValidationException("Value is invalid"));
 
-        Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockWebRequest, false);
+        Map<String, Object> errorAttributes = underTest.getErrorAttributes(mockWebRequest, false);
 
         assertNull( errorAttributes.get("errorCode"));
-
     }
 }
