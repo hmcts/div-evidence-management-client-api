@@ -69,12 +69,13 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'net.serenity-bdd.aggregator'
 
 pmd {
-    toolVersion = '6.11.0'
+    toolVersion = '6.13.0'
     ignoreFailures = true
     sourceSets = [sourceSets.main, sourceSets.test]
     reportsDir = file("$project.buildDir/reports/pmd")
     ruleSetFiles = files("ruleset.xml")
     ruleSets = []
+    incrementalAnalysis = true
 }
 
 group = 'uk.gov.hmcts.reform.divorce'
