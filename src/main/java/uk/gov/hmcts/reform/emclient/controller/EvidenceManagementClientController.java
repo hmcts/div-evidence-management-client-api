@@ -76,6 +76,5 @@ public class EvidenceManagementClientController {
             @PathVariable("fileId") @ApiParam("File ID to download") String fileId) {
 
         return emDownloadService.downloadFile(fileId, authorizationToken);
-
     }
 }

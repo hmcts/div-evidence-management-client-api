@@ -32,7 +32,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementDeleteServiceImplUTest {
 
-    private static final String EVIDENCE_MANAGEMENT_SERVICE_URL = "http://localhost:8080/documents/";
+    private static final String EM_SERVICE_URL = "http://localhost:8080/documents/";
+    private static final String TEST_REQUEST_ID = "12344";
 
     @Mock
     private RestTemplate restTemplate;
@@ -60,12 +61,12 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruDocumentDeletedSuccessfullyState() {
+    public void shouldPassThroughDocumentDeletedSuccessfullyState() {
 
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
+        String fileUrl = EM_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.OK);
 
-        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "AAAABBBB", TEST_REQUEST_ID);
 
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -80,12 +81,12 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruNoDocumentIdIsPassedState() {
+    public void shouldPassThroughNoDocumentIdIsPassedState() {
 
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("");
+        String fileUrl = EM_SERVICE_URL.concat("");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.NO_CONTENT);
 
-        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "AAAABBBB", TEST_REQUEST_ID);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -100,12 +101,12 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruNotAuthorisedAuthTokenState() {
+    public void shouldPassThroughNotAuthorisedAuthTokenState() {
 
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
+        String fileUrl = EM_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.UNAUTHORIZED);
 
-        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "CCCCDDDD", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "CCCCDDDD", TEST_REQUEST_ID);
 
         assertNotNull(response);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -120,12 +121,12 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test
-    public void shouldPassThruNotAuthenticatedAuthTokenState() {
+    public void shouldPassThroughNotAuthenticatedAuthTokenState() {
 
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("56");
+        String fileUrl = EM_SERVICE_URL.concat("56");
         setupMockEvidenceManagementService(fileUrl, HttpStatus.FORBIDDEN);
 
-        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "", "12344");
+        ResponseEntity<?> response = deleteService.deleteFile(fileUrl, "", TEST_REQUEST_ID);
 
         assertNotNull(response);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
@@ -139,9 +140,9 @@ public class EvidenceManagementDeleteServiceImplUTest {
      */
 
     @Test(expected = ResourceAccessException.class)
-    public void shouldPassThruExceptionThrownWhenEvidenceManagementServiceNotFound() {
+    public void shouldPassThroughExceptionThrownWhenEvidenceManagementServiceNotFound() {
 
-        String fileUrl = EVIDENCE_MANAGEMENT_SERVICE_URL.concat("25");
+        String fileUrl = EM_SERVICE_URL.concat("25");
 
         doThrow(ResourceAccessException.class)
                 .when(restTemplate)
@@ -150,7 +151,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
                         ArgumentMatchers.<HttpEntity<String>>any(),
                         ArgumentMatchers.<Class<Resource>>any());
 
-        deleteService.deleteFile(fileUrl, "AAAABBBB", "12344");
+        deleteService.deleteFile(fileUrl, "AAAABBBB", TEST_REQUEST_ID);
 
         assertFalse("Failed to receive exception resulting from non-running EM service", true);
     }

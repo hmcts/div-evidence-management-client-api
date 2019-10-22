@@ -34,9 +34,7 @@ public class GlobalExceptionHandlerTest {
 
     private WebRequest mockHttpServletRequest;
     private HttpServletResponse mockHttpServletResponse;
-
     private GlobalExceptionHandler underTest;
-
 
     @Before
     public void setUp() {

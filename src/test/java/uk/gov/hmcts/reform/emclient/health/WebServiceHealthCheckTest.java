@@ -19,11 +19,11 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WebServiceHealthCheckTest {
-    private String uri = "http://example.com";
-    private RestTemplate restTemplate = mock(RestTemplate.class);
-    private HttpEntityFactory httpEntityFactory = mock(HttpEntityFactory.class);
+    private final String uri = "http://example.com";
+    private final RestTemplate restTemplate = mock(RestTemplate.class);
+    private final HttpEntityFactory httpEntityFactory = mock(HttpEntityFactory.class);
 
-    private TestWebServiceHealthCheck healthCheck = new TestWebServiceHealthCheck(httpEntityFactory, restTemplate, uri);
+    private final TestWebServiceHealthCheck healthCheck = new TestWebServiceHealthCheck(httpEntityFactory, restTemplate, uri);
 
     @Test
     public void shouldReturnUpWhenServiceReturnsOk() {

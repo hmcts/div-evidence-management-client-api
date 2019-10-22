@@ -78,6 +78,12 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
     private MockRestServiceServer mockRestServiceServer;
     private ClientHttpRequestFactory originalRequestFactory;
     private HttpClient httpClient = HttpClients.createMinimal();
+    private static final String UP = "UP";
+    private static final String DOWN = "DOWN";
+    private static final String SERVICE_AUTH_PROVIDER_HEALTH_CHECK = "serviceAuthProviderHealthCheck";
+    private static final String EVIDENCE_MANAGEMENT_STORE_API = "evidenceManagementStoreAPI";
+    private static final String HEALTHCHECK_UP_JSON = "/fixtures/evidence-management-store-api/healthcheck-up.json";
+    private static final String HEALTHCHECK_DOWN_JSON = "/fixtures/evidence-management-store-api/healthcheck-down.json";
 
     private HttpResponse getHealth() throws Exception {
         HttpGet request = new HttpGet(healthUrl);
@@ -103,37 +109,36 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         //stub stubEvidenceManagementStoreApiHealthUp
         mockServiceAuthFeignHealthCheck();
         stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl, serviceAuthApiUrl);
-        assertStatus(EntityUtils.toString(getHealth().getEntity()), "UP",
-                "evidenceManagementStoreAPI", "serviceAuthProviderHealthCheck");
-
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), UP,
+                EVIDENCE_MANAGEMENT_STORE_API, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
     }
 
     @Test
     public void shouldReturnStatusDownWhenAllDependenciesAreDown() throws Exception {
         mockServiceAuthFeignHealthCheck();
         stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
-        assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN",
-                "evidenceManagementStoreAPI", "serviceAuthProviderHealthCheck");
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN,
+                EVIDENCE_MANAGEMENT_STORE_API, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
     }
 
     @Test
     public void shouldReturnStatusDownWhenEvidenceManagementStoreApiIsDown() throws Exception {
         mockServiceAuthFeignHealthCheck();
         stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
-        assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN", "evidenceManagementStoreAPI");
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), UP, EVIDENCE_MANAGEMENT_STORE_API);
     }
 
     @Test
     public void shouldReturnStatusDownWhenServiceAuthApiIsDown() throws Exception {
         mockServiceAuthFeignHealthCheck();
         stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
-        assertStatus(EntityUtils.toString(getHealth().getEntity()), "DOWN", "serviceAuthProviderHealthCheck");
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
     }
 
     private void stubHealthService( HttpStatus healthStatus, String ... services) throws Exception {
-        String resourceName = "/fixtures/evidence-management-store-api/healthcheck-down.json";
+        String resourceName = HEALTHCHECK_DOWN_JSON;
         if (healthStatus == HttpStatus.OK) {
-            resourceName = "/fixtures/evidence-management-store-api/healthcheck-up.json";
+            resourceName = HEALTHCHECK_UP_JSON;
         }
         for (String service: services) {
             stubHealthService(service, healthStatus, resourceName);
@@ -145,7 +150,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         for (String service : onServices) {
             assertThat(JsonPath.read(body, String.format("$.%s.status", service)).toString(), equalTo(checkStatus));
         }
-        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo("UP"));
+        assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo(UP));
     }
 
     private void stubHealthService(String requestUrl, HttpStatus status, String resourceName) throws Exception {
@@ -161,7 +166,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
     private void mockServiceAuthFeignHealthCheck() throws URISyntaxException, IOException {
         String responseBody = FileUtils.readFileToString(
             new File(
-                getClass().getResource("/fixtures/evidence-management-store-api/healthcheck-up.json").toURI()),
+                getClass().getResource(HEALTHCHECK_UP_JSON).toURI()),
             Charset.defaultCharset());
 
         serviceAuthServer.stubFor(get("/health")
@@ -170,6 +175,4 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE)
                 .withBody(responseBody)));
     }
-
-
 }
