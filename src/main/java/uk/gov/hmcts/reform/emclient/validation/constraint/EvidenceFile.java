@@ -15,8 +15,6 @@ import uk.gov.hmcts.reform.emclient.validation.validator.EvidenceFileValidator;
 @Constraint(validatedBy = EvidenceFileValidator.class)
 public @interface EvidenceFile {
     String message() default "{EvidenceFile.message}";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

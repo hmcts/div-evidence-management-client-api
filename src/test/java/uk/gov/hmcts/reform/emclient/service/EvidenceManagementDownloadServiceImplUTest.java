@@ -30,6 +30,7 @@ public class EvidenceManagementDownloadServiceImplUTest {
     private static  final String TEST_AUTH_TOKEN = "testAuthToken";
     private static  final String DM_STORE_URL = "http://dmstore.url";
     private static  final String SERVICE_TOKEN = "serviceToken";
+    private static  final String EM_STORE_URL = "evidenceManagementStoreUrl";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -48,7 +49,7 @@ public class EvidenceManagementDownloadServiceImplUTest {
 
     @Before
     public void setUp(){
-        ReflectionTestUtils.setField(classToTest, "evidenceManagementStoreUrl", DM_STORE_URL);
+        ReflectionTestUtils.setField(classToTest, EM_STORE_URL, DM_STORE_URL);
     }
 
     @Test
@@ -65,6 +66,4 @@ public class EvidenceManagementDownloadServiceImplUTest {
 
         assertEquals(expectedResponse, response);
     }
-
-
 }

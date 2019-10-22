@@ -33,7 +33,7 @@ def versions = [
         commonsIo                               : '2.5',
         commonsLang3                            : '3.0',
         guava                                   : '27.0.1-jre',
-        hibernate                               : '6.0.5.Final',
+        hibernate                               : '6.0.17.Final',
         jacksonCore                             : '2.10.0',
         jacksonDatabind                         : '2.10.0',
         javaxValidation                         : '2.0.0.Final',
@@ -56,14 +56,13 @@ def versions = [
         springfoxSwagger                        : '2.9.2',
         springHateoas                           : '0.25.1.RELEASE',
         springPluginCore                        : '1.2.0.RELEASE',
-        springRetry                             : '1.2.1.RELEASE',
+        springRetry                             : '1.2.4.RELEASE',
+        springSecurityCrypto                    : '5.2.0.RELEASE',
         spring_security_rsa                     : '1.0.8.RELEASE',
+        tomcat                                  : '9.0.22',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.8.0',
-        springSecurityCrypto                    : '5.1.5.RELEASE',
-        tomcat                                  : '9.0.22'
+        wiremockVersion                         : '2.8.0'
 ]
-
 
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'net.serenity-bdd.aggregator'

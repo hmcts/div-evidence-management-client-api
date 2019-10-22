@@ -123,5 +123,4 @@ public class EMClientFileUploadTest extends IntegrationTest {
         headers.put("Content-Type", "multipart/form-data");
         return headers;
     }
-
 }

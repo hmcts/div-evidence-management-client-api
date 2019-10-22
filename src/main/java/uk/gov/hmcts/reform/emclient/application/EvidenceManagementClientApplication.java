@@ -36,5 +36,4 @@ public class EvidenceManagementClientApplication {
     ) {
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microService, serviceAuthorisationApi);
     }
-
 }

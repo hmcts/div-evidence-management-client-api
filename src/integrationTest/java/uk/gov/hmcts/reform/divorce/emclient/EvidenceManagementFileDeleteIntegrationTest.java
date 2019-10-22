@@ -94,6 +94,5 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
                                                                         evidenceManagementClientApiBaseUrl,
                                                                         documentManagementURL,
                                                                         idamTestSupportUtil);
-
     }
 }

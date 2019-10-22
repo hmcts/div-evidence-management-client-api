@@ -65,5 +65,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorAttributes, HttpStatus.OK);
     }
-
 }

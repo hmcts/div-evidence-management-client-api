@@ -16,7 +16,6 @@ public class BaseFunctionalTest {
         public ServerList<Server> ribbonServerList(@Value("${auth.provider.service.client.port}") int serverPort) {
             return new StaticServerList<>(new Server("localhost", serverPort));
         }
-
     }
 
     protected String getAppBaseUrl(String serverPort){
@@ -26,6 +25,5 @@ public class BaseFunctionalTest {
         }else {
             throw new RuntimeException("Server Port config not found in application properties");
         }
-
     }
 }
