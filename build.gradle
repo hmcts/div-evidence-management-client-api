@@ -9,7 +9,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:0.32.0') {
+        classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.5') {
             exclude(group: 'org.pitest')
         }
         classpath('org.pitest:pitest-command-line:0.33')
