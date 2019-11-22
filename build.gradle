@@ -14,7 +14,7 @@ buildscript {
         }
         classpath('org.pitest:pitest-command-line:0.33')
         classpath("org.springframework.boot:spring-boot-gradle-plugin:versions.springBoot")
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.41")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.87")
     }
 }
 
