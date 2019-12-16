@@ -42,10 +42,10 @@ def versions = [
         junit                                   : '4.12',
         lombok                                  : '1.16.16',
         puppyCrawl                              : '8.21',
-        reformHealth                            : '0.0.3',
+        reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.0.4',
         reformsHttpProxySpringBootAutoconfigure : '1.1.0',
-        reformsJavaLogging                      : '5.0.1',
+        reformsJavaLogging                      : '5.1.1',
         restAssured                             : '3.3.0',
         serenity                                : '2.0.41',
         serenityCucumber                        : '1.9.31',
@@ -208,9 +208,9 @@ dependencies {
 
     compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
     compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformsHttpProxySpringBootAutoconfigure
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.reformsJavaLogging
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformsJavaLogging
-    compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging
+    compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
 
     compile (group: 'com.google.guava', name: 'guava', version: versions.guava) {
