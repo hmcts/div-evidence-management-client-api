@@ -70,7 +70,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
         headers.put(AUTHORIZATION_HEADER_NAME, token);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
 
-        Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
+        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
         Map<String, Object> headers = evidenceManagementTestUtils.getInvalidAuthenticationTokenHeader();
 
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
-        Assert.assertEquals(HttpStatus.FORBIDDEN.value(), response.getStatusCode());
+        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {

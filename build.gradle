@@ -59,7 +59,7 @@ def versions = [
         springRetry                             : '1.2.4.RELEASE',
         springSecurityCrypto                    : '5.2.0.RELEASE',
         spring_security_rsa                     : '1.0.8.RELEASE',
-        tomcat                                  : '9.0.22',
+        tomcat                                  : '9.0.30',
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.8.0'
 ]
