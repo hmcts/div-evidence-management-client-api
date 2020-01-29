@@ -1,17 +1,15 @@
 # Divorce Evidence Management Client API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-
-## A Hypermedia Restful API/HATEOAS Client for Evidence Management Service
-
+## The Evidence Management Client API is responsible for providing an interface between the Divorce services and the HMCTS Document Management Service
 
 ## Introduction
 * This API provides below endpoints
   * File Upload(s)
   * File Download
-* It uses below technical stack
+* It uses the following tech stack tech stack
   * Java8
   * Spring Boot
-  * Junit, Mockito and SpringBootTest and Powermockito
+  * Junit, Mockito, SpringBootTest and Powermockito
   * Gradle
   * Spring Hateos
   * Traverson
