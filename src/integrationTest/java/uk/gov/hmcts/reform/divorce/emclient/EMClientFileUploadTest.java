@@ -49,10 +49,10 @@ public class EMClientFileUploadTest extends IntegrationTest {
     private String fileType;
 
     private static String[] fileName = {"PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg",
-            "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
+        "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
 
     private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
-            "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
+        "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
 
 
     @TestData
@@ -64,7 +64,7 @@ public class EMClientFileUploadTest extends IntegrationTest {
 
     public EMClientFileUploadTest(String filename, String fileContentType) {
         this.name = filename;
-        this.fileType= fileContentType;
+        this.fileType = fileContentType;
     }
 
     @Test
