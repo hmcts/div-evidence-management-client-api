@@ -5,7 +5,6 @@ import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static net.serenitybdd.rest.SerenityRest.given;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SerenityParameterizedRunner.class)
 public class EMClientFileUploadTest extends IntegrationTest {
@@ -44,16 +44,14 @@ public class EMClientFileUploadTest extends IntegrationTest {
     @Autowired
     private AuthTokenGenerator authTokenGenerator;
 
-    private String name;
-
-    private String fileType;
+    private final String name;
+    private final String fileType;
 
     private static String[] fileName = {"PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg",
         "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
 
     private static String[] fileContentType = {"image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg",
         "image/png", "image/bmp", "application/pdf", "image/tiff", "image/jpeg"};
-
 
     @TestData
     public static Collection<Object[]> testData() {
@@ -76,20 +74,23 @@ public class EMClientFileUploadTest extends IntegrationTest {
     private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         Response response = SerenityRest.given()
-                .headers(getAuthenticationTokenHeader())
-                .multiPart("file", file, fileContentType)
-                .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
-                .andReturn();
-        Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
+            .headers(getAuthenticationTokenHeader())
+            .multiPart("file", file, fileContentType)
+            .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
+            .andReturn();
+
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
+
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
     }
 
     private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
         Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
-        Assert.assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
-        Assert.assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
-        Assert.assertEquals(fileContentType, responseFromEvidenceManagement.getBody().path("mimeType"));
+
+        assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
+        assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
+        assertEquals(fileContentType, responseFromEvidenceManagement.getBody().path("mimeType"));
     }
 
     public Response readDataFromEvidenceManagement(String uri) {
@@ -100,12 +101,13 @@ public class EMClientFileUploadTest extends IntegrationTest {
         headers.put("ServiceAuthorization", authTokenGenerator.generate());
         headers.put("user-id", username);
         headers.put("user-roles", "caseworker-divorce");
+
         return given()
-                .contentType("application/json")
-                .headers(headers)
-                .when()
-                .get(uri)
-                .andReturn();
+            .contentType("application/json")
+            .headers(headers)
+            .when()
+            .get(uri)
+            .andReturn();
     }
 
     private Map<String, Object> getAuthenticationTokenHeader() {

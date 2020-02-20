@@ -12,10 +12,9 @@ import java.util.Map;
 
 public class EvidenceManagementTestUtils {
 
-    public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+    static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> getAuthenticationTokenHeader(IdamUtils idamTestSupportUtil) {
+    Map<String, Object> getAuthenticationTokenHeader(IdamUtils idamTestSupportUtil) {
         String authenticationToken = idamTestSupportUtil.generateNewUserAndReturnToken();
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);

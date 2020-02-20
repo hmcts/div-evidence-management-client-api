@@ -21,7 +21,7 @@ public class BaseFunctionalTest {
     String getAppBaseUrl(String serverPort) {
         if (StringUtils.isNotEmpty(serverPort)) {
             String url = new LocalRibbonClientConfiguration()
-                .ribbonServerList(Integer.valueOf(serverPort))
+                .ribbonServerList(Integer.parseInt(serverPort))
                 .getInitialListOfServers().get(0).getId();
             return "http://" + url;
         } else {

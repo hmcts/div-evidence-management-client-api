@@ -77,7 +77,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
     private String healthUrl;
     private MockRestServiceServer mockRestServiceServer;
     private ClientHttpRequestFactory originalRequestFactory;
-    private HttpClient httpClient = HttpClients.createMinimal();
+    private final HttpClient httpClient = HttpClients.createMinimal();
     private static final String UP = "UP";
     private static final String DOWN = "DOWN";
     private static final String SERVICE_AUTH_PROVIDER_HEALTH_CHECK = "serviceAuthProviderHealthCheck";
@@ -94,7 +94,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
 
     @Before
     public void setUp() {
-        healthUrl = "http://localhost:" + String.valueOf(port) + "/health";
+        healthUrl = "http://localhost:" + port + "/health";
         originalRequestFactory = restTemplate.getRequestFactory();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
@@ -106,7 +106,6 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
 
     @Test
     public void shouldReturnStatusUpWhenAllDependenciesAreUp() throws Exception {
-        //stub stubEvidenceManagementStoreApiHealthUp
         mockServiceAuthFeignHealthCheck();
         stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl, serviceAuthApiUrl);
         assertStatus(EntityUtils.toString(getHealth().getEntity()), UP,

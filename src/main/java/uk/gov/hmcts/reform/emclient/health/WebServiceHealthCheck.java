@@ -29,7 +29,7 @@ public abstract class WebServiceHealthCheck implements HealthIndicator {
 
     public Health health() {
         HttpEntity<Object> httpEntity = httpEntityFactory.createRequestEntityForHealthCheck();
-        ResponseEntity<Object> responseEntity = null;
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, Object.class, new HashMap<>());

@@ -49,7 +49,7 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
 
         log.info("Deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
-        UserDetails userDetails = null;
+        UserDetails userDetails;
         try {
             userDetails = userService.getUserDetails(authorizationToken);
         } catch (Exception e) {

@@ -108,13 +108,12 @@ public class EvidenceManagementUploadServiceImplUTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("files");
         emUploadService.upload(null, authKey(), REQ_ID);
-        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+        httpEntityReqEntity.getAllValues();
     }
 
-    private ArgumentCaptor<HttpEntity> mockRestTemplate() throws IOException {
+    private void mockRestTemplate() throws IOException {
         this.httpEntityReqEntity = ArgumentCaptor.forClass(HttpEntity.class);
         when(restTemplate.postForObject(eq(EM_URI), httpEntityReqEntity.capture(), any())).thenReturn(getResponse());
-        return httpEntityReqEntity;
     }
 
     private HttpHeaders getEMRequestHeaders() {

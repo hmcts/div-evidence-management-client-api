@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, Object>> handleValidationException(ConstraintViolationException exception, WebRequest webRequest) {
-        /**
-         * This is a temporary solution because of an nginx configuration which requires a status code 200 to be returned.
+        /*
+          This is a temporary solution because of an nginx configuration which requires a status code 200 to be returned.
          */
         webRequest.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(), WebRequest.SCOPE_REQUEST);
         webRequest.setAttribute("javax.servlet.error.error_code", "invalidFileType", WebRequest.SCOPE_REQUEST);
