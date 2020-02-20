@@ -1,11 +1,10 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -28,7 +27,6 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementDeleteServiceImplUTest {
 
@@ -48,7 +46,7 @@ public class EvidenceManagementDeleteServiceImplUTest {
     private EvidenceManagementDeleteServiceImpl deleteService = new EvidenceManagementDeleteServiceImpl();
 
     @Before
-    public void setUp(){
+    public void setUp() {
         when(userService.getUserDetails(anyString())).thenReturn(UserDetails.builder().id("19").build());
     }
 

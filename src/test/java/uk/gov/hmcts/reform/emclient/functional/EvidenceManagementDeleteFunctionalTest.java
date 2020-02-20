@@ -35,25 +35,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "service-auth-provider.service.stub.enabled=false",
         "evidence-management-api.service.stub.enabled=false"})
 @AutoConfigureMockMvc
-public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
+public class EvidenceManagementDeleteFunctionalTest extends BaseFunctionalTest {
+
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String API_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
+    private static final String DOC_URI = "http://doc-store/1";
+    private MockRestServiceServer mockRestServiceServer;
 
     @Autowired
     private MockMvc webClient;
-
-    private MockRestServiceServer mockRestServiceServer;
-    private static final String AUTH_HEADER = "Authorization";
-
-
-//   TODO - Clarify with Ganesh/Mathan @Value("${evidence.management.client.api.baseUrl}")
-//    private String evidenceManagementClientApiBaseUrl;
 
     @Value("${evidence.management.client.api.service.port}")
     private String serverPort;
 
     @Autowired
     private RestTemplate restTemplate;
-    private String docUri = "http://doc-store/1";
-    private String API_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
 
     @Before
     public void before() {
@@ -63,9 +59,9 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     @Test
     public void givenDocServiceReturnsForbiddenForBadS2SToken_thenReturn() throws Exception {
 
-        mockDocumentService(HttpStatus.FORBIDDEN, docUri);
+        mockDocumentService(HttpStatus.FORBIDDEN, DOC_URI);
 
-        webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL + docUri)
+        webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL + DOC_URI)
                 .header(AUTH_HEADER, authToken())
                 .content(""))
                 .andExpect(status().isForbidden())
@@ -90,9 +86,9 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
 
     @Test
     public void givenAllGoesWell_thenReturn() throws Exception {
-        mockDocumentService(HttpStatus.NO_CONTENT, docUri);
+        mockDocumentService(HttpStatus.NO_CONTENT, DOC_URI);
 
-        webClient.perform(delete(getAppBaseUrl(serverPort)+ API_URL + docUri)
+        webClient.perform(delete(getAppBaseUrl(serverPort) + API_URL + DOC_URI)
                 .header(AUTH_HEADER, authToken())
                 .content(""))
                 .andExpect(status().isNoContent())
@@ -107,11 +103,11 @@ public class EvidenceManagementDeleteFunctionalTest  extends BaseFunctionalTest{
     }
 
     private static String authToken() {
-        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT" +
-                "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V" +
-                "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV" +
-                "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi" +
-                "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb" +
-                "x72zDa1r7Qnp1M";
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT"
+            + "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V"
+            + "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV"
+            + "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi"
+            + "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb"
+            + "x72zDa1r7Qnp1M";
     }
 }

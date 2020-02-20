@@ -48,18 +48,18 @@ public class EvidenceManagementDownloadServiceImplUTest {
     private EvidenceManagementDownloadServiceImpl classToTest;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         ReflectionTestUtils.setField(classToTest, EM_STORE_URL, DM_STORE_URL);
     }
 
     @Test
-    public void givenFile_whenDownloadFile_thenDMStoreServiceIsCalled(){
+    public void givenFile_whenDownloadFile_thenDMStoreServiceIsCalled() {
         ResponseEntity<byte[]> expectedResponse = mock(ResponseEntity.class);
 
         when(userService.getUserDetails(TEST_AUTH_TOKEN)).thenReturn(UserDetails.builder().build());
         when(authTokenGenerator.generate()).thenReturn(SERVICE_TOKEN);
 
-        String url = DM_STORE_URL+"/"+TEST_FILE_ID+"/binary";
+        String url = DM_STORE_URL + "/" + TEST_FILE_ID + "/binary";
         when(restTemplate.exchange(eq(url), eq(HttpMethod.GET), any(HttpEntity.class), eq(byte[].class)))
                 .thenReturn(expectedResponse);
         ResponseEntity<byte[]> response = classToTest.downloadFile(TEST_FILE_ID, TEST_AUTH_TOKEN);

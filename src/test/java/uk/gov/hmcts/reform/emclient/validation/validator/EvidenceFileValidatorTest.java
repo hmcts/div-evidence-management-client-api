@@ -1,16 +1,6 @@
 package uk.gov.hmcts.reform.emclient.validation.validator;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,15 +9,22 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
-
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.validation.constraint.EvidenceFile;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+import java.util.Set;
+import javax.annotation.Resource;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @SpringBootTest(classes = {EvidenceManagementClientApplication.class})
 @RunWith(SpringRunner.class)
-@TestPropertySource(value="classpath:application.yml")
+@TestPropertySource(value = "classpath:application.yml")
 public class EvidenceFileValidatorTest {
 
     @Resource
@@ -99,6 +96,7 @@ public class EvidenceFileValidatorTest {
 
         assertTrue(constraintViolations.isEmpty());
     }
+
     @Test
     public void testRestrictedFileFailValidation() {
         MockMultipartFile exeFile = new MockMultipartFile("test.exe", "test.exe", "application/octet-stream", "data".getBytes());

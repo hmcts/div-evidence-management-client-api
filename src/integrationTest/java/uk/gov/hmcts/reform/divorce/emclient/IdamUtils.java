@@ -13,7 +13,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 @Service
-public class IDAMUtils {
+public class IdamUtils {
 
     @Value("${auth.idam.client.baseUrl}")
     private String idamUserBaseUrl;

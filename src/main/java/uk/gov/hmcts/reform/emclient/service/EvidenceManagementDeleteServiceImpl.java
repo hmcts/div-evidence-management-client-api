@@ -1,16 +1,18 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
-
 
 @Service
 @Slf4j
@@ -48,9 +50,9 @@ public class EvidenceManagementDeleteServiceImpl implements EvidenceManagementDe
         log.info("Deleting evidence management document: fileUrl='{}', requestId='{}'", fileUrl, requestId);
 
         UserDetails userDetails = null;
-        try{
+        try {
             userDetails = userService.getUserDetails(authorizationToken);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.valueOf(((FeignException)e).status()));
         }
         HttpEntity<Object> httpEntity = deleteServiceCallHeaders(userDetails.getId());

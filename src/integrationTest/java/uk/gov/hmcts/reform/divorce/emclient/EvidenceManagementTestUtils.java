@@ -15,7 +15,7 @@ public class EvidenceManagementTestUtils {
     public static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getAuthenticationTokenHeader(IDAMUtils idamTestSupportUtil) {
+    public Map<String, Object> getAuthenticationTokenHeader(IdamUtils idamTestSupportUtil) {
         String authenticationToken = idamTestSupportUtil.generateNewUserAndReturnToken();
         Map<String, Object> headers = new HashMap<>();
         headers.put(AUTHORIZATION_HEADER_NAME, authenticationToken);
@@ -31,7 +31,7 @@ public class EvidenceManagementTestUtils {
     }
 
     /**
-     * Given the uri it will update the url to corresponding localhost url for testing with docker
+     * Given the uri it will update the url to corresponding localhost url for testing with docker.
      *
      * @param uri the link to be updated
      * @return updated url
@@ -50,7 +50,7 @@ public class EvidenceManagementTestUtils {
     }
 
     /**
-     * Make REST call to an emclient API with user token to store a document in EM Store
+     * Make REST call to an emclient API with user token to store a document in EM Store.
      * <p/>
      *
      * @param filePath the name of the file to be sent to the EM store
@@ -62,7 +62,7 @@ public class EvidenceManagementTestUtils {
                                                  String fileContentType,
                                                  String evidenceManagementClientApiBaseUrl,
                                                  String documentManagementURL,
-                                                 IDAMUtils idamTestSupportUtil) {
+                                                 IdamUtils idamTestSupportUtil) {
         File file = new File(filePath);
         Response response = SerenityRest.given()
                 .headers(getAuthenticationTokenHeader(idamTestSupportUtil))

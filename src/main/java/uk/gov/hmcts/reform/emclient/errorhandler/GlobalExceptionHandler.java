@@ -1,10 +1,5 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,14 +13,15 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final String EXCEPTION_MESSAGE = "Request Id : {} and Exception message : {}";
-
     private static final String REQUEST_ID_HEADER_KEY = "requestId";
-
-    private static final Logger log = LoggerFactory
-            .getLogger(GlobalExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(HttpClientErrorException.class)
     // BAD_REQUEST(400),UNAUTHORIZED(401),FORBIDDEN(403),NOT_FOUND(404),METHOD_NOT_ALLOWED(405)...
@@ -56,7 +52,9 @@ public class GlobalExceptionHandler {
          */
         webRequest.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(), WebRequest.SCOPE_REQUEST);
         webRequest.setAttribute("javax.servlet.error.error_code", "invalidFileType", WebRequest.SCOPE_REQUEST);
-        webRequest.setAttribute("javax.servlet.error.request_uri", ((ServletWebRequest)webRequest).getRequest().getRequestURL().toString(), WebRequest.SCOPE_REQUEST);
+        webRequest.setAttribute("javax.servlet.error.request_uri",
+            ((ServletWebRequest)webRequest).getRequest().getRequestURL().toString(),
+            WebRequest.SCOPE_REQUEST);
         Map<String, Object> errorAttributes = new GlobalErrorAttributes().getErrorAttributes(webRequest, false);
 
         if (!exception.getConstraintViolations().isEmpty()) {

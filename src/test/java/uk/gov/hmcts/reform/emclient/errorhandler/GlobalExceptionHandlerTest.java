@@ -1,16 +1,5 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-
-import java.util.Collections;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +11,19 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.request.RequestContextHolder;
+
+import java.util.Collections;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GlobalExceptionHandlerTest {
@@ -55,7 +54,9 @@ public class GlobalExceptionHandlerTest {
                 underTest.handleClientException(mockException, mockHttpServletRequest, mockHttpServletResponse);
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        assertEquals("Http Client Exception. Please check service input parameters and also verify the status of service token generator", responseEntity.getBody());
+        assertEquals(
+            "Http Client Exception. Please check service input parameters and also verify the status of service token generator",
+            responseEntity.getBody());
     }
 
     @Test

@@ -8,9 +8,9 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +38,17 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
-@ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@ImportAutoConfiguration({
+    RibbonAutoConfiguration.class,
+    HttpMessageConvertersAutoConfiguration.class,
+    FeignRibbonClientAutoConfiguration.class,
+    FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
 public class EvidenceManagementClientControllerTest {
     private static final String AUTH_TOKEN = "AAAAAAA";
@@ -52,6 +58,8 @@ public class EvidenceManagementClientControllerTest {
     private static final String CONTENT_TYPE_HEADER = "content-type";
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
+    private static final String INVALID_FILE_ERROR_MSG =
+        "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
@@ -62,7 +70,6 @@ public class EvidenceManagementClientControllerTest {
 
     @MockBean
     private EvidenceManagementDeleteService emDeleteService;
-
 
     private MockMvc mockMvc;
 
@@ -124,7 +131,7 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.status", is(400)))
                 .andExpect(jsonPath("$.error", is("Bad Request")))
                 .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
-                .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
+                .andExpect(jsonPath("$.message", is(INVALID_FILE_ERROR_MSG)))
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
@@ -158,16 +165,16 @@ public class EvidenceManagementClientControllerTest {
     @Test
     public void shouldReturnStatus200WithErrorBodyWhenTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
-                .file(textMultipartFile())
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-                .header(REQUEST_ID_HEADER, REQUEST_ID)
-                .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
-                .andDo(print())
-                .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.error", is("Bad Request")))
-                .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
-                .andExpect(jsonPath("$.message", is("Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)")))
-                .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
+            .file(textMultipartFile())
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(REQUEST_ID_HEADER, REQUEST_ID)
+            .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
+            .andDo(print())
+            .andExpect(jsonPath("$.status", is(400)))
+            .andExpect(jsonPath("$.error", is("Bad Request")))
+            .andExpect(jsonPath("$.errorCode", is("invalidFileType")))
+            .andExpect(jsonPath("$.message", is(INVALID_FILE_ERROR_MSG)))
+            .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
     @Test
@@ -177,7 +184,6 @@ public class EvidenceManagementClientControllerTest {
                 .willThrow(new ResourceAccessException("Evidence management service is currently down"));
 
         verifyExceptionFromUploadServiceIsHandledGracefully();
-
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
@@ -185,10 +191,10 @@ public class EvidenceManagementClientControllerTest {
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEMServiceThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
-                .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
+                .willThrow(
+                    new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
 
         verifyExceptionFromUploadServiceIsHandledGracefully();
-
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
@@ -264,11 +270,12 @@ public class EvidenceManagementClientControllerTest {
 
     private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
-                .file(jpegMultipartFile())
-                .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
-                .header(REQUEST_ID_HEADER, REQUEST_ID)
-                .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
-                .andExpect(status().is5xxServerError())
-                .andExpect(content().string("Some server side exception occurred. Please check logs for details"));
+            .file(jpegMultipartFile())
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(REQUEST_ID_HEADER, REQUEST_ID)
+            .header(CONTENT_TYPE_HEADER, MediaType.MULTIPART_FORM_DATA))
+            .andExpect(status().is5xxServerError())
+            .andExpect(content().string(
+                "Some server side exception occurred. Please check logs for details"));
     }
 }

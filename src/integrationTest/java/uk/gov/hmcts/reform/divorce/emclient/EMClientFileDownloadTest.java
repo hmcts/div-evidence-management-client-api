@@ -31,13 +31,13 @@ public class EMClientFileDownloadTest extends IntegrationTest {
     private String evidenceManagementClientApiBaseUrl;
 
     @Autowired
-    private IDAMUtils idamTestSupportUtil;
+    private IdamUtils idamTestSupportUtil;
 
     @Test
     public void downloadFileTest()throws Exception {
         Response response = SerenityRest.given()
                 .headers(getDownloadAuthenticationTokenHeader())
-                .get(evidenceManagementClientApiBaseUrl+"/download/"+FILE_TO_DOWNLOAD)
+                .get(evidenceManagementClientApiBaseUrl + "/download/" + FILE_TO_DOWNLOAD)
                 .andReturn();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());

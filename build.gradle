@@ -23,6 +23,7 @@ buildscript {
 
 plugins {
     id 'application'
+    id 'checkstyle'
     id 'jacoco'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'info.solidsoft.pitest' version '1.4.6'
@@ -66,6 +67,7 @@ def versions = [
         wiremockVersion                         : '2.25.1'
 ]
 
+apply plugin: 'checkstyle'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'net.serenity-bdd.aggregator'
 
@@ -147,6 +149,25 @@ pitest {
     mutationThreshold = 50
 }
 
+checkstyle {
+    maxWarnings = 0
+    toolVersion = '8.21'
+    // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
+    configDir = new File(rootDir, './')
+}
+
+// make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
+tasks.withType(Checkstyle).each { checkstyleTask ->
+    checkstyleTask.doLast {
+        reports.all { report ->
+            def outputFile = report.destination
+            if (outputFile.exists() && outputFile.text.contains("<error ")) {
+                throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
+            }
+        }
+    }
+}
+
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
     // Specifies if the build should be failed if a CVSS score above a specified level is identified.
@@ -179,6 +200,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
     compile group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
     compile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
+    compile group: 'com.puppycrawl.tools', name: 'checkstyle', version: versions.puppyCrawl
     compile group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger

@@ -19,11 +19,11 @@ import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 import static java.util.stream.StreamSupport.stream;
 import static uk.gov.hmcts.reform.emclient.service.UploadRequestBuilder.param;
@@ -53,7 +53,11 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(param(files), headers(userDetails.getId()));
         JsonNode documents = template.postForObject(evidenceManagementStoreUrl, httpEntity, ObjectNode.class)
                 .path("_embedded").path("documents");
-        log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}", requestId, userDetails.getId(), documents);
+        log.info("For Request Id {} and userId {} : File upload response from Evidence Management service is {}",
+            requestId,
+            userDetails.getId(),
+            documents);
+
         return toUploadResponse(documents);
     }
 
@@ -79,8 +83,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     }
 
     private String getTextFromJsonNode(JsonNode document, String attribute) {
-        return Optional.ofNullable(document)
-                .map(file -> Optional.ofNullable(attribute).map(file::asText).orElse(null))
+        return Optional.ofNullable(document).flatMap(file -> Optional.ofNullable(attribute).map(file::asText))
                 .orElse(null);
     }
 
@@ -91,5 +94,4 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
         headers.set("user-id", userId);
         return headers;
     }
-
 }
