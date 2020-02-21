@@ -9,4 +9,9 @@
         <gav regex="true">.*</gav>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    <suppress>
+        <notes> Suppressing unfixable vulnerabilities in latest version of Checkstyle. </notes>
+        <cve>CVE-2019-10086</cve>
+        <cve>CVE-2019-10782</cve>
+    </suppress>
 </suppressions>
