@@ -36,13 +36,13 @@ public class EvidenceManagementTestUtils {
      * @return updated url
      */
     //this is a hack to make this work with the docker container
-    String getDocumentStoreURI(String uri, String documentManagementURL) {
+    String getDocumentStoreUri(String uri, String documentManagementUrl) {
         if (uri.contains("http://em-api-gateway-web:3404")) {
-            return uri.replace("http://em-api-gateway-web:3404", documentManagementURL);
+            return uri.replace("http://em-api-gateway-web:3404", documentManagementUrl);
         }
 
         if (uri.contains("document-management-store:8080")) {
-            return uri.replace("http://document-management-store:8080", documentManagementURL);
+            return uri.replace("http://document-management-store:8080", documentManagementUrl);
         }
 
         return uri;
@@ -60,7 +60,7 @@ public class EvidenceManagementTestUtils {
     public String uploadFileToEvidenceManagement(String filePath,
                                                  String fileContentType,
                                                  String evidenceManagementClientApiBaseUrl,
-                                                 String documentManagementURL,
+                                                 String documentManagementUrl,
                                                  IdamUtils idamTestSupportUtil) {
         File file = new File(filePath);
         Response response = SerenityRest.given()
@@ -71,6 +71,6 @@ public class EvidenceManagementTestUtils {
 
         Assert.assertEquals(HttpStatus.OK.value(), response.statusCode());
 
-        return getDocumentStoreURI(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementURL);
+        return getDocumentStoreUri(((List<String>) response.getBody().path("fileUrl")).get(0), documentManagementUrl);
     }
 }

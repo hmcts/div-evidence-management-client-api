@@ -29,7 +29,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
     private String evidenceManagementClientApiBaseUrl;
 
     @Value("${document.management.store.baseUrl}")
-    private String documentManagementURL;
+    private String documentManagementUrl;
 
     private EvidenceManagementTestUtils evidenceManagementTestUtils = new EvidenceManagementTestUtils();
 
@@ -98,7 +98,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
     private String uploadFile() {
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
                                                                         evidenceManagementClientApiBaseUrl,
-                                                                        documentManagementURL,
+            documentManagementUrl,
                                                                         idamTestSupportUtil);
     }
 }

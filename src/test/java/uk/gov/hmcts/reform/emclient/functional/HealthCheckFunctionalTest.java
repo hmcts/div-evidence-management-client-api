@@ -134,7 +134,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
         assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
     }
 
-    private void stubHealthService( HttpStatus healthStatus, String ... services) throws Exception {
+    private void stubHealthService(HttpStatus healthStatus, String...services) throws Exception {
         String resourceName = HEALTHCHECK_DOWN_JSON;
         if (healthStatus == HttpStatus.OK) {
             resourceName = HEALTHCHECK_UP_JSON;
@@ -154,7 +154,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
                 .contentType(MediaType.APPLICATION_JSON));
     }
 
-    private void assertStatus(String body, String checkStatus, String ... onServices) {
+    private void assertStatus(String body, String checkStatus, String...onServices) {
         assertThat(JsonPath.read(body, "$.status").toString(), equalTo(checkStatus));
         for (String service : onServices) {
             assertThat(JsonPath.read(body, String.format("$.%s.status", service)).toString(), equalTo(checkStatus));

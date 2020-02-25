@@ -8,8 +8,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Map;
 import javax.xml.bind.ValidationException;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -58,7 +58,6 @@ public class GlobalErrorAttributesTest {
                 underTest.getErrorAttributes(mockWebRequest, false);
 
         assertEquals("validationFailure", errorAttributes.get("errorCode"));
-
     }
 
     @Test
@@ -71,7 +70,6 @@ public class GlobalErrorAttributesTest {
         Map<String, Object> errorAttributes =
                 underTest.getErrorAttributes(mockWebRequest, false);
 
-        assertNull( errorAttributes.get("errorCode"));
-
+        assertNull(errorAttributes.get("errorCode"));
     }
 }

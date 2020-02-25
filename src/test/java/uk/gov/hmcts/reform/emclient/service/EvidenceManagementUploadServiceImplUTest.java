@@ -73,34 +73,34 @@ public class EvidenceManagementUploadServiceImplUTest {
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMRequestWith3Headers() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmRequestWith3Headers() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
         List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
         assertEquals(3, allValues.get(0).getHeaders().size());
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveSecurityAuthHeader() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmReqToHaveSecurityAuthHeader() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertTrue(getEMRequestHeaders().containsKey("ServiceAuthorization"));
+        assertTrue(getEmRequestHeaders().containsKey("ServiceAuthorization"));
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveUserIdHeader() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmReqToHaveUserIdHeader() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertTrue(getEMRequestHeaders().containsKey(USER_ID));
+        assertTrue(getEmRequestHeaders().containsKey(USER_ID));
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveValidContentTypeHeader() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmReqToHaveValidContentTypeHeader() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertEquals("multipart/form-data", getEMRequestHeaders().get("Content-Type").get(0));
+        assertEquals("multipart/form-data", getEmRequestHeaders().get("Content-Type").get(0));
     }
 
     @Test
     public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectAuthKeyIsParsedForUserId() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertEquals("19", getEMRequestHeaders().get(USER_ID).get(0));
+        assertEquals("19", getEmRequestHeaders().get(USER_ID).get(0));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class EvidenceManagementUploadServiceImplUTest {
         when(restTemplate.postForObject(eq(EM_URI), httpEntityReqEntity.capture(), any())).thenReturn(getResponse());
     }
 
-    private HttpHeaders getEMRequestHeaders() {
+    private HttpHeaders getEmRequestHeaders() {
         return httpEntityReqEntity.getAllValues().get(0).getHeaders();
     }
 

@@ -53,7 +53,7 @@ public class EvidenceManagementDownloadServiceImplUTest {
     }
 
     @Test
-    public void givenFile_whenDownloadFile_thenDMStoreServiceIsCalled() {
+    public void givenFile_whenDownloadFile_thenDmStoreServiceIsCalled() {
         ResponseEntity<byte[]> expectedResponse = mock(ResponseEntity.class);
 
         when(userService.getUserDetails(TEST_AUTH_TOKEN)).thenReturn(UserDetails.builder().build());

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class EvidenceManagementStoreAPI extends WebServiceHealthCheck {
+public class EvidenceManagementStoreApi extends WebServiceHealthCheck {
     @Autowired
-    public EvidenceManagementStoreAPI(HttpEntityFactory httpEntityFactory,
+    public EvidenceManagementStoreApi(HttpEntityFactory httpEntityFactory,
                                       @Qualifier("healthCheckRestTemplate") RestTemplate restTemplate,
                                       @Value("${evidence.management.store.health.url}") String uri) {
         super(httpEntityFactory, restTemplate, uri);

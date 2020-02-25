@@ -136,7 +136,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEMStoreThrowsHttpServerException()
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
@@ -178,7 +178,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEMServiceIsUnavailable()
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceIsUnavailable()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(new ResourceAccessException("Evidence management service is currently down"));
@@ -188,7 +188,7 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEMServiceThrowsHttpServerException()
+    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
                 .willThrow(
@@ -248,14 +248,14 @@ public class EvidenceManagementClientControllerTest {
 
     private List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
-        fileUploadResponse = FileUploadResponse.builder() .status(HttpStatus.OK)
-        .fileUrl(UPLOADED_FILE_URL)
-        .fileName("test.txt")
-        .createdBy("testuser")
-        .createdOn("2017-09-01T13:12:36.862+0000")
-        .modifiedOn("2017-09-01T13:12:36.862+0000")
-        .lastModifiedBy("testuser")
-        .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
+        fileUploadResponse = FileUploadResponse.builder().status(HttpStatus.OK)
+            .fileUrl(UPLOADED_FILE_URL)
+            .fileName("test.txt")
+            .createdBy("testuser")
+            .createdOn("2017-09-01T13:12:36.862+0000")
+            .modifiedOn("2017-09-01T13:12:36.862+0000")
+            .lastModifiedBy("testuser")
+            .mimeType(MediaType.TEXT_PLAIN_VALUE).build();
         return Collections.singletonList(fileUploadResponse);
     }
 

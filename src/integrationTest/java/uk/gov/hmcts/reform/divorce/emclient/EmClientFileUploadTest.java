@@ -27,7 +27,7 @@ import static net.serenitybdd.rest.SerenityRest.given;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SerenityParameterizedRunner.class)
-public class EMClientFileUploadTest extends IntegrationTest {
+public class EmClientFileUploadTest extends IntegrationTest {
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
@@ -60,18 +60,18 @@ public class EMClientFileUploadTest extends IntegrationTest {
                 .collect(Collectors.toList());
     }
 
-    public EMClientFileUploadTest(String filename, String fileContentType) {
+    public EmClientFileUploadTest(String filename, String fileContentType) {
         this.name = filename;
         this.fileType = fileContentType;
     }
 
     @Test
     public void uploadFile() {
-        uploadFileToEMStore(this.name, this.fileType);
+        uploadFileToEmStore(this.name, this.fileType);
     }
 
     @SuppressWarnings("unchecked")
-    private void uploadFileToEMStore(String fileToUpload, String fileContentType) {
+    private void uploadFileToEmStore(String fileToUpload, String fileContentType) {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader())
@@ -82,10 +82,10 @@ public class EMClientFileUploadTest extends IntegrationTest {
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
-        assertEMGetFileResponse(fileToUpload, fileContentType, fileUrl);
+        assertEmGetFileResponse(fileToUpload, fileContentType, fileUrl);
     }
 
-    private void assertEMGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
+    private void assertEmGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
         Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
 
         assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
