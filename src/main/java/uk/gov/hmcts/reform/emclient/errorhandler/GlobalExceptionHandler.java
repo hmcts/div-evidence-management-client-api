@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
             WebRequest request,
             HttpServletResponse response) {
 
+        //NOSONAR
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), clientErrorException.getMessage());
 
         return ResponseEntity.status(clientErrorException.getStatusCode()).body(
@@ -39,6 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ResourceAccessException.class, HttpServerErrorException.class})
     public ResponseEntity<Object> handleMaxUploadException(RestClientException restClientException, WebRequest request) {
 
+        //NOSONAR
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), restClientException.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
