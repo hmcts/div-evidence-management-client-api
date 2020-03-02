@@ -14,12 +14,12 @@ import org.springframework.http.HttpStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SerenityRunner.class)
-public class EMClientFileDownloadTest extends IntegrationTest {
+public class EmClientFileDownloadTest extends IntegrationTest {
 
     private static final String FILE_TO_DOWNLOAD = "ce377eb6-baa8-4b80-b183-e9f90a71ccf9";
     private static final String TEST_FILE = "documents/testDocument.pdf";
@@ -31,13 +31,13 @@ public class EMClientFileDownloadTest extends IntegrationTest {
     private String evidenceManagementClientApiBaseUrl;
 
     @Autowired
-    private IDAMUtils idamTestSupportUtil;
+    private IdamUtils idamTestSupportUtil;
 
     @Test
     public void downloadFileTest()throws Exception {
         Response response = SerenityRest.given()
                 .headers(getDownloadAuthenticationTokenHeader())
-                .get(evidenceManagementClientApiBaseUrl+"/download/"+FILE_TO_DOWNLOAD)
+                .get(evidenceManagementClientApiBaseUrl + "/download/" + FILE_TO_DOWNLOAD)
                 .andReturn();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());

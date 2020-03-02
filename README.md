@@ -44,13 +44,13 @@ This will output
 ```
  but this is expected behaviour of Gradle and means the project is running.
 
-**Additional Commands that are avaliable:**
-* This command will create a local Sonar Qube docker instance on port 9000:
+**Additional Commands that are available:**
+* This command will create a local SonarQube docker instance on port 9000:
 ```
 docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest
 ```
 
-* This command will generate sonar reports and update it into local sonarqube instance.
+* This command will generate sonar reports and update it into local SonarQube instance.
 ```
 ./gradlew sonarqube -Dsonar.host.url=http://localhost:9000
 ```

@@ -1,12 +1,12 @@
 package uk.gov.hmcts.reform.emclient.errorhandler;
 
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.Map;
 
 @Component
 public class GlobalErrorAttributes extends DefaultErrorAttributes {

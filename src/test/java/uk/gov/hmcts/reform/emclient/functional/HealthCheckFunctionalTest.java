@@ -40,7 +40,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.client.ExpectedCount.manyTimes;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -56,7 +56,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
     "feign.hystrix.enabled=true",
     "eureka.client.enabled=false"
     })
-public class HealthCheckFunctionalTest extends BaseFunctionalTest{
+public class HealthCheckFunctionalTest extends BaseFunctionalTest {
 
     @LocalServerPort
     private int port;
@@ -77,7 +77,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
     private String healthUrl;
     private MockRestServiceServer mockRestServiceServer;
     private ClientHttpRequestFactory originalRequestFactory;
-    private HttpClient httpClient = HttpClients.createMinimal();
+    private final HttpClient httpClient = HttpClients.createMinimal();
     private static final String UP = "UP";
     private static final String DOWN = "DOWN";
     private static final String SERVICE_AUTH_PROVIDER_HEALTH_CHECK = "serviceAuthProviderHealthCheck";
@@ -94,7 +94,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
 
     @Before
     public void setUp() {
-        healthUrl = "http://localhost:" + String.valueOf(port) + "/health";
+        healthUrl = "http://localhost:" + port + "/health";
         originalRequestFactory = restTemplate.getRequestFactory();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
@@ -106,7 +106,6 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
 
     @Test
     public void shouldReturnStatusUpWhenAllDependenciesAreUp() throws Exception {
-        //stub stubEvidenceManagementStoreApiHealthUp
         mockServiceAuthFeignHealthCheck();
         stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl, serviceAuthApiUrl);
         assertStatus(EntityUtils.toString(getHealth().getEntity()), UP,
@@ -135,7 +134,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
     }
 
-    private void stubHealthService( HttpStatus healthStatus, String ... services) throws Exception {
+    private void stubHealthService(HttpStatus healthStatus, String...services) throws Exception {
         String resourceName = HEALTHCHECK_DOWN_JSON;
         if (healthStatus == HttpStatus.OK) {
             resourceName = HEALTHCHECK_UP_JSON;
@@ -145,22 +144,22 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         }
     }
 
-    private void assertStatus(String body, String checkStatus, String ... onServices) {
+    private void stubHealthService(String requestUrl, HttpStatus status, String resourceName) throws Exception {
+        String responseBody = FileUtils.readFileToString(
+            new File(getClass().getResource(resourceName).toURI()),
+            Charset.defaultCharset());
+        mockRestServiceServer.expect(manyTimes(), requestTo(requestUrl)).andExpect(method(HttpMethod.GET))
+            .andRespond(withStatus(status)
+                .body(responseBody)
+                .contentType(MediaType.APPLICATION_JSON));
+    }
+
+    private void assertStatus(String body, String checkStatus, String...onServices) {
         assertThat(JsonPath.read(body, "$.status").toString(), equalTo(checkStatus));
         for (String service : onServices) {
             assertThat(JsonPath.read(body, String.format("$.%s.status", service)).toString(), equalTo(checkStatus));
         }
         assertThat(JsonPath.read(body, "$.diskSpace.status").toString(), equalTo(UP));
-    }
-
-    private void stubHealthService(String requestUrl, HttpStatus status, String resourceName) throws Exception {
-        String responseBody = FileUtils.readFileToString(
-                new File(getClass().getResource(resourceName).toURI()),
-                Charset.defaultCharset());
-        mockRestServiceServer.expect(manyTimes(), requestTo(requestUrl)).andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(status)
-                        .body(responseBody)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     private void mockServiceAuthFeignHealthCheck() throws URISyntaxException, IOException {
@@ -172,7 +171,7 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest{
         serviceAuthServer.stubFor(get("/health")
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
-                .withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE)
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(responseBody)));
     }
 }

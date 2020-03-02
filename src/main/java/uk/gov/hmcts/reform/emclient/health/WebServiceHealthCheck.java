@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.emclient.health;
 
-import java.util.HashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.health.Health;
@@ -13,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
 
 public abstract class WebServiceHealthCheck implements HealthIndicator {
     private static final Logger log = LoggerFactory.getLogger(WebServiceHealthCheck.class);
@@ -29,7 +29,7 @@ public abstract class WebServiceHealthCheck implements HealthIndicator {
 
     public Health health() {
         HttpEntity<Object> httpEntity = httpEntityFactory.createRequestEntityForHealthCheck();
-        ResponseEntity<Object> responseEntity = null;
+        ResponseEntity<Object> responseEntity;
 
         try {
             responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, Object.class, new HashMap<>());

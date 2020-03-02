@@ -8,7 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
@@ -32,7 +40,7 @@ public class EvidenceManagementClientController {
     @Autowired
     private EvidenceManagementDownloadService emDownloadService;
 
-    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation(value = "Upload a file")
     @ApiResponses(value = {
@@ -49,7 +57,7 @@ public class EvidenceManagementClientController {
         return emUploadService.upload(files, authorizationToken, requestId);
     }
 
-    @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Delete a file")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "File successfully deleted",
