@@ -1,8 +1,5 @@
 package uk.gov.hmcts.reform.emclient.service;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -11,8 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
-
 import uk.gov.hmcts.reform.emclient.exception.TemporaryStoreFailureException;
+
+import java.io.IOException;
+import java.util.List;
 
 final class UploadRequestBuilder {
 
@@ -51,5 +50,4 @@ final class UploadRequestBuilder {
             throw new TemporaryStoreFailureException(ioException);
         }
     }
-
 }

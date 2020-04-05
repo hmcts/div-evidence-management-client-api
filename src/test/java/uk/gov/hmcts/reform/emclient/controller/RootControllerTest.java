@@ -10,13 +10,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes=EvidenceManagementClientApplication.class)
+@SpringBootTest(classes = EvidenceManagementClientApplication.class)
 @AutoConfigureMockMvc
 public class RootControllerTest {
 

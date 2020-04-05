@@ -36,7 +36,7 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
 
         HttpHeaders headers = createDownloadHeaders();
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-        String url = evidenceManagementStoreUrl + "/"+ fileId+"/binary";
+        String url = evidenceManagementStoreUrl + "/" + fileId + "/binary";
 
         return template.exchange(url, HttpMethod.GET, httpEntity, byte[].class);
     }

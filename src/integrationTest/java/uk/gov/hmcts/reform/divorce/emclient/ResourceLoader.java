@@ -3,13 +3,13 @@ package uk.gov.hmcts.reform.divorce.emclient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ResourceLoader {
     public static String loadAsText(final String filePath) throws Exception {
-        return new String(loadResource(filePath), Charset.forName("utf-8"));
+        return new String(loadResource(filePath), StandardCharsets.UTF_8);
     }
 
     public static byte[] loadResource(final String filePath) throws Exception {

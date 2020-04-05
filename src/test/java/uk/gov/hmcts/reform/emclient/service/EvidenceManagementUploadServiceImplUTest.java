@@ -23,7 +23,7 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.nio.file.Files.readAllBytes;
@@ -73,34 +73,34 @@ public class EvidenceManagementUploadServiceImplUTest {
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMRequestWith3Headers() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmRequestWith3Headers() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
         List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
         assertEquals(3, allValues.get(0).getHeaders().size());
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveSecurityAuthHeader() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmReqToHaveSecurityAuthHeader() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertTrue(getEMRequestHeaders().containsKey("ServiceAuthorization"));
+        assertTrue(getEmRequestHeaders().containsKey("ServiceAuthorization"));
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveUserIdHeader() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmReqToHaveUserIdHeader() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertTrue(getEMRequestHeaders().containsKey(USER_ID));
+        assertTrue(getEmRequestHeaders().containsKey(USER_ID));
     }
 
     @Test
-    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEMReqToHaveValidContentTypeHeader() {
+    public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectEmReqToHaveValidContentTypeHeader() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertEquals("multipart/form-data", getEMRequestHeaders().get("Content-Type").get(0));
+        assertEquals("multipart/form-data", getEmRequestHeaders().get("Content-Type").get(0));
     }
 
     @Test
     public void givenAuthKeyParamIsPassed_whenUploadIsCalled_thenExpectAuthKeyIsParsedForUserId() {
         emUploadService.upload(getMultipartFiles(), authKey(), REQ_ID);
-        assertEquals("19", getEMRequestHeaders().get(USER_ID).get(0));
+        assertEquals("19", getEmRequestHeaders().get(USER_ID).get(0));
     }
 
     @Test
@@ -108,30 +108,30 @@ public class EvidenceManagementUploadServiceImplUTest {
         expectedException.expect(NullPointerException.class);
         expectedException.expectMessage("files");
         emUploadService.upload(null, authKey(), REQ_ID);
-        List<HttpEntity> allValues = httpEntityReqEntity.getAllValues();
+        httpEntityReqEntity.getAllValues();
     }
 
-    private ArgumentCaptor<HttpEntity> mockRestTemplate() throws IOException {
+    private void mockRestTemplate() throws IOException {
         this.httpEntityReqEntity = ArgumentCaptor.forClass(HttpEntity.class);
         when(restTemplate.postForObject(eq(EM_URI), httpEntityReqEntity.capture(), any())).thenReturn(getResponse());
-        return httpEntityReqEntity;
     }
 
-    private HttpHeaders getEMRequestHeaders() {
+    private HttpHeaders getEmRequestHeaders() {
         return httpEntityReqEntity.getAllValues().get(0).getHeaders();
     }
+
     private ObjectNode getResponse() throws IOException {
         final String response = new String(readAllBytes(get(FILE_UPLOAD_RESPONSE)));
         return (ObjectNode) new ObjectMapper().readTree(response);
     }
 
     private static String authKey() {
-        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT" +
-                "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V" +
-                "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV" +
-                "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi" +
-                "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb" +
-                "x72zDa1r7Qnp1M";
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJkZGFjaW5hbWh1dXV0ZHBoOGNqMWg0NGM4MSIsInN1YiI6IjE5IiwiaWF0IjoxNT"
+            + "IyNzkxMDQ1LCJleHAiOjE1MjI3OTQ2NDUsImRhdGEiOiJjYXNld29ya2VyLWRpdm9yY2UsY2FzZXdvcmtlcixjYXNld29ya2V"
+            + "yLWRpdm9yY2UtbG9hMSxjYXNld29ya2VyLWxvYTEiLCJ0eXBlIjoiQUNDRVNTIiwiaWQiOiIxOSIsImZvcmVuYW1lIjoiQ2FzZV"
+            + "dvcmtlclRlc3QiLCJzdXJuYW1lIjoiVXNlciIsImRlZmF1bHQtc2VydmljZSI6IkNDRCIsImxvYSI6MSwiZGVmYXVsdC11cmwiOi"
+            + "JodHRwczovL2xvY2FsaG9zdDo5MDAwL3BvYy9jY2QiLCJncm91cCI6ImNhc2V3b3JrZXIifQ.y5tbI6Tg1bJLPkXm-nrI6D_FhM0pb"
+            + "x72zDa1r7Qnp1M";
     }
 
     private List<MultipartFile> getMultipartFiles() {
@@ -140,6 +140,6 @@ public class EvidenceManagementUploadServiceImplUTest {
                 "JDP.pdf",
                 "application/pdf",
                 "This is a test pdf file".getBytes());
-        return Arrays.asList(multipartFile);
+        return Collections.singletonList(multipartFile);
     }
 }

@@ -26,7 +26,7 @@ public class UserServiceTest {
     private static final String BEARER_AUTH_TOKEN = "Bearer authTokenValue";
 
     @Test
-    public void userServiceReturnUserDetails(){
+    public void userServiceReturnUserDetails() {
 
         UserDetails userDetails = UserDetails.builder().id("IdOne").build();
         String authToken = BEARER_AUTH_TOKEN;
@@ -36,7 +36,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = HttpClientErrorException.class)
-    public void userServiceThrowErrorWhenNotAuthorised(){
+    public void userServiceThrowErrorWhenNotAuthorised() {
         String authToken = BEARER_AUTH_TOKEN;
         when(idamApiClient.retrieveUserDetails(authToken)).thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
 

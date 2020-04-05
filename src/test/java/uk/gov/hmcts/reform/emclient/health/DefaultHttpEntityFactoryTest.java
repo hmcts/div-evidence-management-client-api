@@ -20,7 +20,7 @@ public class DefaultHttpEntityFactoryTest {
         HttpEntity<Object> httpEntity = httpEntityFactory.createRequestEntityForHealthCheck();
 
         assertThat(httpEntity.getHeaders().size()).isEqualTo(1);
-        assertThat(httpEntity.getHeaders().getAccept().get(0)).isEqualTo(MediaType.APPLICATION_JSON_UTF8);
+        assertThat(httpEntity.getHeaders().getAccept().get(0)).isEqualTo(MediaType.APPLICATION_JSON);
         assertThat(httpEntity.getBody()).isNull();
     }
 }
