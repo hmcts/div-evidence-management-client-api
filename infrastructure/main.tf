@@ -1,3 +1,7 @@
+provider "azurerm" {
+  version = "1.44.0"
+}
+
 locals {
   aseName        = "core-compute-${var.env}"
   local_env      = "${(var.env == "preview" || var.env == "spreview") ? (var.env == "preview" ) ? "aat" : "saat" : var.env}"
@@ -8,7 +12,7 @@ locals {
   nonPreviewVaultName = "${var.reform_team}-${var.env}"
   vaultName = "${var.env == "preview" ? local.previewVaultName : local.nonPreviewVaultName}"
   vaultUri = "${data.azurerm_key_vault.div_key_vault.vault_uri}"
-  
+
   asp_name = "${var.env == "prod" ? "div-emca-prod" : "${var.raw_product}-${var.env}"}"
   asp_rg = "${var.env == "prod" ? "div-emca-prod" : "${var.raw_product}-${var.env}"}"
 }
