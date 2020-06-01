@@ -15,7 +15,7 @@ buildscript {
         classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.6') {
             exclude(group: 'org.pitest')
         }
-        classpath('org.pitest:pitest-command-line:1.4.11')
+        classpath('org.pitest:pitest-command-line:1.5.2')
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("net.serenity-bdd:serenity-gradle-plugin:2.1.2")
     }
