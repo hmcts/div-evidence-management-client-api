@@ -13,4 +13,18 @@
         <notes>Upgrade log4j to 2.13.2 which supports this feature. Previous versions can set the system property mail.smtp.ssl.checkserveridentity to true to globally enable hostname verification for SMTPS connections.</notes>
         <cve>CVE-2020-9488</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-websocket-9.0.35.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
+        <cve>CVE-2020-11996</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.35.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
+        <cve>CVE-2020-11996</cve>
+    </suppress>
 </suppressions>
