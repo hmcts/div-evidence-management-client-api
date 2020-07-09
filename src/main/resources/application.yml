@@ -95,3 +95,9 @@ spring:
     multipart:
       max-file-size: 30000KB
       max-request-size: 30000KB
+
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
