@@ -1,10 +1,5 @@
 java:
-  environment:
-    IDAM_API_HEALTH_URI: "https://idam-api.aat.platform.hmcts.net/health"
-    IDAM_API_URL: "https://idam-api.aat.platform.hmcts.net"
-
   # Don't modify below here
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
-  aadIdentityName: divorce
