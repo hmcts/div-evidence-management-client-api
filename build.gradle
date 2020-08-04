@@ -98,7 +98,7 @@ sourceSets {
 }
 
 dependencies {
-    integrationTestCompile(sourceSets.test.output)
+    integrationTestImplementation(sourceSets.test.output)
     integrationTestAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 }
 
@@ -113,7 +113,7 @@ compileTestJava {
 }
 
 configurations {
-    integrationTestCompile.extendsFrom testCompile
+    integrationTestImplementation.extendsFrom testImplementation
     integrationTestRuntime.extendsFrom testRuntime
 }
 
@@ -166,66 +166,66 @@ dependencyCheck {
 dependencies {
 
     //integration test
-    integrationTestCompile group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
-    integrationTestCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
-    integrationTestCompile group: 'junit', name: 'junit', version: versions.junit
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-    integrationTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    integrationTestCompile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
+    integrationTestImplementation group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
+    integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    integrationTestImplementation group: 'junit', name: 'junit', version: versions.junit
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+    integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+    integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    integrationTestCompile group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    integrationTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
-    integrationTestCompile group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
 
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
-    compile group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
-    compile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
-    compile group: 'commons-io', name: 'commons-io', version: versions.commonsIo
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
-    compile group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: versions.jsr305
+    implementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
+    implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
+    implementation group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
+    implementation group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
     annotationProcessor("org.projectlombok:lombok:${versions.lombok}")
     implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 
-    compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.springBoot
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
-    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
-    compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
-    compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.springBoot
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
+    implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
+    implementation group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
+    implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
 
-    compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
-    compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-    compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging
-    compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
-    compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
+    implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
+    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
 
-    compile (group: 'com.google.guava', name: 'guava', version: versions.guava) {
+    implementation (group: 'com.google.guava', name: 'guava', version: versions.guava) {
         force = true
     }
 
-    compile (group: 'org.apache.tomcat.embed', name:'tomcat-embed-core', version: versions.tomcat) {
+    implementation (group: 'org.apache.tomcat.embed', name:'tomcat-embed-core', version: versions.tomcat) {
         force = true
     }
-    compile (group: 'org.apache.tomcat.embed', name:'tomcat-embed-websocket', version: versions.tomcat) {
+    implementation (group: 'org.apache.tomcat.embed', name:'tomcat-embed-websocket', version: versions.tomcat) {
         force = true
     }
-    compile (group: 'org.apache.tomcat.embed', name:'tomcat-embed-el', version: versions.tomcat) {
+    implementation (group: 'org.apache.tomcat.embed', name:'tomcat-embed-el', version: versions.tomcat) {
         force = true
     }
 
-    compile (group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud) {
+    implementation (group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud) {
         exclude group: 'io.reactivex', module: 'io.reactivex'
         exclude group: 'io.reactivex', module: 'rxnetty'
         exclude group: 'io.reactivex', module: 'rxnetty-contexts'
@@ -233,23 +233,23 @@ dependencies {
         exclude group: 'org.bouncycastle'
     }
 
-    compile (group:  'org.springframework.security', name: 'spring-security-rsa', version: versions.spring_security_rsa) {
+    implementation (group:  'org.springframework.security', name: 'spring-security-rsa', version: versions.spring_security_rsa) {
         force = true
     }
 
-    compile (group: 'org.springframework.security', name:'spring-security-crypto', version: versions.springSecurityCrypto) {
+    implementation (group: 'org.springframework.security', name:'spring-security-crypto', version: versions.springSecurityCrypto) {
         force = true
     }
 
-    compile (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
+    implementation (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
         exclude group: 'io.reactivex', module: 'io.reactivex'
         exclude group: 'io.reactivex', module: 'rxnetty'
         exclude group: 'io.reactivex', module: 'rxnetty-contexts'
         exclude group: 'io.reactivex', module: 'rxnetty-servo'
     }
 
-    testCompile group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
+    testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
+    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
 }
