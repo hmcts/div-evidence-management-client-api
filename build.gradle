@@ -43,11 +43,10 @@ def versions = [
         jaywayJsonPath                          : '2.4.0',
         jsr305                                  : '3.0.2',
         junit                                   : '4.13',
-        lombok                                  : '1.18.10',
+        lombok                                  : '1.18.12',
         puppyCrawl                              : '8.29',
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.0.4',
-        reformSpringBootAutoConfigure           : '2.0.0',
         reformsJavaLogging                      : '5.1.1',
         restAssured                             : '3.3.0',
         serenity                                : '2.1.2',
@@ -207,7 +206,6 @@ dependencies {
     compile group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
 
     compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
-    compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: versions.reformSpringBootAutoConfigure
     compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging
     compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
