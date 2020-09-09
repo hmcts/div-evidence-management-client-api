@@ -125,6 +125,16 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+    dependencies {
+        //CVE-2017-18640
+        dependency group: 'org.yaml',name: 'snakeyaml', version: '1.26'
+    }
+}
+
 distributions {
   main {
     contents {
@@ -270,6 +280,10 @@ task bootRunAat(type: BootRun, description: 'Runs the app using AAT config', dep
         main = bootJar.mainClassName
         classpath = sourceSets.main.runtimeClasspath
         systemProperty 'spring.profiles.active', 'aat'
+        systemProperty 'http.proxyHost', 'proxyout.reform.hmcts.net'
+        systemProperty 'http.proxyPort', '8080'
+        systemProperty 'https.proxyHost', 'proxyout.reform.hmcts.net'
+        systemProperty 'https.proxyPort', '8080'
     }
 }
 
