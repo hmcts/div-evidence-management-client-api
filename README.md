@@ -7,7 +7,7 @@
   * File Upload(s)
   * File Download
 * It uses the following tech stack tech stack
-  * Java8
+  * Java11
   * Spring Boot
   * Junit, Mockito, SpringBootTest and Powermockito
   * Gradle
