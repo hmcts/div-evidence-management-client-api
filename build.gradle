@@ -54,7 +54,7 @@ def versions = [
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
         springBoot                              : '2.2.4.RELEASE',
-        springCloud                             : '2.2.1.RELEASE',
+        springCloud                             : '2.2.5.RELEASE',
         springfoxSwagger                        : '2.9.2',
         springHateoas                           : '0.25.2.RELEASE',
         springPluginCore                        : '1.2.0.RELEASE',
@@ -132,7 +132,10 @@ dependencyManagement {
     dependencies {
         //CVE-2017-18640
         dependency group: 'org.yaml',name: 'snakeyaml', version: '1.26'
+
+        dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.0'
     }
+
 }
 
 distributions {
