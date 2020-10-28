@@ -27,12 +27,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 def secrets = [
         'div-${env}': [
-                secret("ccd-submission-s2s-auth-secret", "AUTH_PROVIDER_CCDSUBMISSION_CLIENT_KEY"),
-                secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_DOCUMENTGENERATOR_CLIENT_KEY"),
-                //secret("frontend-secret", "SERVICE_AUTH_SECRET"),
-                //secret("idam-secret", "IDAM_CLIENT_SECRET"),
-                //secret("idam-citizen-password", "IDAM_CITIZEN_PASSWORD"),
-                //secret("idam-caseworker-password", "IDAM_CASEWORKER_PASSWORD")
+                secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
+                secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
+                secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
         ]
 ]
 
@@ -45,9 +42,15 @@ withNightlyPipeline(type, product, component) {
     println("### Set test_environment.. ###")
     env.test_environment = 'aat'
 
+    after('functionalTest:preview') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
     env.Rules = params.SecurityRules
     enableFullFunctionalTest()
     //enableSecurityScan()
     //enableMutationTest()
+
+
 
 }
