@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SerenityRunner.class)
 public class EmClientFileDownloadTest extends IntegrationTest {
 
-    private static final String FILE_TO_DOWNLOAD = "ce377eb6-baa8-4b80-b183-e9f90a71ccf9";
+    private static final String FILE_TO_DOWNLOAD = "b0211f13-7973-4940-adc9-3435307fe925";
     private static final String TEST_FILE = "documents/testDocument.pdf";
 
     @Rule
