@@ -21,8 +21,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SerenityRunner.class)
 public class EmClientFileDownloadTest extends IntegrationTest {
 
-    private static final String FILE_TO_DOWNLOAD = "894a7016-410a-46f2-8bb9-6fe060e5e004";
-    private static final String TEST_FILE = "documents/certificateOfEntitlement.pdf";
+    private static final String FILE_TO_DOWNLOAD = "93e06406-453f-475e-b6e0-1a845221f44f";
+    private static final String TEST_FILE = "documents/testDocument.pdf";
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
