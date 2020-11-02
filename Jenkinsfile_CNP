@@ -59,4 +59,10 @@ withPipeline(type, product, component) {
     after('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
+
+    onMaster() {
+        env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
+        enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+    }
+
 }
