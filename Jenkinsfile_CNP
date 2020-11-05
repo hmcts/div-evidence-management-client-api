@@ -34,6 +34,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
     ]
 }
 
+//Pact Broker URL
+env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
+
 withPipeline(type, product, component) {
     loadVaultSecrets(secrets)
     enableAksStagingDeployment()
@@ -61,7 +64,6 @@ withPipeline(type, product, component) {
     }
 
     onMaster() {
-        env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
         enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     }
 
