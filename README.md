@@ -105,6 +105,15 @@ To run all integration tests locally:
 * Start the app with AAT config using `./gradlew clean bootRunAat`
 * Start the test with AAT config using `./gradlew clean functional`
 
+## Contract Test (PACT)
+
+To run consumer contract tests locally
+* Execute gradle task Contract 
+   ```./gradlew contract```
+ 
+* To publish the contract into local pact broker or Hmcts broker.  Execute
+   ```./gradlew runAndPublishConsumerPactTests```
+
 
 ##  License
 
