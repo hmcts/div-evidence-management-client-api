@@ -1,0 +1,106 @@
+api:
+  version: 0.1
+auth:
+  provider:
+    service:
+      client:
+        port: 4502
+documentation:
+  swagger:
+    enabled: true
+endpoints:
+  fileupload:
+    extensions: .jpg,.jpeg,.bmp,.tif,.tiff,.png,.pdf
+    mimetypes: image/jpeg,application/pdf,image/tiff,image/png,image/bmp
+evidence:
+  management:
+    client:
+      api:
+        service:
+          port: 4006
+    health:
+      url: ${EVIDENCE_MANAGEMENT_HEALTH_URL:http://localhost:3404/health}
+    store:
+      health:
+        url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://localhost:3405}/health
+      upload:
+        file:
+          url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://localhost:4603}/documents
+    upload:
+      file:
+        url: ${EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL:http://localhost:3404/documents}
+health:
+  check:
+    http:
+      connect:
+        request:
+          timeout: 5000
+        timeout: 5000
+http:
+  connect:
+    request:
+      timeout: 60000
+    timeout: 60000
+idam:
+  api:
+    url: ${IDAM_API_URL:http://localhost:8081}
+  auth:
+    microservice: ${AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE:em_gw}
+    secret: ${AUTH_PROVIDER_SERVICE_CLIENT_KEY:AAAAAAAAAAAAAAAA}
+  s2s-auth:
+    health:
+      url: ${idam.s2s-auth.url}/health
+    url: ${AUTH_PROVIDER_SERVICE_CLIENT_BASEURL:http://localhost:4502}
+management:
+  endpoint:
+    health:
+      cache:
+        time-to-live: 4000ms
+      enabled: true
+      show-details: ALWAYS
+  endpoints:
+    metrics:
+      enabled: true
+      sensitive: false
+    web:
+      base-path: /
+      exposure:
+        include: health, info
+      path-mapping:
+        health: health
+  health:
+    defaults:
+      enabled: true
+    diskspace:
+      enabled: true
+  info:
+    defaults:
+      enabled: true
+  security:
+    enabled: false
+server:
+  port: 4006
+service:
+  service-auth-provider:
+    health:
+      uri: ${idam.s2s-auth.health.url}
+spring:
+  application:
+    name: div-emca
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: development
+  servlet:
+    multipart:
+      max-file-size: 30000KB
+      max-request-size: 30000KB
+logging:
+  level:
+    org.springframework.web: ERROR
+    uk.gov.hmcts.reform.divorce.emclient: DEBUG
+    au.com.dius.pact: DEBUG
+  pattern:
+    console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
+
+
