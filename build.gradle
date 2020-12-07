@@ -48,7 +48,7 @@ def versions = [
         puppyCrawl                              : '8.29',
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.0.4',
-        reformsJavaLogging                      : '5.1.1',
+        reformsJavaLogging                      : '5.1.7',
         restAssured                             : '3.3.0',
         serenity                                : '2.1.2',
         serenityCucumber                        : '1.9.51',
@@ -65,8 +65,8 @@ def versions = [
         tomcat                                  : '9.0.37',
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.25.1',
-        pact_version                            : '4.1.7'
-
+        pact_version                            : '4.1.7',
+        httpComponents                          : '4.5.13'
 ]
 
 apply plugin: 'checkstyle'
@@ -229,9 +229,14 @@ dependencies {
     implementation group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
 
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
+    implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
+
     implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging
+    implementation (group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging){
+        exclude group: 'org.apache.httpcomponents', 'module': 'httpclient'
+    }
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
 
@@ -277,6 +282,8 @@ dependencies {
         exclude(module: 'commons-logging')
     }
     //pact
+    contractTestCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
+    contractTestCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
     contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
     contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
     contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
