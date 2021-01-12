@@ -66,7 +66,8 @@ def versions = [
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.25.1',
         pact_version                            : '4.1.7',
-        httpComponents                          : '4.5.13'
+        httpComponents                          : '4.5.13',
+        bouncycastle                            : '1.61'
 ]
 
 apply plugin: 'checkstyle'
@@ -228,6 +229,7 @@ dependencies {
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     implementation group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: versions.bouncycastle
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
