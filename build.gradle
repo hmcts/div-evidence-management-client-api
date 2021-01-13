@@ -30,15 +30,16 @@ plugins {
     id 'org.owasp.dependencycheck' version '6.0.2'
     id 'org.sonarqube' version '2.8'
     id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'au.com.dius.pact' version '4.1.0'
 }
 
 def versions = [
         commonsIo                               : '2.6',
         commonsLang3                            : '3.9',
-        guava                                   : '28.2-jre',
+        guava                                   : '30.0-jre',
         hibernate                               : '6.0.17.Final',
         jacksonCore                             : '2.10.2',
-        jacksonDatabind                         : '2.10.2',
+        jacksonDatabind                         : '2.11.0',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.4.0',
         jsr305                                  : '3.0.2',
@@ -47,7 +48,7 @@ def versions = [
         puppyCrawl                              : '8.29',
         reformHealth                            : '0.0.5',
         reformPropertiesVolume                  : '0.0.4',
-        reformsJavaLogging                      : '5.1.1',
+        reformsJavaLogging                      : '5.1.7',
         restAssured                             : '3.3.0',
         serenity                                : '2.1.2',
         serenityCucumber                        : '1.9.51',
@@ -61,9 +62,12 @@ def versions = [
         springRetry                             : '1.2.5.RELEASE',
         springSecurityCrypto                    : '5.2.4.RELEASE',
         spring_security_rsa                     : '1.0.8.RELEASE',
-        tomcat                                  : '9.0.37',
+        tomcat                                  : '9.0.40',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.25.1'
+        wiremockVersion                         : '2.25.1',
+        pact_version                            : '4.1.7',
+        httpComponents                          : '4.5.13',
+        bouncycastle                            : '1.61'
 ]
 
 apply plugin: 'checkstyle'
@@ -94,6 +98,14 @@ sourceSets {
         resources {
             srcDir('src/integrationTest/resources')
         }
+    }
+    contractTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/contractTest/java')
+        }
+        resources.srcDir file('src/contractTest/resources')
     }
 }
 
@@ -217,10 +229,16 @@ dependencies {
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
     implementation group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: versions.bouncycastle
+
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
+    implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
 
     implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: versions.reformHealth
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging
+    implementation (group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging){
+        exclude group: 'org.apache.httpcomponents', 'module': 'httpclient'
+    }
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
 
@@ -265,6 +283,20 @@ dependencies {
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
+    //pact
+    contractTestCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
+    contractTestCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
+    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+    contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.3.2")
+    contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.2")
+    contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.3.2')
+
+    contractTestCompile sourceSets.main.runtimeClasspath
+    contractTestCompile sourceSets.test.runtimeClasspath
 }
 
 test {
@@ -352,6 +384,43 @@ sonarqube {
 
 task addReleaseSuffixToDevelop() {
     version = "${version}-SNAPSHOT"
+}
+
+task contract(type: Test) {
+    group = 'Delivery pipeline'
+    description = 'Runs the consumer Pact tests'
+    useJUnitPlatform()
+    testClassesDirs = sourceSets.contractTest.output.classesDirs
+    classpath = sourceSets.contractTest.runtimeClasspath
+    include "uk/gov/hmcts/reform/divorce/emclient/**"
+}
+
+task runAndPublishConsumerPactTests(type: Test){
+    logger.lifecycle("Runs pact Tests")
+    testClassesDirs = sourceSets.contractTest.output.classesDirs
+    classpath = sourceSets.contractTest.runtimeClasspath
+
+}
+
+runAndPublishConsumerPactTests.dependsOn contract
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
+
+project.ext {
+    pactVersion = getCheckedOutGitCommitHash()
+}
+
+def getCheckedOutGitCommitHash() {
+    'git rev-parse --verify --short HEAD'.execute().text.trim()
+}
+
+pact {
+    publish {
+        pactDirectory = 'build/pacts'
+        pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
+        tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+        version = project.pactVersion
+    }
 }
 
 def debug = System.getProperty("debug")
