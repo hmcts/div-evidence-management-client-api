@@ -2,22 +2,17 @@ variable "reform_service_name" {
   default = "emca"
 }
 
-variable "product" {
-  type    = "string"
-}
+variable "product" {}
 
 variable "raw_product" {
   default = "div"
 }
 
-variable "component" {
-  type = "string"
-}
+variable "component" {}
 
 variable "tenant_id" {}
 
 variable "jenkins_AAD_objectId" {
-  type        = "string"
   description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
 }
 
@@ -33,9 +28,7 @@ variable "instance_size" {
   default = "I2"
 }
 
-variable "env" {
-  type = "string"
-}
+variable "env" {}
 
 variable "idam_s2s_url_prefix" {
   default = "rpe-service-auth-provider"
@@ -69,7 +62,6 @@ variable "http_connect_socket_timeout" {
 variable "subscription" {}
 
 variable "location" {
-  type    = "string"
   default = "UK South"
 }
 
@@ -80,5 +72,5 @@ variable "vault_env" {}
 variable "idam_api_url" {}
 
 variable "common_tags" {
-  type = "map"
+  type = map(string)
 }

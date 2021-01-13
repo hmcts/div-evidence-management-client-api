@@ -7,7 +7,7 @@
   * File Upload(s)
   * File Download
 * It uses the following tech stack tech stack
-  * Java8
+  * Java11
   * Spring Boot
   * Junit, Mockito, SpringBootTest and Powermockito
   * Gradle
@@ -104,6 +104,15 @@ To run all integration tests locally:
 * Replace the `replace_me` secrets in both of the _newly created_ files. You can get the values from SCM and Azure secrets key vault (the new files are in .gitignore and should ***not*** be committed to git)
 * Start the app with AAT config using `./gradlew clean bootRunAat`
 * Start the test with AAT config using `./gradlew clean functional`
+
+## Contract Test (PACT)
+
+To run consumer contract tests locally
+* Execute gradle task Contract 
+   ```./gradlew contract```
+ 
+* To publish the contract into local pact broker or Hmcts broker.  Execute
+   ```./gradlew runAndPublishConsumerPactTests```
 
 
 ##  License
