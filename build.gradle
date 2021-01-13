@@ -165,7 +165,13 @@ tasks.withType(JavaCompile) {
 }
 
 pitest {
-    targetClasses = ['uk.gov.hmcts.reform.emclient.*']
+    targetClasses = [
+            'uk.gov.hmcts.reform.emclient.service.*',
+            'uk.gov.hmcts.reform.emclient.validation.*',
+            'uk.gov.hmcts.reform.emclient.idam.*',
+            'uk.gov.hmcts.reform.emclient.errorhandler.*',
+            'uk.gov.hmcts.reform.emclient.controller.*'
+    ]
     excludedClasses = ['uk.gov.hmcts.reform.emclient.health.*', 'uk.gov.hmcts.reform.emclient.configuration.*', 'uk.gov.hmcts.reform.emclient.response.*']
     threads = 4
     outputFormats = ['XML', 'HTML']
