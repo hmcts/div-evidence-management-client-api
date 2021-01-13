@@ -143,7 +143,7 @@ dependencyManagement {
     }
     dependencies {
         //CVE-2017-18640
-        dependency group: 'org.yaml',name: 'snakeyaml', version: '1.26'
+        dependency group: 'org.yaml',name: 'snakeyaml', version: '1.27'
 
         dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.0'
     }
