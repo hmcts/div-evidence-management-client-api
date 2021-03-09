@@ -117,4 +117,4 @@ public class EmClientFileUploadTest extends IntegrationTest {
         headers.put("Content-Type", "multipart/form-data");
         return headers;
     }
-}io.restassured.config.LogConfig
+}
