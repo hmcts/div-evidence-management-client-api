@@ -34,17 +34,20 @@ plugins {
 }
 
 def versions = [
+        bouncycastle                            : '1.61',
         commonsIo                               : '2.6',
         commonsLang3                            : '3.9',
         guava                                   : '30.0-jre',
         hibernate                               : '6.0.17.Final',
+        httpComponents                          : '4.5.13',
         jacksonCore                             : '2.10.2',
         jacksonDatabind                         : '2.11.0',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.4.0',
         jsr305                                  : '3.0.2',
-        junit                                   : '4.13',
+        junit                                   : '4.13.1',
         lombok                                  : '1.18.12',
+        pact_version                            : '4.1.7',
         puppyCrawl                              : '8.29',
         reformPropertiesVolume                  : '0.0.4',
         reformsJavaLogging                      : '5.1.7',
@@ -59,14 +62,11 @@ def versions = [
         springHateoas                           : '0.25.2.RELEASE',
         springPluginCore                        : '1.2.0.RELEASE',
         springRetry                             : '1.2.5.RELEASE',
-        springSecurityCrypto                    : '5.2.9.RELEASE',
-        spring_security_rsa                     : '1.0.8.RELEASE',
+        springSecurityCrypto                    : '5.4.5',
+        spring_security_rsa                     : '1.0.9.RELEASE',
         tomcat                                  : '9.0.43',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.25.1',
-        pact_version                            : '4.1.7',
-        httpComponents                          : '4.5.13',
-        bouncycastle                            : '1.61'
+        wiremockVersion                         : '2.25.1'
 ]
 
 apply plugin: 'checkstyle'
