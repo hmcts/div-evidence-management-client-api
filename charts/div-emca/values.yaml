@@ -18,3 +18,4 @@ java:
       resourceGroup: div
       secrets:
         - div-doc-s2s-auth-secret
+        - AppInsightsInstrumentationKey
