@@ -46,7 +46,7 @@ def versions = [
         jaywayJsonPath                          : '2.4.0',
         jsr305                                  : '3.0.2',
         junit                                   : '4.13.1',
-        lombok                                  : '1.18.12',
+        lombok                                  : '1.18.20',
         pact_version                            : '4.1.7',
         puppyCrawl                              : '8.29',
         reformPropertiesVolume                  : '0.0.4',
