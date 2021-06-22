@@ -21,42 +21,42 @@
 ## Setup
 
 1. Clone the repo 
-```
+```bash
 git clone [https://github.com/hmcts/div-evidence-management-client-api.git](https://github.com/hmcts/div-evidence-management-client-api.git)
 ```
-2. cd into the directory
-```
+2. `cd` into the directory
+```bash
 cd div-evidence-management-client-api
 ```
 
-3. 
-Run the following command
-```
+3. Run the following command
+```bash
 ./gradlew bootRun
 
 ```
 This command will start the spring boot application in an embedded tomcat on port 4006.
 To change the port change the configuration in `application.properties`. 
-This will output 
-```
-<==========---> 80% EXECUTING [43s]`
+
+This will output: 
+```bash
+<==========---> 80% EXECUTING [43s]
 > :bootRun
 ```
- but this is expected behaviour of Gradle and means the project is running.
+this is an expected behaviour of Gradle and means the project is running.
 
 **Additional Commands that are available:**
 * This command will create a local SonarQube docker instance on port 9000:
-```
+```bash
 docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonarqube:latest
 ```
 
 * This command will generate sonar reports and update it into local SonarQube instance.
-```
+```bash
 ./gradlew sonarqube -Dsonar.host.url=http://localhost:9000
 ```
 
 * This command will runs all verification tasks in the project, including test.
-```
+```bash
 ./gradlew check
 ```
  
@@ -71,7 +71,8 @@ docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonar
 
 **File Upload Response:**
 
-``` [
+```JSON
+[
     {
         "fileUrl": "http://localhost:8080/documents/214",
         "fileName": "file",
@@ -82,8 +83,7 @@ docker pull sonarqube:latest && docker run -d --restart=always -p9000:9000 sonar
         "modifiedOn": "null",
         "status": "OK"
     }
-] 
-
+]
 ```
 
 | File Download Endpoint | HTTP Protocol | Header Attribute  Condition | Headers |
@@ -108,12 +108,15 @@ To run all integration tests locally:
 ## Contract Test (PACT)
 
 To run consumer contract tests locally
-* Execute gradle task Contract 
-   ```./gradlew contract```
+* Execute gradle task Contract
+```bash
+./gradlew contract
+```
  
-* To publish the contract into local pact broker or Hmcts broker.  Execute
-   ```./gradlew runAndPublishConsumerPactTests```
-
+* To publish the contract into local pact broker or Hmcts broker. Execute:
+```bash
+./gradlew runAndPublishConsumerPactTests
+```
 
 ##  License
 
