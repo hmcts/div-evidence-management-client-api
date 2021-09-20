@@ -61,7 +61,6 @@ management:
   endpoints:
     metrics:
       enabled: true
-      sensitive: false
     web:
       base-path: /
       exposure:
@@ -76,8 +75,6 @@ management:
   info:
     defaults:
       enabled: true
-  security:
-    enabled: false
 server:
   port: 4006
 service:
