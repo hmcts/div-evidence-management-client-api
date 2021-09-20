@@ -61,7 +61,6 @@ management:
   endpoints:
     metrics:
       enabled: true
-      sensitive: false
     web:
       base-path: /
       exposure:
