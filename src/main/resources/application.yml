@@ -76,8 +76,6 @@ management:
   info:
     defaults:
       enabled: true
-  security:
-    enabled: false
 server:
   port: 4006
 service:
