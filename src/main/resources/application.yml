@@ -19,16 +19,16 @@ evidence:
         service:
           port: 4006
     health:
-      url: ${EVIDENCE_MANAGEMENT_HEALTH_URL:http://localhost:3404/health}
+      url: ${EVIDENCE_MANAGEMENT_HEALTH_URL:http://localhost:4506/health}
     store:
       health:
-        url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://localhost:3405}/health
+        url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://localhost:4506/health}
       upload:
         file:
-          url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://localhost:4603}/documents
+          url: ${DOCUMENT_MANAGEMENT_STORE_URL:http://localhost:4506/documents}
     upload:
       file:
-        url: ${EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL:http://localhost:3404/documents}
+        url: ${EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL:http://localhost:4506/documents}
 health:
   check:
     http:
@@ -43,7 +43,7 @@ http:
     timeout: 60000
 idam:
   api:
-    url: ${IDAM_API_URL:http://localhost:8081}
+    url: ${IDAM_API_URL:http://localhost:5000}
   auth:
     microservice: ${AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE:em_gw}
     secret: ${AUTH_PROVIDER_SERVICE_CLIENT_KEY:AAAAAAAAAAAAAAAA}
