@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +10,8 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
@@ -27,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
 import java.util.Collections;
@@ -71,6 +76,21 @@ public class EvidenceManagementClientControllerTest {
     @MockBean
     private EvidenceManagementDeleteService emDeleteService;
 
+    @MockBean
+    private EvidenceManagementSecureDocStoreService emSecureDocService;
+
+    @MockBean
+    private ApacheHttpClientFactory apacheHttpClientFactory;
+
+    @MockBean
+    private ApacheHttpClientConnectionManagerFactory apacheHttpClientConnectionManagerFactory;
+
+    @MockBean
+    private HttpClientConnectionManager httpClientConnectionManager;
+
+    @MockBean
+    private CloseableHttpClient closeableHttpClient;
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -104,7 +124,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
@@ -120,7 +140,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
@@ -135,7 +155,7 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
@@ -146,7 +166,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileIsInvokedWithInvalidAuthToken()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
@@ -162,7 +182,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldReturnStatus200WithErrorBodyWhenTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(textMultipartFile())
@@ -177,7 +197,7 @@ public class EvidenceManagementClientControllerTest {
             .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceIsUnavailable()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
@@ -187,7 +207,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
@@ -198,7 +218,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
         given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(new ResponseEntity<>(HttpStatus.OK));

@@ -19,6 +19,7 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.24")
     }
+
 }
 
 plugins {
@@ -148,7 +149,6 @@ dependencyManagement {
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
     }
-
 }
 
 distributions {
@@ -237,7 +237,14 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
+
+    runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
+    runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
+    runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud
+    runtimeOnly group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
+
     implementation group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
     implementation group: 'org.springframework.retry', name: 'spring-retry', version: versions.springRetry
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: versions.bouncycastle
@@ -289,11 +296,14 @@ dependencies {
         exclude group: 'io.reactivex', module: 'rxnetty-servo'
     }
 
+    implementation("com.github.hmcts:ccd-case-document-am-client:1.7.3")
+
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
     testCompile('com.github.hmcts:fortify-client:1.2.0:all')
+    testCompile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
     //pact
     contractTestCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
     contractTestCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
