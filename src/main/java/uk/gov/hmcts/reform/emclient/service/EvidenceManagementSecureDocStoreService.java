@@ -59,7 +59,6 @@ public class EvidenceManagementSecureDocStoreService {
         caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(),
             getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
-
     }
 
     private UUID getDocumentIdFromSelfHref(String selfHref) {

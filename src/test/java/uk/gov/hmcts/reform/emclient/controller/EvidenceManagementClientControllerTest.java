@@ -56,21 +56,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     FeignRibbonClientAutoConfiguration.class,
     FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
-//@TestPropertySource(properties = {"feature.secure-doc-store=true"})
 public class EvidenceManagementClientControllerTest {
-    protected static final String AUTH_TOKEN = "AAAAAAA";
-    protected static final String REQUEST_ID = "1234";
-    protected static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
-    protected static final String REQUEST_ID_HEADER = "requestId";
-    protected static final String CONTENT_TYPE_HEADER = "content-type";
-    protected static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
-    protected static final String INVALID_AUTH_TOKEN = "{[][][][][}";
-    protected static final String INVALID_FILE_ERROR_MSG =
+    private static final String AUTH_TOKEN = "AAAAAAA";
+    private static final String REQUEST_ID = "1234";
+    private static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
+    private static final String REQUEST_ID_HEADER = "requestId";
+    private static final String CONTENT_TYPE_HEADER = "content-type";
+    private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
+    private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
+    private static final String INVALID_FILE_ERROR_MSG =
         "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
-    protected static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
-    protected static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
-    protected static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
+    private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
+    private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
+    private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
 
     @MockBean
     protected EvidenceManagementUploadService emUploadService;
@@ -93,7 +92,7 @@ public class EvidenceManagementClientControllerTest {
     @MockBean
     private CloseableHttpClient closeableHttpClient;
 
-    protected MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
