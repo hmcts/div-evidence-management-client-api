@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.commons.httpclient.DefaultApacheHttpClientFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +50,7 @@ public class EvidenceManagementClientController {
     private UserService userService;
 
     @Value("${feature.secure-doc-store:false}")
-    boolean secureDocStoreEnabled;
+    protected boolean secureDocStoreEnabled;
 
     @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -55,29 +56,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     FeignRibbonClientAutoConfiguration.class,
     FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
+//@TestPropertySource(properties = {"feature.secure-doc-store=true"})
 public class EvidenceManagementClientControllerTest {
-    private static final String AUTH_TOKEN = "AAAAAAA";
-    private static final String REQUEST_ID = "1234";
-    private static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
-    private static final String REQUEST_ID_HEADER = "requestId";
-    private static final String CONTENT_TYPE_HEADER = "content-type";
-    private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
-    private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
-    private static final String INVALID_FILE_ERROR_MSG =
+    protected static final String AUTH_TOKEN = "AAAAAAA";
+    protected static final String REQUEST_ID = "1234";
+    protected static final String AUTHORIZATION_TOKEN_HEADER = "Authorization";
+    protected static final String REQUEST_ID_HEADER = "requestId";
+    protected static final String CONTENT_TYPE_HEADER = "content-type";
+    protected static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
+    protected static final String INVALID_AUTH_TOKEN = "{[][][][][}";
+    protected static final String INVALID_FILE_ERROR_MSG =
         "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
-    private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
-    private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
-    public static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
+    protected static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
+    protected static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
+    protected static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
 
     @MockBean
-    private EvidenceManagementUploadService emUploadService;
+    protected EvidenceManagementUploadService emUploadService;
 
     @MockBean
-    private EvidenceManagementDeleteService emDeleteService;
+    protected EvidenceManagementDeleteService emDeleteService;
 
     @MockBean
-    private EvidenceManagementSecureDocStoreService emSecureDocService;
+    protected EvidenceManagementSecureDocStoreService emSecureDocService;
 
     @MockBean
     private ApacheHttpClientFactory apacheHttpClientFactory;
@@ -91,7 +93,7 @@ public class EvidenceManagementClientControllerTest {
     @MockBean
     private CloseableHttpClient closeableHttpClient;
 
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -124,7 +126,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
@@ -140,7 +142,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
@@ -155,7 +157,7 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
@@ -166,7 +168,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileIsInvokedWithInvalidAuthToken()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID))
@@ -182,7 +184,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, INVALID_AUTH_TOKEN, REQUEST_ID);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldReturnStatus200WithErrorBodyWhenTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(textMultipartFile())
@@ -197,7 +199,7 @@ public class EvidenceManagementClientControllerTest {
             .andExpect(jsonPath("$.path", is(EM_CLIENT_UPLOAD_URL)));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceIsUnavailable()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
@@ -207,7 +209,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileIsInvokedAndEmServiceThrowsHttpServerException()
             throws Exception {
         given(emUploadService.upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID))
@@ -218,7 +220,7 @@ public class EvidenceManagementClientControllerTest {
         verify(emUploadService).upload(MULTIPART_FILE_LIST, AUTH_TOKEN, REQUEST_ID);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
         given(emDeleteService.deleteFile(UPLOADED_FILE_URL, AUTH_TOKEN, REQUEST_ID))
                 .willReturn(new ResponseEntity<>(HttpStatus.OK));
@@ -266,7 +268,7 @@ public class EvidenceManagementClientControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    private List<FileUploadResponse> prepareFileUploadResponse() {
+    protected List<FileUploadResponse> prepareFileUploadResponse() {
         FileUploadResponse fileUploadResponse;
         fileUploadResponse = FileUploadResponse.builder().status(HttpStatus.OK)
             .fileUrl(UPLOADED_FILE_URL)
@@ -279,16 +281,16 @@ public class EvidenceManagementClientControllerTest {
         return Collections.singletonList(fileUploadResponse);
     }
 
-    private MockMultipartFile textMultipartFile() {
+    protected MockMultipartFile textMultipartFile() {
         return new MockMultipartFile("file", "test.txt", "multipart/form-data",
                 "This is a test file".getBytes());
     }
 
-    private MockMultipartFile jpegMultipartFile() {
+    protected MockMultipartFile jpegMultipartFile() {
         return new MockMultipartFile("image", "image.jpeg", "image/jpeg", new byte[0]);
     }
 
-    private void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
+    protected void verifyExceptionFromUploadServiceIsHandledGracefully() throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
             .file(jpegMultipartFile())
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
