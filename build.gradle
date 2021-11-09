@@ -388,6 +388,7 @@ def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/response/*',
         '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
         '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
+        '**uk/gov/hmcts/reform/emclient/idam/models/IdamTokens.java',
         '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
 ]
 

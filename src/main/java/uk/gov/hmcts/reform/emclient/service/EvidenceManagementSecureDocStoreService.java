@@ -61,7 +61,7 @@ public class EvidenceManagementSecureDocStoreService {
             getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
     }
 
-    private UUID getDocumentIdFromSelfHref(String selfHref) {
+    protected UUID getDocumentIdFromSelfHref(String selfHref) {
         return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
     }
 
@@ -89,14 +89,6 @@ public class EvidenceManagementSecureDocStoreService {
         String documentHref = URI.create(selfHref).getPath().replaceFirst("/", "");
         return caseDocumentClient.getDocumentBinary(idamTokens.getIdamOauth2Token(),
             idamTokens.getServiceAuthorization(), documentHref);
-    }
-
-    private void logFiles(List<MultipartFile> files) {
-        log.info("Files could not be uploaded:");
-        files.forEach(file -> {
-            log.info("Name: {}", file.getName());
-            log.info("OriginalName {}", file.getOriginalFilename());
-        });
     }
 
     private String getLocalDateTime(Date date) {

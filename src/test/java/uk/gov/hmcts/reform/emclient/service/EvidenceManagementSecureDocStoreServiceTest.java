@@ -24,6 +24,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -53,12 +55,26 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files))
             .thenReturn(uploadResponse);
 
-
         List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files,
             idamTokens);
         FileUploadResponse response = result.get(0);
 
         assertFileUploadResponse(response);
+    }
+
+    @Test
+    public void shouldReturnNullIWhenResponseIsNull() {
+
+        IdamTokens idamTokens = buildIdamTokens();
+        List<MultipartFile> files = Arrays.asList(mockFile);
+
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files))
+            .thenReturn(null);
+
+        List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files,
+            idamTokens);
+
+        assertNull(result);
     }
 
     @Test(expected = HttpClientErrorException.class)
@@ -92,7 +108,6 @@ public class EvidenceManagementSecureDocStoreServiceTest {
 
         verify(caseDocumentClient).getDocumentBinary(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
             docPartUrl);
-
     }
 
     @Test(expected = HttpClientErrorException.class)
@@ -110,6 +125,20 @@ public class EvidenceManagementSecureDocStoreServiceTest {
                 idamTokens);
     }
 
+    @Test
+    public void shouldDeleteDoc() {
+        IdamTokens idamTokens = buildIdamTokens();
+
+        String docPartUrl = "documents/f5734b18-c075-4417-81ce-c0c2e0155dbe";
+        String binaryHref = "http://dm-store-aat.service.core-compute-aat.internal/" + docPartUrl;
+
+        evidenceManagementSecureDocStoreService
+            .delete(binaryHref,
+                idamTokens);
+
+        verify(caseDocumentClient).deleteDocument(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
+            evidenceManagementSecureDocStoreService.getDocumentIdFromSelfHref(binaryHref),Boolean.TRUE);
+    }
 
     private void assertFileUploadResponse(FileUploadResponse response) {
         assertThat(response.getCreatedBy(), is("someUser"));
