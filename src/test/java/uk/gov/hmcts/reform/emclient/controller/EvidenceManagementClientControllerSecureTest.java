@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -100,6 +101,17 @@ public class EvidenceManagementClientControllerSecureTest extends EvidenceManage
         verify(emSecureDocService).upload(MULTIPART_FILE_LIST, idamTokens);
     }
 
+
+    @Test
+    @Override
+    public void shouldDeleteFileWhenDeleteFileIsInvokedWithFileUrl() throws Exception {
+        mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(REQUEST_ID_HEADER, REQUEST_ID))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(emSecureDocService).delete(UPLOADED_FILE_URL, idamTokens);
+    }
 
     private IdamTokens buildIdamTokens() {
         IdamTokens idamTokens = IdamTokens.builder()

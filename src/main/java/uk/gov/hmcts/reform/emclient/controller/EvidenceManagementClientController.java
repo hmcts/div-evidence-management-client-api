@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -83,7 +84,12 @@ public class EvidenceManagementClientController {
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
                                         @RequestParam("fileUrl") @ApiParam("File url to delete") String fileUrl) {
-        return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+        if (secureDocStoreEnabled) {
+            evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
+        }
     }
 
     @GetMapping(value = "/version/1/download/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)

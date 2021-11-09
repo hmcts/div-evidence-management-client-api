@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,6 +32,7 @@ import static java.util.stream.StreamSupport.stream;
 public class EvidenceManagementSecureDocStoreService {
 
     private final CaseDocumentClient caseDocumentClient;
+    private static final int DOC_UUID_LENGTH = 36;
 
     @Autowired
     public EvidenceManagementSecureDocStoreService(CaseDocumentClient caseDocumentClient) {
@@ -54,7 +56,12 @@ public class EvidenceManagementSecureDocStoreService {
     }
 
     public void delete(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
-        //TODO
+        caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(),idamTokens.getServiceAuthorization(),  getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
+
+    }
+
+    private UUID getDocumentIdFromSelfHref(String selfHref) {
+        return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
     }
 
     private List<FileUploadResponse> toUploadResponse(UploadResponse uploadResponse) {
