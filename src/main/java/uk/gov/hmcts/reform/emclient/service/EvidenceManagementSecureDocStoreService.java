@@ -56,7 +56,9 @@ public class EvidenceManagementSecureDocStoreService {
     }
 
     public void delete(String selfHref, IdamTokens idamTokens) throws HttpClientErrorException {
-        caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(),idamTokens.getServiceAuthorization(),  getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
+        caseDocumentClient.deleteDocument(idamTokens.getIdamOauth2Token(),
+            idamTokens.getServiceAuthorization(),
+            getDocumentIdFromSelfHref(selfHref), Boolean.TRUE);
 
     }
 
