@@ -53,7 +53,6 @@ public class HttpConnectionConfiguration {
 
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.registerModule(new Jackson2HalModule());
-        objectMapper.registerModule(new ParameterNamesModule());
 
         MappingJackson2HttpMessageConverter jackson2HttpConverter
             = new MappingJackson2HttpMessageConverter(objectMapper);
