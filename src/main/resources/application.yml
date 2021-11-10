@@ -68,6 +68,8 @@ management:
       path-mapping:
         health: health
   health:
+    case-document-am-api:
+      enabled: false
     defaults:
       enabled: true
     diskspace:
@@ -75,6 +77,7 @@ management:
   info:
     defaults:
       enabled: true
+
 server:
   port: 4006
 service:
