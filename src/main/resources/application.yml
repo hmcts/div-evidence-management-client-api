@@ -105,3 +105,11 @@ case_document_am:
   url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
   health:
     url: ${case_document_am.url}/health
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
