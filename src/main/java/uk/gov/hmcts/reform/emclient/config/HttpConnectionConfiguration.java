@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.ImmutableList;
 import org.apache.http.client.config.RequestConfig;
@@ -50,16 +49,14 @@ public class HttpConnectionConfiguration {
     @Bean
     @Primary
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(
-            @Autowired ObjectMapper objectMapper) {
+        @Autowired ObjectMapper objectMapper) {
 
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.registerModule(new Jackson2HalModule());
-        objectMapper.registerModule(new JavaTimeModule());
         objectMapper.registerModule(new ParameterNamesModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         MappingJackson2HttpMessageConverter jackson2HttpConverter
-                = new MappingJackson2HttpMessageConverter(objectMapper);
+            = new MappingJackson2HttpMessageConverter(objectMapper);
         jackson2HttpConverter.setObjectMapper(objectMapper);
         jackson2HttpConverter.setSupportedMediaTypes(ImmutableList.of(MEDIA_TYPE_HAL_JSON, MediaType.APPLICATION_JSON));
 
@@ -75,33 +72,33 @@ public class HttpConnectionConfiguration {
     @Bean
     public RestTemplate healthCheckRestTemplate(@Autowired MappingJackson2HttpMessageConverter jackson2HttpConverter) {
         return getRestTemplate(
-                jackson2HttpConverter,
-                healthCheckHttpConnectTimeout,
-                healthCheckHttpConnectRequestTimeout
+            jackson2HttpConverter,
+            healthCheckHttpConnectTimeout,
+            healthCheckHttpConnectRequestTimeout
         );
     }
 
     private RestTemplate getRestTemplate(
-            @Autowired MappingJackson2HttpMessageConverter jackson2HttpConverter,
-            int connectTimeout,
-            int connectRequestTimeout) {
+        @Autowired MappingJackson2HttpMessageConverter jackson2HttpConverter,
+        int connectTimeout,
+        int connectRequestTimeout) {
         RestTemplate restTemplate = new RestTemplate(asList(jackson2HttpConverter,
-                new FormHttpMessageConverter(),
-                new ResourceHttpMessageConverter(),
-                new ByteArrayHttpMessageConverter()));
+            new FormHttpMessageConverter(),
+            new ResourceHttpMessageConverter(),
+            new ByteArrayHttpMessageConverter()));
 
         RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(connectTimeout)
-                .setConnectionRequestTimeout(connectRequestTimeout)
-                .setSocketTimeout(connectRequestTimeout)
-                .build();
+            .setConnectTimeout(connectTimeout)
+            .setConnectionRequestTimeout(connectRequestTimeout)
+            .setSocketTimeout(connectRequestTimeout)
+            .build();
 
         CloseableHttpClient client = HttpClientBuilder
-                .create()
-                .useSystemProperties()
-                .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
-                .setDefaultRequestConfig(config)
-                .build();
+            .create()
+            .useSystemProperties()
+            .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
+            .setDefaultRequestConfig(config)
+            .build();
 
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
 
