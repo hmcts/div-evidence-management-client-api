@@ -216,6 +216,10 @@ dependencies {
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
+    integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
+    integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud
+    integrationTestImplementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
