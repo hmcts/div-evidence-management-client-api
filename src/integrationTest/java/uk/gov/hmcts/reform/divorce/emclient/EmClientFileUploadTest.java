@@ -35,9 +35,6 @@ public class EmClientFileUploadTest extends IntegrationTest {
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
-    @Value("${evidence.management.client.api.endpoint.uploadwiths2stoken}")
-    private String emClientApiUploadEndpoint;
-
     @Autowired
     private IdamUtils idamTestSupportUtil;
 
