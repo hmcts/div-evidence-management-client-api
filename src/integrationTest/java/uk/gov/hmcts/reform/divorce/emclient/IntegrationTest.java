@@ -1,15 +1,10 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.assertj.core.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
-import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
@@ -17,16 +12,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
+import javax.annotation.PostConstruct;
 
 @Lazy
 @Slf4j
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
-@ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
-        FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+@ImportAutoConfiguration({RibbonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+    FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
 public class IntegrationTest {
