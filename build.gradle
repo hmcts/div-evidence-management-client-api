@@ -216,9 +216,6 @@ dependencies {
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
-    integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
-    integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
-    integrationTestImplementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud
     integrationTestImplementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
@@ -239,14 +236,12 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud
+
+    compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
-    runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springCloud
-    runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: versions.springCloud
-    runtimeOnly group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud
     runtimeOnly group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
     implementation group: 'org.springframework.plugin', name: 'spring-plugin-core', version: versions.springPluginCore
@@ -307,7 +302,6 @@ dependencies {
         exclude(module: 'commons-logging')
     }
     testCompile('com.github.hmcts:fortify-client:1.2.0:all')
-    testCompile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloud
     //pact
     contractTestCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
     contractTestCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents

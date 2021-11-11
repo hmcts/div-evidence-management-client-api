@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.emclient.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.ImmutableList;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;

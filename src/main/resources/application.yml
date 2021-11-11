@@ -97,6 +97,16 @@ spring:
       max-file-size: 30000KB
       max-request-size: 30000KB
 
+feign:
+  httpclient:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
 feature-toggle:
   toggle:
     secure-doc-store: ${SECURE_DOC_STORE_FEATURE:false}
@@ -105,11 +115,3 @@ case_document_am:
   url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
   health:
     url: ${case_document_am.url}/health
-
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
