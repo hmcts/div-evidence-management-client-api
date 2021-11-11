@@ -10,6 +10,7 @@ import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -109,6 +110,10 @@ public class HttpConnectionConfiguration {
         return restTemplate;
     }
 
+    @Bean
+    public CloseableHttpClient feignClient() {
+        return HttpClients.createDefault();
+    }
     @Bean
     public Client getFeignHttpClient() {
         return new ApacheHttpClient(getHttpClient());

@@ -99,7 +99,7 @@ spring:
 
 feign:
   httpclient:
-    enabled: false
+    enabled: true
   client:
     config:
       default:
