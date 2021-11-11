@@ -242,8 +242,9 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
 
-    compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.2'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
 
     implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
