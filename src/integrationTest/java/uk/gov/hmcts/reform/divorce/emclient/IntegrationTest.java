@@ -1,10 +1,15 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.assertj.core.util.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
+import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
@@ -25,6 +30,18 @@ import java.net.URL;
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
 public class IntegrationTest {
+
+    @MockBean
+    private ApacheHttpClientFactory apacheHttpClientFactory;
+
+    @MockBean
+    private ApacheHttpClientConnectionManagerFactory apacheHttpClientConnectionManagerFactory;
+
+    @MockBean
+    private HttpClientConnectionManager httpClientConnectionManager;
+
+    @MockBean
+    private CloseableHttpClient closeableHttpClient;
 
     @Value("${http.proxy:#{null}}")
     protected String httpProxy;
