@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +8,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.commons.httpclient.ApacheHttpClientConnectionManagerFactory;
-import org.springframework.cloud.commons.httpclient.ApacheHttpClientFactory;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
@@ -56,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     FeignRibbonClientAutoConfiguration.class,
     FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
-@TestPropertySource(properties = {"feature.secure-doc-store=true"})
+@TestPropertySource(properties = {"feature.secure-doc-store=true", "feign.httpclient.enabled=false"})
 public class EvidenceManagementClientControllerSecureTest {
 
     private static final String AUTH_TOKEN = "AAAAAAA";
@@ -66,8 +62,6 @@ public class EvidenceManagementClientControllerSecureTest {
     private static final String CONTENT_TYPE_HEADER = "content-type";
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
-    private static final String INVALID_FILE_ERROR_MSG =
-        "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
 
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
@@ -81,18 +75,6 @@ public class EvidenceManagementClientControllerSecureTest {
 
     @MockBean
     private EvidenceManagementSecureDocStoreService emSecureDocService;
-
-    @MockBean
-    private ApacheHttpClientFactory apacheHttpClientFactory;
-
-    @MockBean
-    private ApacheHttpClientConnectionManagerFactory apacheHttpClientConnectionManagerFactory;
-
-    @MockBean
-    private HttpClientConnectionManager httpClientConnectionManager;
-
-    @MockBean
-    private CloseableHttpClient closeableHttpClient;
 
     private MockMvc mockMvc;
 

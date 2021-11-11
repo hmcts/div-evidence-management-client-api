@@ -56,6 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     FeignRibbonClientAutoConfiguration.class,
     FeignAutoConfiguration.class})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
+@TestPropertySource(properties = {"feature.secure-doc-store=false", "feign.httpclient.enabled=false"})
 public class EvidenceManagementClientControllerTest {
     private static final String AUTH_TOKEN = "AAAAAAA";
     private static final String REQUEST_ID = "1234";
@@ -79,18 +80,6 @@ public class EvidenceManagementClientControllerTest {
 
     @MockBean
     protected EvidenceManagementSecureDocStoreService emSecureDocService;
-
-    @MockBean
-    private ApacheHttpClientFactory apacheHttpClientFactory;
-
-    @MockBean
-    private ApacheHttpClientConnectionManagerFactory apacheHttpClientConnectionManagerFactory;
-
-    @MockBean
-    private HttpClientConnectionManager httpClientConnectionManager;
-
-    @MockBean
-    private CloseableHttpClient closeableHttpClient;
 
     private MockMvc mockMvc;
 
