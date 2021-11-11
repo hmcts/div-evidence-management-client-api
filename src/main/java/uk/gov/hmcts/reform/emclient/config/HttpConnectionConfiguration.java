@@ -3,6 +3,10 @@ package uk.gov.hmcts.reform.emclient.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
+import feign.Client;
+import feign.httpclient.ApacheHttpClient;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -20,6 +24,7 @@ import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterceptor;
+import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.StandardCharsets;
 
@@ -67,6 +72,7 @@ public class HttpConnectionConfiguration {
         return getRestTemplate(jackson2HttpConverter, httpConnectTimeout, httpConnectRequestTimeout);
     }
 
+
     @Bean
     public RestTemplate healthCheckRestTemplate(@Autowired MappingJackson2HttpMessageConverter jackson2HttpConverter) {
         return getRestTemplate(
@@ -101,5 +107,29 @@ public class HttpConnectionConfiguration {
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(client));
 
         return restTemplate;
+    }
+
+    @Bean
+    public Client getFeignHttpClient() {
+        return new ApacheHttpClient(getHttpClient());
+    }
+
+
+    private CloseableHttpClient getHttpClient() {
+        int timeout = 10000;
+        RequestConfig config = RequestConfig.custom()
+            .setConnectTimeout(timeout)
+            .setConnectionRequestTimeout(timeout)
+            .setSocketTimeout(timeout)
+            .build();
+
+        return HttpClientBuilder
+            .create()
+            .useSystemProperties()
+            .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
+            .addInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
+            .addInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
+            .setDefaultRequestConfig(config)
+            .build();
     }
 }

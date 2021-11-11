@@ -55,10 +55,10 @@ def versions = [
         restAssured                             : '3.3.0',
         serenity                                : '2.1.2',
         serenityCucumber                        : '1.9.51',
-        serviceTokenGenerator                   : '3.0.0',
+        serviceTokenGenerator                   : '4.0.0',
         skyscreamer                             : '1.2.3',
         springBoot                              : '2.3.11.RELEASE',
-        springCloud                             : '2.2.5.RELEASE',
+        springCloud                             : 'Hoxton.SR12',
         springfoxSwagger                        : '2.9.2',
         springHateoas                           : '0.25.2.RELEASE',
         springPluginCore                        : '1.2.0.RELEASE',
@@ -137,9 +137,14 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
+ext {
+    springCloudVersion = 'Hoxton.SR12'
+}
+
 dependencyManagement {
     imports {
         mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
     dependencies {
         //CVE-2017-18640
@@ -210,7 +215,6 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-    integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
@@ -218,6 +222,7 @@ dependencies {
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
     integrationTestImplementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.springHateoas
 
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonCore
@@ -272,13 +277,15 @@ dependencies {
         force = true
     }
 
-    implementation (group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud) {
-        exclude group: 'io.reactivex', module: 'io.reactivex'
-        exclude group: 'io.reactivex', module: 'rxnetty'
-        exclude group: 'io.reactivex', module: 'rxnetty-contexts'
-        exclude group: 'io.reactivex', module: 'rxnetty-servo'
-        exclude group: 'org.bouncycastle'
-    }
+    implementation group: 'com.netflix.ribbon', name: 'ribbon-loadbalancer', version: '2.7.18'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: '2.2.9.RELEASE'
+//    implementation (group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign',  version: versions.springCloud) {
+//        exclude group: 'io.reactivex', module: 'io.reactivex'
+//        exclude group: 'io.reactivex', module: 'rxnetty'
+//        exclude group: 'io.reactivex', module: 'rxnetty-contexts'
+//        exclude group: 'io.reactivex', module: 'rxnetty-servo'
+//        exclude group: 'org.bouncycastle'
+//    }
 
     implementation (group:  'org.springframework.security', name: 'spring-security-rsa', version: versions.spring_security_rsa) {
         force = true
@@ -301,6 +308,7 @@ dependencies {
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
+    testImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     testCompile('com.github.hmcts:fortify-client:1.2.0:all')
     //pact
     contractTestCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
