@@ -31,18 +31,6 @@ import java.net.URL;
 @PropertySource("classpath:application-${env}.properties")
 public class IntegrationTest {
 
-    @MockBean
-    private ApacheHttpClientFactory apacheHttpClientFactory;
-
-    @MockBean
-    private ApacheHttpClientConnectionManagerFactory apacheHttpClientConnectionManagerFactory;
-
-    @MockBean
-    private HttpClientConnectionManager httpClientConnectionManager;
-
-    @MockBean
-    private CloseableHttpClient closeableHttpClient;
-
     @Value("${http.proxy:#{null}}")
     protected String httpProxy;
 
