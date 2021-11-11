@@ -111,9 +111,10 @@ public class HttpConnectionConfiguration {
     }
 
     @Bean
-    public CloseableHttpClient feignClient() {
-        return HttpClients.createDefault();
+    public Client feignClient() {
+        return new ApacheHttpClient(getHttpClient());
     }
+
     @Bean
     public Client getFeignHttpClient() {
         return new ApacheHttpClient(getHttpClient());
