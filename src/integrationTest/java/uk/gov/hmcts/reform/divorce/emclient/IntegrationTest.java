@@ -11,6 +11,8 @@ import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfigura
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.ContextConfiguration;
+import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.net.URL;
     FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
+@ContextConfiguration(classes = {EvidenceManagementClientApplication.class})
 public class IntegrationTest {
 
     @Value("${http.proxy:#{null}}")
