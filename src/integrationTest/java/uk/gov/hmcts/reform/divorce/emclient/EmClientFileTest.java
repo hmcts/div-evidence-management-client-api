@@ -90,10 +90,11 @@ public class EmClientFileTest extends IntegrationTest {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         String fileUrl = uploadFileTest(fileContentType, file);
         downloadFileTest(fileUrl, file);
-        deleteFileTest(fileUrl);
+        //deleteFileTest(fileUrl);
     }
 
     private String uploadFileTest(String fileContentType, File file) {
+        log.info("File upload test with filename {}", file.getName());
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader())
             .multiPart("file", file, fileContentType)
@@ -108,6 +109,7 @@ public class EmClientFileTest extends IntegrationTest {
 
     private void downloadFileTest(String fileUrl, File file) throws Exception {
         String documentId = URI.create(fileUrl).getPath().replaceFirst("/", "");
+        log.info("File download test with documentId {}", documentId);
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader())
             .get(evidenceManagementClientApiBaseUrl.concat("/download/" + documentId))
