@@ -50,6 +50,8 @@ public class EmClientFileTest extends IntegrationTest {
 
     private final String name;
     private final String fileType;
+    private static final int DOC_UUID_LENGTH = 36;
+
 
     private static String[] fileName = {"PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg",
         "PNGFile.png", "BMPFile.bmp", "PDFFile.pdf", "TIFFile.TIF", "JPEGFile.jpg"};
@@ -108,18 +110,22 @@ public class EmClientFileTest extends IntegrationTest {
     }
 
     private void downloadFileTest(String fileUrl, File file, String fileContentType) throws Exception {
-        String documentId = URI.create(fileUrl).getPath().replaceFirst("/", "");
+        UUID documentId = getDocumentIdFromSelfHref(URI.create(fileUrl).getPath().replaceFirst("/", ""));
         log.info("File download test with documentId {}", documentId);
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader())
             .multiPart("file", file,fileContentType)
-            .get(evidenceManagementClientApiBaseUrl.concat("/download/" + documentId))
+            .get(evidenceManagementClientApiBaseUrl.concat("/download/" + documentId.toString()))
             .andReturn();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         byte[] actualContent = response.getBody().asByteArray();
         byte[] expectedContent = Files.readAllBytes(file.toPath());
         assertThat(actualContent, equalTo(expectedContent));
+    }
+
+    private UUID getDocumentIdFromSelfHref(String selfHref) {
+        return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
     }
 
     private void deleteFileTest(String fileUrl) {
