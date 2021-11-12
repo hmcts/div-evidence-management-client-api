@@ -1,19 +1,23 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.io.File;
+import java.net.URI;
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +27,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static net.serenitybdd.rest.SerenityRest.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SerenityParameterizedRunner.class)
-public class EmClientFileUploadTest extends IntegrationTest {
+@Slf4j
+public class EmClientFileTest extends IntegrationTest {
 
     @Rule
     public SpringIntegrationMethodRule springMethodIntegration = new SpringIntegrationMethodRule();
@@ -38,8 +44,9 @@ public class EmClientFileUploadTest extends IntegrationTest {
     @Autowired
     private IdamUtils idamTestSupportUtil;
 
-    @Autowired
-    private AuthTokenGenerator authTokenGenerator;
+    private String username;
+    private String password;
+    private boolean userInitialized;
 
     private final String name;
     private final String fileType;
@@ -53,62 +60,77 @@ public class EmClientFileUploadTest extends IntegrationTest {
     @TestData
     public static Collection<Object[]> testData() {
         return IntStream.range(0, fileName.length)
-                .mapToObj(i -> new String[]{fileName[i], fileContentType[i]})
-                .collect(Collectors.toList());
+            .mapToObj(i -> new String[] {fileName[i], fileContentType[i]})
+            .collect(Collectors.toList());
     }
 
-    public EmClientFileUploadTest(String filename, String fileContentType) {
+    public EmClientFileTest(String filename, String fileContentType) {
         this.name = filename;
         this.fileType = fileContentType;
     }
 
+    @Before
+    public void setUpTest() {
+        if (!userInitialized) {
+            username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
+            password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
+            idamTestSupportUtil.createCaseworkerUserInIdam(username, password);
+            log.info("Set up Caseworker with username {} and pwd {}", username, password);
+            userInitialized = true;
+        }
+    }
+
     @Test
-    public void uploadFile() {
+    public void uploadFile() throws Exception {
         uploadFileToEmStore(this.name, this.fileType);
     }
 
     @SuppressWarnings("unchecked")
-    private void uploadFileToEmStore(String fileToUpload, String fileContentType) {
+    private void uploadFileToEmStore(String fileToUpload, String fileContentType) throws Exception {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
+        String fileUrl = uploadFileTest(fileContentType, file);
+        downloadFileTest(fileUrl, file);
+        deleteFileTest(fileUrl);
+    }
+
+    private String uploadFileTest(String fileContentType, File file) {
         Response response = SerenityRest.given()
             .headers(getAuthenticationTokenHeader())
             .multiPart("file", file, fileContentType)
             .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
             .andReturn();
-
+        log.info("File upload response received with status {}", response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.statusCode());
         String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
+        log.info("File url {}", fileUrl);
+        return fileUrl;
+    }
+
+    private void downloadFileTest(String fileUrl, File file) throws Exception {
+        String documentId = URI.create(fileUrl).getPath().replaceFirst("/", "");
+        Response response = SerenityRest.given()
+            .headers(getAuthenticationTokenHeader())
+            .get(evidenceManagementClientApiBaseUrl.concat("/download/" + documentId))
+            .andReturn();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
-        assertEmGetFileResponse(fileToUpload, fileContentType, fileUrl);
+        byte[] actualContent = response.getBody().asByteArray();
+        byte[] expectedContent = Files.readAllBytes(file.toPath());
+        assertThat(actualContent, equalTo(expectedContent));
     }
 
-    private void assertEmGetFileResponse(String fileToUpload, String fileContentType, String fileUrl) {
-        Response responseFromEvidenceManagement = readDataFromEvidenceManagement(fileUrl);
-
-        assertEquals(HttpStatus.OK.value(), responseFromEvidenceManagement.getStatusCode());
-        assertEquals(fileToUpload, responseFromEvidenceManagement.getBody().path("originalDocumentName"));
-        assertEquals(fileContentType, responseFromEvidenceManagement.getBody().path("mimeType"));
-    }
-
-    public Response readDataFromEvidenceManagement(String uri) {
-        String username = "simulate-delivered" + UUID.randomUUID() + "@notifications.service.gov.uk";
-        String password = UUID.randomUUID().toString().toUpperCase(Locale.UK);
-        idamTestSupportUtil.createCaseworkerUserInIdam(username, password);
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("ServiceAuthorization", authTokenGenerator.generate());
-        headers.put("user-id", username);
-        headers.put("user-roles", "caseworker-divorce");
-
-        return given()
-            .contentType("application/json")
-            .headers(headers)
-            .when()
-            .get(uri)
+    private void deleteFileTest(String fileUrl) {
+        Response response = SerenityRest.given()
+            .headers(getAuthenticationTokenHeader())
+            .param("fileUrl", fileUrl)
+            .delete(evidenceManagementClientApiBaseUrl.concat("/deleteFile"))
             .andReturn();
+        Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
+
 
     private Map<String, Object> getAuthenticationTokenHeader() {
-        String authenticationToken = idamTestSupportUtil.getIdamTestUser();
+        String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);
         Map<String, Object> headers = new HashMap<>();
         headers.put("Authorization", authenticationToken);
         headers.put("Content-Type", "multipart/form-data");

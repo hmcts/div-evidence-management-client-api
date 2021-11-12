@@ -39,6 +39,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -66,6 +67,8 @@ public class EvidenceManagementClientControllerSecureTest {
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
+    private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download/";
+    private static final String DOWNLOAD_FILE_ID = "300441c6-24e4-430c-82fe-124184b76558";
 
     @MockBean
     private EvidenceManagementUploadService emUploadService;
@@ -160,9 +163,19 @@ public class EvidenceManagementClientControllerSecureTest {
         mockMvc.perform(delete(EM_CLIENT_DELETE_ENDPOINT_URL + UPLOADED_FILE_URL)
             .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
             .header(REQUEST_ID_HEADER, REQUEST_ID))
-            .andExpect(status().isOk())
+            .andExpect(status().isNoContent())
             .andReturn();
         verify(emSecureDocService).delete(UPLOADED_FILE_URL, idamTokens);
+    }
+
+    @Test
+    public void shouldDownloadFileWhenFileUrl() throws Exception {
+        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + DOWNLOAD_FILE_ID)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(REQUEST_ID_HEADER, REQUEST_ID))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(emSecureDocService).download(DOWNLOAD_FILE_ID, idamTokens);
     }
 
     private IdamTokens buildIdamTokens() {

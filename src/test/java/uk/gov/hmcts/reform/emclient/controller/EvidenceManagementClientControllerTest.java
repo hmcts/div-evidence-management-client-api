@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDownloadService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService;
 import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadService;
 
@@ -42,6 +43,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -71,12 +73,17 @@ public class EvidenceManagementClientControllerTest {
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
     private static final String UPLOADED_FILE_URL = "http://localhost:8080/documents/6";
+    private static final String EM_CLIENT_DOWNLOAD_ENDPOINT_URL = "/emclientapi/version/1/download/";
+    private static final String DOWNLOAD_FILE_ID = "300441c6-24e4-430c-82fe-124184b76558";
 
     @MockBean
     protected EvidenceManagementUploadService emUploadService;
 
     @MockBean
     protected EvidenceManagementDeleteService emDeleteService;
+
+    @MockBean
+    protected EvidenceManagementDownloadService emDownloadService;
 
     @MockBean
     protected EvidenceManagementSecureDocStoreService emSecureDocService;
@@ -254,6 +261,16 @@ public class EvidenceManagementClientControllerTest {
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
                 .header(REQUEST_ID_HEADER, REQUEST_ID))
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    public void shouldDownloadFileWhenFileUrl() throws Exception {
+        mockMvc.perform(get(EM_CLIENT_DOWNLOAD_ENDPOINT_URL + DOWNLOAD_FILE_ID)
+            .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
+            .header(REQUEST_ID_HEADER, REQUEST_ID))
+            .andExpect(status().isOk())
+            .andReturn();
+        verify(emDownloadService).downloadFile(DOWNLOAD_FILE_ID, AUTH_TOKEN);
     }
 
     protected List<FileUploadResponse> prepareFileUploadResponse() {

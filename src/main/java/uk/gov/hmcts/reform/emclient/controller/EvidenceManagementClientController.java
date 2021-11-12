@@ -86,7 +86,7 @@ public class EvidenceManagementClientController {
                                         @RequestParam("fileUrl") @ApiParam("File url to delete") String fileUrl) {
         if (secureDocStoreEnabled) {
             evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
         }
@@ -103,7 +103,13 @@ public class EvidenceManagementClientController {
     public ResponseEntity<byte[]> getFile(
         @RequestHeader(value = "Authorization") String authorizationToken,
         @PathVariable("fileId") @ApiParam("File ID to download") String fileId) {
+        if (secureDocStoreEnabled) {
+            byte[] bytes = evidenceManagementSecureDocStoreService.download(fileId, userService.getIdamTokens(authorizationToken));
+            return new ResponseEntity<>(bytes, HttpStatus.OK);
 
-        return emDownloadService.downloadFile(fileId, authorizationToken);
+        } else {
+            return emDownloadService.downloadFile(fileId, authorizationToken);
+        }
+
     }
 }

@@ -99,7 +99,7 @@ public class IdamUtils {
         return idamUserBaseUrl + "/testing-support/accounts";
     }
 
-    private String generateUserTokenWithNoRoles(String username, String password) {
+    public String generateUserTokenWithNoRoles(String username, String password) {
         String userLoginDetails = String.join(":", username, password);
         final String authHeader = "Basic " + new String(Base64.getEncoder().encode((userLoginDetails).getBytes()));
 
