@@ -92,7 +92,7 @@ public class EmClientFileTest extends IntegrationTest {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         String fileUrl = uploadFileTest(fileContentType, file);
         downloadFileTest(fileUrl, file, fileContentType);
-        //deleteFileTest(fileUrl);
+        deleteFileTest(fileUrl);
     }
 
     private String uploadFileTest(String fileContentType, File file) {
