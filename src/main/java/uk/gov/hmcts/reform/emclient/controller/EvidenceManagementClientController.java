@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/emclientapi")
 @Validated
+@Slf4j
 public class EvidenceManagementClientController {
 
     @Autowired
@@ -66,6 +68,7 @@ public class EvidenceManagementClientController {
         @RequestHeader(value = "Authorization", required = false) String authorizationToken,
         @RequestHeader(value = "requestId", required = false) String requestId,
         @RequestParam("file") @ApiParam("Files to upload") List<@EvidenceFile MultipartFile> files) {
+        log.info("Call to upload doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             return evidenceManagementSecureDocStoreService.upload(files, userService.getIdamTokens(authorizationToken));
         } else {
@@ -84,6 +87,7 @@ public class EvidenceManagementClientController {
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
                                         @RequestParam("fileUrl") @ApiParam("File url to delete") String fileUrl) {
+        log.info("Call to delete doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             evidenceManagementSecureDocStoreService.delete(fileUrl, userService.getIdamTokens(authorizationToken));
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -103,6 +107,7 @@ public class EvidenceManagementClientController {
     public ResponseEntity<byte[]> getFile(
         @RequestHeader(value = "Authorization") String authorizationToken,
         @PathVariable("fileId") @ApiParam("File ID to download") String fileId) {
+        log.info("Call to download doc received with secure flag {} ", secureDocStoreEnabled);
         if (secureDocStoreEnabled) {
             byte[] bytes = evidenceManagementSecureDocStoreService.download(fileId, userService.getIdamTokens(authorizationToken));
             return new ResponseEntity<>(bytes, HttpStatus.OK);
