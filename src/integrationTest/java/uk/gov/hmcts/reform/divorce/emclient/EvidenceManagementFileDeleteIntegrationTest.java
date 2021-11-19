@@ -18,7 +18,7 @@ import java.util.Map;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
-@DisabledIfSystemProperty(named="feature.secure-doc-store", matches="true")
+@DisabledIfSystemProperty(named = "feature.secure-doc-store", matches = "true")
 public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest {
 
     @Rule
@@ -92,15 +92,15 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
         return SerenityRest.given()
-                .headers(headers)
-                .delete(evidenceManagementClientApiBaseUrl.concat(DELETE_ENDPOINT + fileUrl))
-                .andReturn();
+            .headers(headers)
+            .delete(evidenceManagementClientApiBaseUrl.concat(DELETE_ENDPOINT + fileUrl))
+            .andReturn();
     }
 
     private String uploadFile() {
         return evidenceManagementTestUtils.uploadFileToEvidenceManagement(FILE_PATH, IMAGE_FILE_CONTENT_TYPE,
-                                                                        evidenceManagementClientApiBaseUrl,
+            evidenceManagementClientApiBaseUrl,
             documentManagementUrl,
-                                                                        idamTestSupportUtil);
+            idamTestSupportUtil);
     }
 }

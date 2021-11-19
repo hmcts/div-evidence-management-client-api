@@ -35,12 +35,12 @@ public class EmClientFileDownloadTest extends IntegrationTest {
     private IdamUtils idamTestSupportUtil;
 
     @Test
-    @DisabledIfSystemProperty(named="feature.secure-doc-store", matches="true")
-    public void downloadFileTest()throws Exception {
+    @DisabledIfSystemProperty(named = "feature.secure-doc-store", matches = "true")
+    public void downloadFileTest() throws Exception {
         Response response = SerenityRest.given()
-                .headers(getDownloadAuthenticationTokenHeader())
-                .get(evidenceManagementClientApiBaseUrl + "/download/" + FILE_TO_DOWNLOAD)
-                .andReturn();
+            .headers(getDownloadAuthenticationTokenHeader())
+            .get(evidenceManagementClientApiBaseUrl + "/download/" + FILE_TO_DOWNLOAD)
+            .andReturn();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         byte[] actualContent = response.getBody().asByteArray();
