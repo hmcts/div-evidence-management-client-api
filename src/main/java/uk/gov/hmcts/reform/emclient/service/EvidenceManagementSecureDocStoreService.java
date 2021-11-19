@@ -31,6 +31,8 @@ import static java.util.stream.StreamSupport.stream;
 @Slf4j
 public class EvidenceManagementSecureDocStoreService {
 
+    protected static final String CASE_TYPE = "DIVORCE";
+    protected static final String JURISDICTION_ID = "DIVORCE";
     private final CaseDocumentClient caseDocumentClient;
     private static final int DOC_UUID_LENGTH = 36;
 
@@ -42,7 +44,7 @@ public class EvidenceManagementSecureDocStoreService {
     public List<FileUploadResponse> upload(List<MultipartFile> files, IdamTokens idamTokens) throws HttpClientErrorException {
 
         UploadResponse uploadResponse = caseDocumentClient
-            .uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files);
+            .uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files);
         log.info("For userId {} : File upload response from Case Doc AM  is {}",
             idamTokens.getEmail(),
             uploadResponse);

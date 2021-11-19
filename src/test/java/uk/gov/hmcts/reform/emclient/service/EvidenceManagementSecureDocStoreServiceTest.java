@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService.CASE_TYPE;
+import static uk.gov.hmcts.reform.emclient.service.EvidenceManagementSecureDocStoreService.JURISDICTION_ID;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EvidenceManagementSecureDocStoreServiceTest {
@@ -52,7 +54,7 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         List<MultipartFile> files = Arrays.asList(mockFile);
         UploadResponse uploadResponse = new UploadResponse(Arrays.asList(document));
 
-        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files))
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
             .thenReturn(uploadResponse);
 
         List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files,
@@ -68,7 +70,7 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         IdamTokens idamTokens = buildIdamTokens();
         List<MultipartFile> files = Arrays.asList(mockFile);
 
-        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files))
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
             .thenReturn(null);
 
         List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files,
@@ -83,7 +85,7 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         IdamTokens idamTokens = buildIdamTokens();
         List<MultipartFile> files = Arrays.asList(mockFile);
 
-        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), "Divorce", "Divorce", files))
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
             .thenThrow(HttpClientErrorException.class);
 
         evidenceManagementSecureDocStoreService.upload(files,
