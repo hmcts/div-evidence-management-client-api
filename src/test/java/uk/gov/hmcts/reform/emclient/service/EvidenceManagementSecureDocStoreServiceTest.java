@@ -54,7 +54,8 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         List<MultipartFile> files = Arrays.asList(mockFile);
         UploadResponse uploadResponse = new UploadResponse(Arrays.asList(document));
 
-        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
+            idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
             .thenReturn(uploadResponse);
 
         List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files,
@@ -70,7 +71,8 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         IdamTokens idamTokens = buildIdamTokens();
         List<MultipartFile> files = Arrays.asList(mockFile);
 
-        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
+            idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
             .thenReturn(null);
 
         List<FileUploadResponse> result = evidenceManagementSecureDocStoreService.upload(files,
@@ -85,7 +87,8 @@ public class EvidenceManagementSecureDocStoreServiceTest {
         IdamTokens idamTokens = buildIdamTokens();
         List<MultipartFile> files = Arrays.asList(mockFile);
 
-        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
+        when(caseDocumentClient.uploadDocuments(idamTokens.getIdamOauth2Token(),
+            idamTokens.getServiceAuthorization(), CASE_TYPE, JURISDICTION_ID, files))
             .thenThrow(HttpClientErrorException.class);
 
         evidenceManagementSecureDocStoreService.upload(files,
@@ -118,7 +121,8 @@ public class EvidenceManagementSecureDocStoreServiceTest {
 
         String docPartUrl = "documents/f5734b18-c075-4417-81ce-c0c2e0155dbe";
         String binaryHref = "http://dm-store-aat.service.core-compute-aat.internal/" + docPartUrl;
-        when(caseDocumentClient.getDocumentBinary(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
+        when(caseDocumentClient.getDocumentBinary(idamTokens.getIdamOauth2Token(),
+            idamTokens.getServiceAuthorization(),
             docPartUrl))
             .thenThrow(HttpClientErrorException.class);
 
