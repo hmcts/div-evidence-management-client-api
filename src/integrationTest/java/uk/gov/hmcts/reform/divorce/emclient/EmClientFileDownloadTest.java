@@ -6,6 +6,7 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ public class EmClientFileDownloadTest extends IntegrationTest {
     private IdamUtils idamTestSupportUtil;
 
     @Test
+    @DisabledIfSystemProperty(named="feature.secure-doc-store", matches="true")
     public void downloadFileTest()throws Exception {
         Response response = SerenityRest.given()
                 .headers(getDownloadAuthenticationTokenHeader())

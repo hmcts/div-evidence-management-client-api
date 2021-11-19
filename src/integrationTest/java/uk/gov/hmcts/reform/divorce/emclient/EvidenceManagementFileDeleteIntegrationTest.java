@@ -7,6 +7,7 @@ import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import java.util.Map;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
+@DisabledIfSystemProperty(named="feature.secure-doc-store", matches="true")
 public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest {
 
     @Rule

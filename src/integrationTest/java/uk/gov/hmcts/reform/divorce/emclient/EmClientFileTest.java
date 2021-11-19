@@ -92,7 +92,6 @@ public class EmClientFileTest extends IntegrationTest {
         File file = new File("src/integrationTest/resources/FileTypes/" + fileToUpload);
         String fileUrl = uploadFileTest(fileContentType, file);
         downloadFileTest(fileUrl, file, fileContentType);
-        deleteFileTest(fileUrl, fileContentType);
     }
 
     private String uploadFileTest(String fileContentType, File file) {
@@ -127,17 +126,6 @@ public class EmClientFileTest extends IntegrationTest {
     private UUID getDocumentIdFromSelfHref(String selfHref) {
         return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
     }
-
-    private void deleteFileTest(String fileUrl, String fileContentType) {
-        Response response = SerenityRest.given()
-            .headers(getAuthenticationTokenHeader())
-            .multiPart("file", fileContentType)
-            .param("fileUrl", fileUrl)
-            .delete(evidenceManagementClientApiBaseUrl.concat("/deleteFile"))
-            .andReturn();
-        Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
-    }
-
 
     private Map<String, Object> getAuthenticationTokenHeader() {
         String authenticationToken = idamTestSupportUtil.generateUserTokenWithNoRoles(username, password);

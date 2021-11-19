@@ -131,20 +131,6 @@ public class EvidenceManagementSecureDocStoreServiceTest {
                 idamTokens);
     }
 
-    @Test
-    public void shouldDeleteDoc() {
-        IdamTokens idamTokens = buildIdamTokens();
-
-        String docPartUrl = "documents/f5734b18-c075-4417-81ce-c0c2e0155dbe";
-        String binaryHref = "http://dm-store-aat.service.core-compute-aat.internal/" + docPartUrl;
-
-        evidenceManagementSecureDocStoreService
-            .delete(binaryHref,
-                idamTokens);
-
-        verify(caseDocumentClient).deleteDocument(idamTokens.getIdamOauth2Token(), idamTokens.getServiceAuthorization(),
-            evidenceManagementSecureDocStoreService.getDocumentIdFromSelfHref(binaryHref),Boolean.TRUE);
-    }
 
     private void assertFileUploadResponse(FileUploadResponse response) {
         assertThat(response.getCreatedBy(), is("someUser"));
