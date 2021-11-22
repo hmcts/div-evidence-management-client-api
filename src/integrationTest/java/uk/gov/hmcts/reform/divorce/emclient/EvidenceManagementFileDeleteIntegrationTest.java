@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.Map;
 
@@ -20,7 +19,6 @@ import static org.junit.Assume.assumeFalse;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
-@EnabledIf("false")
 public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest {
 
     @Rule
