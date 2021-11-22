@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
@@ -19,6 +20,7 @@ import static org.junit.Assume.assumeFalse;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
+@Slf4j
 public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest {
 
     @Rule
@@ -45,6 +47,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Before
     public void checkSecureDocStoreFlag() {
+        log.info("In the downloadFileTest with secureFlag {}", secureDocStoreOn);
         assumeFalse(secureDocStoreOn);
     }
 

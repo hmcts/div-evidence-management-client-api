@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeFalse;
 
 @RunWith(SerenityRunner.class)
+@Slf4j
 public class EmClientFileDownloadTest extends IntegrationTest {
 
     private static final String FILE_TO_DOWNLOAD = "93e06406-453f-475e-b6e0-1a845221f44f";
@@ -40,6 +42,7 @@ public class EmClientFileDownloadTest extends IntegrationTest {
 
     @Test
     public void downloadFileTest() throws Exception {
+        log.info("In the downloadFileTest with secureFlag {}", secureDocStoreOn);
         assumeFalse(secureDocStoreOn);
         Response response = SerenityRest.given()
             .headers(getDownloadAuthenticationTokenHeader())
