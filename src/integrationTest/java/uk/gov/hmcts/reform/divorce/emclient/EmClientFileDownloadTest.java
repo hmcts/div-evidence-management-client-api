@@ -7,7 +7,6 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
