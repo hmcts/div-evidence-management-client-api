@@ -12,13 +12,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import java.util.Map;
 
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
-@DisabledIfSystemProperty(named = "feature.secure-doc-store", matches = "true")
+@EnabledIf("false")
 public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest {
 
     @Rule
@@ -26,6 +29,10 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Autowired
     private IdamUtils idamTestSupportUtil;
+
+    @Value("${feature.secure-doc-store}")
+    private boolean secureDocStoreOn;
+
 
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
@@ -41,6 +48,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Test
     public void verifyDeleteRequestForExistingDocumentIsSuccessful() {
+        assumeFalse(secureDocStoreOn);
         String fileUrl = uploadFile();
         Response response = deleteFileFromEvidenceManagement(
             fileUrl,
@@ -50,6 +58,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Test
     public void verifyDeleteRequestForNonExistentDocumentIs404NotFound() {
+        assumeFalse(secureDocStoreOn);
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.concat("xyzzy");
         Response response = deleteFileFromEvidenceManagement(
@@ -61,6 +70,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Test
     public void verifyDeleteRequestWithMissingDocumentIdIsNotAllowed() {
+        assumeFalse(secureDocStoreOn);
         String fileUrl = uploadFile();
         String fileUrlAlt = fileUrl.substring(0, fileUrl.lastIndexOf("/") + 1);
         Response response = deleteFileFromEvidenceManagement(
@@ -72,6 +82,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Test
     public void verifyDeleteRequestWithInvalidAuthTokenIsForbidden() {
+        assumeFalse(secureDocStoreOn);
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil);
         String token = "x".concat(headers.get(AUTHORIZATION_HEADER_NAME).toString()).concat("x");
@@ -83,6 +94,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
 
     @Test
     public void verifyDeleteRequestWithUnauthorisedAuthTokenIsForbidden() {
+        assumeFalse(secureDocStoreOn);
         String fileUrl = uploadFile();
         Map<String, Object> headers = evidenceManagementTestUtils.getInvalidAuthenticationTokenHeader();
 

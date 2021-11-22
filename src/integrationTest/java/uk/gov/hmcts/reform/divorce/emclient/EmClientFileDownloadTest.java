@@ -18,6 +18,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeFalse;
 
 @RunWith(SerenityRunner.class)
 public class EmClientFileDownloadTest extends IntegrationTest {
@@ -31,12 +32,15 @@ public class EmClientFileDownloadTest extends IntegrationTest {
     @Value("${evidence.management.client.api.baseUrl}")
     private String evidenceManagementClientApiBaseUrl;
 
+    @Value("${feature.secure-doc-store}")
+    private boolean secureDocStoreOn;
+
     @Autowired
     private IdamUtils idamTestSupportUtil;
 
     @Test
-    @DisabledIfSystemProperty(named = "feature.secure-doc-store", matches = "true")
     public void downloadFileTest() throws Exception {
+        assumeFalse(secureDocStoreOn);
         Response response = SerenityRest.given()
             .headers(getDownloadAuthenticationTokenHeader())
             .get(evidenceManagementClientApiBaseUrl + "/download/" + FILE_TO_DOWNLOAD)
