@@ -6,6 +6,11 @@
       <cve>CVE-2020-36518</cve>
     </suppress>
     <suppress>
+      <notes><![CDATA[file name: spring-core-5.2.20.RELEASE.jar]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
+      <cve>CVE-2016-1000027</cve>
+    </suppress>
+    <suppress>
         <notes><![CDATA[
             This appears to be a false-positive as this is only exploitable in
             Spring Framework 5.0.5.RELEASE which we don't use ]]>
