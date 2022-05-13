@@ -4,7 +4,6 @@ import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
@@ -43,7 +43,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
         Response response = deleteFileFromEvidenceManagement(
             fileUrl,
             evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
-        Assert.assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
             fileUrlAlt,
             evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
 
-        Assert.assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatusCode());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
             fileUrlAlt,
             evidenceManagementTestUtils.getAuthenticationTokenHeader(idamTestSupportUtil));
 
-        Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), response.getStatusCode());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
         headers.put(AUTHORIZATION_HEADER_NAME, token);
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
 
-        Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class EvidenceManagementFileDeleteIntegrationTest extends IntegrationTest
         Map<String, Object> headers = evidenceManagementTestUtils.getInvalidAuthenticationTokenHeader();
 
         Response response = deleteFileFromEvidenceManagement(fileUrl, headers);
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode());
     }
 
     private Response deleteFileFromEvidenceManagement(String fileUrl, Map<String, Object> headers) {
