@@ -118,6 +118,17 @@ To run consumer contract tests locally
 ./gradlew runAndPublishConsumerPactTests
 ```
 
+### Running additional tests in the Jenkins PR Pipeline
+
+1. Add one or more appropriate labels to your PR in GitHub. Valid labels are:
+
+- ```enable_fortify_scan```
+- ```enable_full_functional_tests```
+
+2. Trigger a build of your PR in Jenkins.  Fortify scans will take place asynchronously as part of the Static Checks/Container Build step.
+- Check the Blue Ocean view for live monitoring, and review the logs once complete for any issues.
+- As Fortify scans execute during the Static Checks/Container Build step, you will need to ensure this is triggered by making a minor change to the PR, such as bumping the chart version.
+
 ##  License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
