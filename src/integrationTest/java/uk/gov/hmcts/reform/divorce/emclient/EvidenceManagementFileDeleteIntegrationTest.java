@@ -15,8 +15,8 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
-import static org.junit.Assume.assumeFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeFalse;
 import static uk.gov.hmcts.reform.divorce.emclient.EvidenceManagementTestUtils.AUTHORIZATION_HEADER_NAME;
 
 @RunWith(SerenityRunner.class)
