@@ -19,7 +19,6 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("net.serenity-bdd:serenity-gradle-plugin:2.4.34")
     }
-
 }
 
 plugins {
@@ -41,13 +40,14 @@ def versions = [
         guava                                   : '30.0-jre',
         hibernate                               : '6.0.17.Final',
         httpComponents                          : '4.5.13',
-        jacksonCore                             : '2.10.2',
-        jacksonDatabind                         : '2.11.0',
+        jacksonCore                             : '2.13.2',
+        jacksonDatabind                         : '2.13.2',
         javaxValidation                         : '2.0.0.Final',
         jaywayJsonPath                          : '2.4.0',
         jsr305                                  : '3.0.2',
         junit                                   : '4.13.1',
-        lombok                                  : '1.18.20',
+        lombok                                  : '1.18.22',
+        logbackVersion                          : '1.2.10',
         pact_version                            : '4.1.7',
         puppyCrawl                              : '8.29',
         reformPropertiesVolume                  : '0.0.4',
@@ -65,7 +65,7 @@ def versions = [
         springRetry                             : '1.2.5.RELEASE',
         springSecurityCrypto                    : '5.4.5',
         spring_security_rsa                     : '1.0.9.RELEASE',
-        tomcat                                  : '9.0.50',
+        tomcat                                  : '9.0.63',
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.25.1'
 ]
@@ -153,6 +153,25 @@ dependencyManagement {
         dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.2'
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
+
+        //CVE-2021-44228, CVE-2021-44832, CVE-2021-45046, CVE-2021-45105
+        dependencySet(group: 'org.apache.logging.log4j', version: '2.17.1') {
+            entry 'log4j-api'
+            entry 'log4j-to-slf4j'
+        }
+
+        //CVE-2022-22965
+        dependencySet(group: 'org.springframework', version: '5.2.22.RELEASE') {
+            entry 'spring-aop'
+            entry 'spring-beans'
+            entry 'spring-context'
+            entry 'spring-context-support'
+            entry 'spring-core'
+            entry 'spring-expression'
+            entry 'spring-jcl'
+            entry 'spring-web'
+            entry 'spring-webmvc'
+        }
     }
 }
 
@@ -276,7 +295,8 @@ dependencies {
         force = true
     }
 
-
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: versions.logbackVersion
+    implementation group: 'ch.qos.logback', name: 'logback-core', version: versions.logbackVersion
     implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '11.6'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.2'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
