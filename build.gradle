@@ -142,8 +142,6 @@ dependencyManagement {
         mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
     }
     dependencies {
-        //CVE-2017-18640
-        dependency group: 'org.yaml',name: 'snakeyaml', version: '1.28'
 
         dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.2'
 
