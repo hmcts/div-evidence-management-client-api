@@ -1,6 +1,6 @@
 package uk.gov.hmcts.reform.divorce.emclient;
 
-import io.restassured.path.json.JsonPath;
+import io.restassured.builder.ResponseBuilder;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
@@ -17,7 +17,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -80,10 +79,9 @@ public class EmClientFileUploadTest extends IntegrationTest {
             .post(evidenceManagementClientApiBaseUrl.concat("/upload"))
             .andReturn();
 
-        JsonPath res = response.jsonPath();
-        res.prettyPrint();
+        final Response resp = new ResponseBuilder().clone(response).setBody(response.asString()).build();
 
-        String fileUrl = ((List<String>) response.getBody().path("fileUrl")).get(0);
+        String fileUrl = resp.path("fileUrl").toString();
 
         assertEquals(HttpStatus.OK.value(), response.statusCode());
         assertEmGetFileResponse(fileToUpload, fileContentType, fileUrl);
