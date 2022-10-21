@@ -53,7 +53,7 @@ def versions = [
         reformPropertiesVolume                  : '0.0.4',
         reformsJavaLogging                      : '5.1.7',
         restAssured                             : '3.3.0',
-        serenity                                : '2.1.2',
+        serenity                                : '2.3.13',
         serenityCucumber                        : '1.9.51',
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
