@@ -109,7 +109,9 @@ public class EmClientFileUploadTest extends IntegrationTest {
             .headers(headers)
             .when()
             .get(uri)
-            .andReturn();
+                .then()
+                .contentType("application/json")
+                .extract().response();
     }
 
     private Map<String, Object> getAuthenticationTokenHeader() {
