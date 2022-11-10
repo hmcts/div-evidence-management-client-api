@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Map;
 
 @Component
+@SuppressWarnings("deprecation")
 public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
     @Override
