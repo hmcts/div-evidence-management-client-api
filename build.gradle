@@ -170,6 +170,12 @@ dependencyManagement {
         dependencySet(group: 'org.yaml', version: '1.33') {
             entry 'snakeyaml'
         }
+
+        //CVE-2022-23181
+        dependencySet(group: 'org.apache.tomcat.embed', version: '9.0.68') {
+            entry 'tomcat-embed-core'
+            entry 'tomcat-embed-websocket'
+        }
     }
 
 }
