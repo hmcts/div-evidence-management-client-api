@@ -17,7 +17,7 @@ buildscript {
         }
         classpath('org.pitest:pitest-command-line:1.6.6')
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("net.serenity-bdd:serenity-gradle-plugin:2.5.8")
+        classpath("net.serenity-bdd:serenity-gradle-plugin:3.5.0")
     }
 }
 
@@ -72,7 +72,7 @@ def versions = [
 
 apply plugin: 'checkstyle'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'net.serenity-bdd.aggregator'
+apply plugin: "net.serenity-bdd.serenity-gradle-plugin"
 
 group = 'uk.gov.hmcts.reform.divorce'
 version = '3.0.0'
