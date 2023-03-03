@@ -55,6 +55,7 @@ public class EvidenceManagementUploadServiceImplUTest {
     private static final String USER_ID = "user-id";
 
     @Rule
+    @SuppressWarnings("deprecation")
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
