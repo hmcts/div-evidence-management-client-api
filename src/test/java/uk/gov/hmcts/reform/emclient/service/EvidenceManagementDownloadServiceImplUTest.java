@@ -33,6 +33,7 @@ public class EvidenceManagementDownloadServiceImplUTest {
     private static  final String EM_STORE_URL = "evidenceManagementStoreUrl";
 
     @Rule
+    @SuppressWarnings("deprecation")
     public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
