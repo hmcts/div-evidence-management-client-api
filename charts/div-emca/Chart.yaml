@@ -5,5 +5,5 @@ name: div-emca
 version: 2.0.11
 dependencies:
   - name: java
-    version: 4.0.11
+    version: 4.0.12
     repository: "https://hmctspublic.azurecr.io/helm/v1/repo/"
