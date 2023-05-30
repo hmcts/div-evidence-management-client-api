@@ -65,8 +65,6 @@ variable "location" {
   default = "UK South"
 }
 
-variable "ilbIp" {}
-
 variable "vault_env" {}
 
 variable "idam_api_url" {}
