@@ -6,6 +6,11 @@
         <cve>CVE-2021-28170</cve>
     </suppress>
     <suppress>
+       <notes><![CDATA[file name: accessors-smart-2.3.1.jar]]></notes>
+       <packageUrl regex="true">^pkg:maven/net\.minidev/accessors\-smart@.*$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
         <notes><![CDATA[file name: kotlin-stdlib-common-1.3.72.jar]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin\-stdlib\-common@.*$</packageUrl>
         <cve>CVE-2020-29582</cve>
@@ -24,6 +29,8 @@
         <notes><![CDATA[file name: spring-core-5.2.20.RELEASE.jar]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
         <cve>CVE-2016-1000027</cve>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[file name: commons-codec-1.14.jar]]></notes>
@@ -84,6 +91,12 @@
         <cve>CVE-2022-1471</cve>
     </suppress>
     <suppress>
+        <notes><![CDATA[file name: spring-aop-5.2.22.RELEASE.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-aop@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
         <notes><![CDATA[file name: spring-cloud-netflix-archaius-2.2.5.RELEASE.jar]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring\-cloud\-netflix\-archaius@.*$</packageUrl>
         <cve>CVE-2021-22053</cve>
@@ -131,6 +144,36 @@
         <cve>CVE-2022-22976</cve>
     </suppress>
     <suppress>
+        <notes><![CDATA[file name: spring-beans-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-context-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-context@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-expression-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-expression@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-jcl-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jcl@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-webmvc-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-webmvc@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>    
+    <suppress>
         <notes><![CDATA[file name: tomcat-embed-core-9.0.68.jar]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
         <cve>CVE-2022-45143</cve>
@@ -151,6 +194,13 @@
         <notes><![CDATA[file name: jackson-core-2.13.2.jar]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
         <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: jackson-databind-2.13.2.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cve>CVE-2020-36518</cve>
+        <cve>CVE-2022-42003</cve>
+        <cve>CVE-2022-42004</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[file name: json-path-2.4.0.jar]]></notes>
