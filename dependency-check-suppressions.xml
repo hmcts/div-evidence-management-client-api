@@ -150,6 +150,30 @@
         <cve>CVE-2023-20863</cve>
     </suppress>
     <suppress>
+        <notes><![CDATA[file name: spring-context-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-context@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-expression-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-expression@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-jcl-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jcl@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-webmvc-5.2.22.RELEASE.jar ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-webmvc@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20863</cve>
+    </suppress>    
+    <suppress>
         <notes><![CDATA[file name: tomcat-embed-core-9.0.68.jar]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-core@.*$</packageUrl>
         <cve>CVE-2022-45143</cve>
