@@ -105,7 +105,10 @@ sourceSets {
             runtimeClasspath += main.output
             srcDir file('src/contractTest/java')
         }
-        resources.srcDir file('src/contractTest/resources')
+        resources {
+            srcDir file('src/contractTest/resources')
+            duplicatesStrategy = 'exclude' as SourceSet
+        }
     }
 }
 
