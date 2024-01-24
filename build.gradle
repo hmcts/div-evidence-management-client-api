@@ -134,7 +134,7 @@ repositories {
     jcenter()
 
     maven { url "https://jitpack.io" }
-    maven { url "http://repo.maven.apache.org/maven2" }
+    maven { url "https://repo.maven.apache.org/maven2" }
 }
 
 dependencyManagement {
@@ -319,21 +319,21 @@ dependencies {
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
-    testCompile('com.github.hmcts:fortify-client:1.2.0:all')
+    testImplementation 'com.github.hmcts:fortify-client:1.2.0:all'
     //pact
-    contractTestCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
-    contractTestCompile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
-    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-    contractTestCompile group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-    contractTestRuntime group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
-    contractTestCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
-    contractTestCompile("org.junit.jupiter:junit-jupiter-api:5.7.2")
-    contractTestRuntime("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    contractTestImplementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
+    contractTestImplementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
+    contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
+    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    contractTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.2")
+    contractTestImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.2")
     contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.2')
 
-    contractTestCompile sourceSets.main.runtimeClasspath
-    contractTestCompile sourceSets.test.runtimeClasspath
+    contractTestImplementation sourceSets.main.runtimeClasspath
+    contractTestImplementation sourceSets.test.runtimeClasspath
 }
 
 test {
