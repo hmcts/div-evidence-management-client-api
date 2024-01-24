@@ -383,4 +383,10 @@
         <cve>CVE-2023-20873</cve>
         <cve>CVE-2023-20883</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-devtools-2.3.11.RELEASE.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-devtools@2\.3\.11.RELEASE$</packageUrl>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
 </suppressions>
