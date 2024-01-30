@@ -225,15 +225,9 @@ dependencyCheck {
 
 
 dependencies {
-    testImplementation 'org.springframework.webflow:org.springframework.js:2.0.5.RELEASE'
-    implementation 'org.springframework.webflow:org.springframework.js:2.0.5.RELEASE'
-    implementation 'org.springframework.webflow:org.springframework.js:2.0.5.RELEASE'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'junit:junit:4.13.2'
-    implementation 'junit:junit:4.13.2'
-    implementation 'junit:junit:4.13.2'
 
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'junit:junit:4.13.2'
 
     //integration test
     integrationTestImplementation group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
