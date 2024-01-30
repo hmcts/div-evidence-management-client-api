@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -33,6 +34,7 @@ public class GlobalExceptionHandlerTest {
 
     private WebRequest mockHttpServletRequest;
     private HttpServletResponse mockHttpServletResponse;
+    private ErrorAttributeOptions mockErrorAttributeOptions;
     private GlobalExceptionHandler underTest;
 
     @Before
@@ -75,7 +77,7 @@ public class GlobalExceptionHandlerTest {
         ConstraintViolationException mockException = mock(ConstraintViolationException.class);
 
         ResponseEntity<Map<String, Object>> responseEntity =
-                underTest.handleValidationException(mockException, mockHttpServletRequest);
+                underTest.handleValidationException(mockException, mockHttpServletRequest, mockErrorAttributeOptions);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
@@ -85,7 +87,7 @@ public class GlobalExceptionHandlerTest {
         ConstraintViolationException mockException = mock(ConstraintViolationException.class);
 
         ResponseEntity<Map<String, Object>> responseEntity =
-                underTest.handleValidationException(mockException, mockHttpServletRequest);
+                underTest.handleValidationException(mockException, mockHttpServletRequest, mockErrorAttributeOptions);
 
         Map<String, Object> body = responseEntity.getBody();
         assertEquals(400, body.get("status"));
@@ -103,7 +105,7 @@ public class GlobalExceptionHandlerTest {
                 .willReturn(Collections.singleton(mockConstraintViolation));
 
         ResponseEntity<Map<String, Object>> responseEntity =
-                underTest.handleValidationException(mockException, mockHttpServletRequest);
+                underTest.handleValidationException(mockException, mockHttpServletRequest, mockErrorAttributeOptions);
 
         Map<String, Object> body = responseEntity.getBody();
         assertEquals("Value is invalid", body.get("message"));
