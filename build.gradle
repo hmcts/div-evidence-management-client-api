@@ -41,6 +41,7 @@ def versions = [
         commonsIo                               : '2.7',
         commonsLang3                            : '3.9',
         guava                                   : '32.1.2-jre',
+        groovy                                  : '4.0.16',
         hibernate                               : '6.0.17.Final',
         httpComponents                          : '4.5.13',
         jacksonCore                             : '2.13.2',
@@ -55,10 +56,10 @@ def versions = [
         puppyCrawl                              : '8.29',
         reformPropertiesVolume                  : '0.0.4',
         reformsJavaLogging                      : '5.1.7',
-        restAssured                             : '3.3.0',
-        selenium                                : '4.17.0',
-        serenity                                : '2.1.2',
-        serenityCucumber                        : '1.9.51',
+        restAssured                             : '5.4.0',
+        selenium                                : '3.141.59',
+        serenity                                : '4.0.46',
+        serenityCucumber                        : '4.0.46',
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
         springBoot                              : '2.7.17',
@@ -308,6 +309,9 @@ dependencies {
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
 
+    implementation "org.apache.groovy:groovy:${versions.groovy}"
+    implementation "org.apache.groovy:groovy-json:${versions.groovy}"
+
     implementation "com.google.guava:guava:${versions.guava}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${versions.tomcat}"
     implementation "org.apache.tomcat.embed:tomcat-embed-websocket:${versions.tomcat}"
@@ -328,7 +332,7 @@ dependencies {
     }
 
     implementation("org.projectlombok:lombok:${versions.lombok}")
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: versions.selenium
+
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
