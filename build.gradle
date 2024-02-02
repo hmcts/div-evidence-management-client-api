@@ -37,41 +37,42 @@ plugins {
 }
 
 def versions = [
-        bouncycastle                            : '1.61',
-        commonsIo                               : '2.7',
-        commonsLang3                            : '3.9',
-        guava                                   : '32.1.2-jre',
-        hibernate                               : '6.0.17.Final',
-        httpComponents                          : '4.5.13',
-        jacksonCore                             : '2.13.2',
-        jacksonDatabind                         : '2.13.2',
-        javaxValidation                         : '2.0.0.Final',
-        jaywayJsonPath                          : '2.4.0',
-        jsr305                                  : '3.0.2',
-        junit                                   : '4.13.2',
-        lombok                                  : '1.18.30',
-        logbackVersion                          : '1.2.10',
-        pact_version                            : '4.1.7',
-        puppyCrawl                              : '8.29',
-        reformPropertiesVolume                  : '0.0.4',
-        reformsJavaLogging                      : '5.1.7',
-        restAssured                             : '3.3.0',
-        selenium                                : '4.17.0',
-        serenity                                : '2.1.2',
-        serenityCucumber                        : '1.9.51',
-        serviceTokenGenerator                   : '3.0.0',
-        skyscreamer                             : '1.2.3',
-        springBoot                              : '2.7.17',
-        springCloud                             : '2021.0.8',
-        springDoc                               : '1.6.9',
-        springHateoas                           : '0.25.2.RELEASE',
-        springPluginCore                        : '1.2.0.RELEASE',
-        springRetry                             : '1.2.5.RELEASE',
-        springSecurityCrypto                    : '5.4.5',
-        spring_security_rsa                     : '1.0.9.RELEASE',
-        tomcat                                  : '9.0.80',
-        unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.25.1'
+        bouncycastle          : '1.61',
+        commonsIo             : '2.7',
+        commonsLang3          : '3.9',
+        guava                 : '32.1.2-jre',
+        groovy                : '4.0.16',
+        hibernate             : '6.0.17.Final',
+        httpComponents        : '4.5.13',
+        jacksonCore           : '2.13.2',
+        jacksonDatabind       : '2.13.2',
+        javaxValidation       : '2.0.0.Final',
+        jaywayJsonPath        : '2.4.0',
+        jsr305                : '3.0.2',
+        junit                 : '4.13.2',
+        lombok                : '1.18.30',
+        logbackVersion        : '1.2.10',
+        pact_version          : '4.1.7',
+        puppyCrawl            : '8.29',
+        reformPropertiesVolume: '0.0.4',
+        reformsJavaLogging    : '5.1.7',
+        restAssured           : '5.4.0',
+        selenium              : '3.141.59',
+        serenity              : '4.0.46',
+        serenityCucumber      : '4.0.46',
+        serviceTokenGenerator : '3.0.0',
+        skyscreamer           : '1.2.3',
+        springBoot            : '2.7.17',
+        springCloud           : '2021.0.8',
+        springDoc             : '1.6.9',
+        springHateoas         : '0.25.2.RELEASE',
+        springPluginCore      : '1.2.0.RELEASE',
+        springRetry           : '1.2.5.RELEASE',
+        springSecurityCrypto  : '5.4.5',
+        spring_security_rsa   : '1.0.9.RELEASE',
+        tomcat                : '9.0.80',
+        unirestJava           : '1.4.9',
+        wiremockVersion       : '2.25.1'
 ]
 
 apply plugin: 'checkstyle'
@@ -174,7 +175,7 @@ dependencyManagement {
     }
     dependencies {
 
-        dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.2'
+        dependency group: 'com.netflix.servo', name: 'servo-core', version: '0.13.2'
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
 
@@ -205,13 +206,13 @@ dependencyManagement {
 }
 
 distributions {
-  main {
-    contents {
-      from(file("$projectDir/lib/AI-Agent.xml")) {
-        into "lib"
-      }
+    main {
+        contents {
+            from(file("$projectDir/lib/AI-Agent.xml")) {
+                into "lib"
+            }
+        }
     }
-  }
 }
 
 tasks.withType(JavaCompile) {
@@ -260,6 +261,8 @@ dependencies {
     //integration test
     integrationTestImplementation group: 'com.mashape.unirest', name: 'unirest-java', version: versions.unirestJava
     integrationTestImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
+    integrationTestImplementation group: 'io.rest-assured', name: 'xml-path', version: versions.restAssured
+
     integrationTestImplementation group: 'junit', name: 'junit', version: versions.junit
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-cucumber', version: versions.serenityCucumber
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
@@ -268,12 +271,10 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
     integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
-    integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
+    integrationTestImplementation group: 'org.skyscreamer', name: 'jsonassert', version: versions.skyscreamer
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
-    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.sprintBoot
-    integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
-    integrationTestImplementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
-    integrationTestRuntime group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.sprintBoot
+    integrationTestImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceTokenGenerator
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -304,11 +305,14 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
 
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-    implementation (group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging){
+    implementation(group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging) {
         exclude group: 'org.apache.httpcomponents', 'module': 'httpclient'
     }
     implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
     implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
+
+    implementation "org.apache.groovy:groovy:${versions.groovy}"
+    implementation "org.apache.groovy:groovy-json:${versions.groovy}"
 
     implementation "com.google.guava:guava:${versions.guava}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${versions.tomcat}"
@@ -322,7 +326,7 @@ dependencies {
     implementation "org.springframework.security:spring-security-rsa:${versions.spring_security_rsa}"
     implementation "org.springframework.security:spring-security-crypto:${versions.springSecurityCrypto}"
 
-    implementation (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
+    implementation(group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceTokenGenerator) {
         exclude group: 'io.reactivex', module: 'io.reactivex'
         exclude group: 'io.reactivex', module: 'rxnetty'
         exclude group: 'io.reactivex', module: 'rxnetty-contexts'
@@ -330,15 +334,13 @@ dependencies {
     }
 
     implementation("org.projectlombok:lombok:${versions.lombok}")
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
 
-    testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
+
+    testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
     testImplementation 'com.github.hmcts:fortify-client:1.2.0:all'
-    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
-
 
     testImplementation("org.projectlombok:lombok:${versions.lombok}")
     testImplementation('com.github.hmcts:fortify-client:1.2.0:all')
@@ -361,11 +363,11 @@ dependencies {
 }
 
 def dependencyVersions = [
-        'com.google.guava:guava': versions.guava,
-        'org.apache.tomcat.embed:tomcat-embed-core': versions.tomcat,
-        'org.apache.tomcat.embed:tomcat-embed-websocket': versions.tomcat,
-        'org.apache.tomcat.embed:tomcat-embed-el': versions.tomcat,
-        'org.springframework.security:spring-security-rsa': versions.spring_security_rsa,
+        'com.google.guava:guava'                             : versions.guava,
+        'org.apache.tomcat.embed:tomcat-embed-core'          : versions.tomcat,
+        'org.apache.tomcat.embed:tomcat-embed-websocket'     : versions.tomcat,
+        'org.apache.tomcat.embed:tomcat-embed-el'            : versions.tomcat,
+        'org.springframework.security:spring-security-rsa'   : versions.spring_security_rsa,
         'org.springframework.security:spring-security-crypto': versions.springSecurityCrypto
 ]
 
@@ -402,12 +404,12 @@ task bootRunAat(type: BootRun, description: 'Runs the app using AAT config', dep
 }
 
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
-        setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
-        setClasspath(sourceSets.integrationTest.runtimeClasspath)
+    setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
+    setClasspath(sourceSets.integrationTest.runtimeClasspath)
 
-        useJUnit()
+    useJUnit()
 
-        finalizedBy aggregate
+    finalizedBy aggregate
 }
 
 task printVersion {
@@ -478,7 +480,7 @@ task contract(type: Test) {
     include "uk/gov/hmcts/reform/divorce/emclient/**"
 }
 
-task runAndPublishConsumerPactTests(type: Test){
+task runAndPublishConsumerPactTests(type: Test) {
     logger.lifecycle("Runs pact Tests")
     testClassesDirs = sourceSets.contractTest.output.classesDirs
     classpath = sourceSets.contractTest.runtimeClasspath
@@ -501,7 +503,7 @@ pact {
     publish {
         pactDirectory = 'build/pacts'
         pactBrokerUrl = System.getenv("PACT_BROKER_FULL_URL") ?: 'http://localhost:80'
-        tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
+        tags = [System.getenv("PACT_BRANCH_NAME") ?: 'Dev']
         version = project.pactVersion
     }
 }
@@ -513,7 +515,7 @@ run {
     }
 }
 
-task fortifyScan(type: JavaExec)  {
+task fortifyScan(type: JavaExec) {
     main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
     classpath += sourceSets.test.runtimeClasspath
     jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
