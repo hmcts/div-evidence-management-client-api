@@ -464,4 +464,66 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-autoconfigure@2\.7\.17$</packageUrl>
         <cve>CVE-2023-34055</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-api-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-api@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-chrome-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-chrome-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-chromium-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-chromium-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-devtools-v85-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-devtools-v85@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-edge-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-edge-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-firefox-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-firefox-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-http-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-http@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-ie-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-ie-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-json-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-json@4\.1\.4$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+        <cve>CVE-2023-5072</cve>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-remote-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-remote-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-safari-driver-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-safari-driver@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: selenium-support-4.1.4.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-support@4\.1\.4$</packageUrl>
+        <cve>CVE-2023-5590</cve>
+    </suppress>
 </suppressions>
