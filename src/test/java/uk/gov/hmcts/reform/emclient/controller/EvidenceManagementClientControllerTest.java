@@ -6,11 +6,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,10 +45,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(EvidenceManagementClientController.class)
 @ImportAutoConfiguration({
-    RibbonAutoConfiguration.class,
-    HttpMessageConvertersAutoConfiguration.class,
-    FeignRibbonClientAutoConfiguration.class,
-    FeignAutoConfiguration.class})
+        RibbonAutoConfiguration.class,
+        HttpMessageConvertersAutoConfiguration.class,
+        FeignAutoConfiguration.class,
+        MockMvcAutoConfiguration.class
+})
 @ContextConfiguration(classes = EvidenceManagementClientApplication.class)
 public class EvidenceManagementClientControllerTest {
     private static final String AUTH_TOKEN = "AAAAAAA";

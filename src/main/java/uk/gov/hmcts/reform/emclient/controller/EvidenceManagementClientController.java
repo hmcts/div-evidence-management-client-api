@@ -1,9 +1,11 @@
 package uk.gov.hmcts.reform.emclient.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,46 +44,48 @@ public class EvidenceManagementClientController {
 
     @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ApiOperation(value = "Upload a file")
+    @Operation(description = "Upload a file")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "File successfully uploaded",
-            response = FileUploadResponse.class),
-        @ApiResponse(code = 500, message = "Internal Server Error")
+            @ApiResponse(responseCode = "200", description = "File successfully uploaded",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FileUploadResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @ResponseBody
     public List<FileUploadResponse> upload(
             @RequestHeader(value = "Authorization", required = false) String authorizationToken,
             @RequestHeader(value = "requestId", required = false) String requestId,
-            @RequestParam("file") @ApiParam("Files to upload") List<@EvidenceFile MultipartFile> files) {
+            @Parameter(description = "Files to upload")
+            @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
         return emUploadService.upload(files, authorizationToken, requestId);
     }
 
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Delete a file")
+    @Operation(description = "Delete a file")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "File successfully deleted",
-            response = FileUploadResponse.class),
-        @ApiResponse(code = 500, message = "Internal Server Error")
+            @ApiResponse(responseCode = "200", description = "File successfully deleted",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FileUploadResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @ResponseBody
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
                                         @RequestHeader(value = "requestId", required = false) String requestId,
-                                        @RequestParam("fileUrl") @ApiParam("File url to delete") String fileUrl) {
+                                        @Parameter(description = "File url to delete")
+                                        @RequestParam("fileUrl") String fileUrl) {
         return emDeleteService.deleteFile(fileUrl, authorizationToken, requestId);
     }
 
     @GetMapping(value = "/version/1/download/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @ApiOperation(value = "Download a file")
+    @Operation(description = "Download a file")
     @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "File successfully downloaded",
-            response = FileUploadResponse.class),
-        @ApiResponse(code = 500, message = "Internal Server Error")
+            @ApiResponse(responseCode = "200", description = "File successfully downloaded",
+                    content = @Content(mediaType = "application/octet-stream")),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @ResponseBody
     public ResponseEntity<byte[]> getFile(
             @RequestHeader(value = "Authorization") String authorizationToken,
-            @PathVariable("fileId") @ApiParam("File ID to download") String fileId) {
+            @PathVariable("fileId") @Parameter(description = "File ID to download") String fileId) {
 
         return emDownloadService.downloadFile(fileId, authorizationToken);
     }
