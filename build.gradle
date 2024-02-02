@@ -329,12 +329,15 @@ dependencies {
     }
 
     implementation("org.projectlombok:lombok:${versions.lombok}")
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
         exclude(module: 'commons-logging')
     }
     testImplementation 'com.github.hmcts:fortify-client:1.2.0:all'
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
+
 
     testImplementation("org.projectlombok:lombok:${versions.lombok}")
     testImplementation('com.github.hmcts:fortify-client:1.2.0:all')
