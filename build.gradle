@@ -273,6 +273,7 @@ dependencies {
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.sprintBoot
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
     integrationTestImplementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
+    integrationTestRuntime group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
