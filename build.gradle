@@ -440,7 +440,10 @@ def sonarExclusions = [
         '**uk/gov/hmcts/reform/emclient/response/*',
         '**uk/gov/hmcts/reform/emclient/service/UploadRequestBuilder.java',
         '**uk/gov/hmcts/reform/emclient/exception/TemporaryStoreFailureException.java',
-        '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java'
+        '**uk/gov/hmcts/reform/emclient/application/EvidenceManagementClientApplication.java',
+        '**uk/gov/hmcts/reform/emclient/errorhandler/GlobalErrorAttributes.java',
+        '**uk/gov/hmcts/reform/emclient/errorhandler/GlobalExceptionHandler.java',
+        '**uk/gov/hmcts/reform/emclient/config/SwaggerConfiguration.java',
 ]
 
 sonarqube {
