@@ -33,6 +33,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.14'
     id 'au.com.dius.pact' version '4.1.0'
     id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'uk.gov.hmcts.java' version '0.12.27'
 }
 
 def versions = [
