@@ -56,6 +56,7 @@ def versions = [
         reformPropertiesVolume                  : '0.0.4',
         reformsJavaLogging                      : '5.1.7',
         restAssured                             : '3.3.0',
+        selenium                                : '4.17.0',
         serenity                                : '2.1.2',
         serenityCucumber                        : '1.9.51',
         serviceTokenGenerator                   : '3.0.0',
@@ -327,6 +328,7 @@ dependencies {
     }
 
     implementation("org.projectlombok:lombok:${versions.lombok}")
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-api', version: versions.selenium
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
