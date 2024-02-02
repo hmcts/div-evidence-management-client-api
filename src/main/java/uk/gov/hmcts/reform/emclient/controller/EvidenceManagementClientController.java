@@ -42,20 +42,19 @@ public class EvidenceManagementClientController {
     @Autowired
     private EvidenceManagementDownloadService emDownloadService;
 
-    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(description = "Upload a file")
+    @Operation(summary = "Handles file upload to Evidence Management Document Store")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "File successfully uploaded",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FileUploadResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @ApiResponse(responseCode = "200", description = "Files uploaded successfully"),
+        @ApiResponse(responseCode = "400", description = "Bad Request"),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
+    @PostMapping(value = "/version/1/upload", produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public List<FileUploadResponse> upload(
-            @RequestHeader(value = "Authorization", required = false) String authorizationToken,
-            @RequestHeader(value = "requestId", required = false) String requestId,
-            @Parameter(description = "Files to upload")
-            @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
+        @RequestHeader(value = "Authorization", required = false) String authorizationToken,
+        @RequestHeader(value = "requestId", required = false) String requestId,
+        @RequestParam("file") List<@EvidenceFile MultipartFile> files) {
 
         return emUploadService.upload(files, authorizationToken, requestId);
     }
@@ -63,9 +62,9 @@ public class EvidenceManagementClientController {
     @DeleteMapping(value = "/version/1/deleteFile", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(description = "Delete a file")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "File successfully deleted",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = FileUploadResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @ApiResponse(responseCode = "200", description = "File successfully deleted",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = FileUploadResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @ResponseBody
     public ResponseEntity<?> deleteFile(@RequestHeader(value = "Authorization") String authorizationToken,
@@ -78,14 +77,14 @@ public class EvidenceManagementClientController {
     @GetMapping(value = "/version/1/download/{fileId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Operation(description = "Download a file")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "File successfully downloaded",
-                    content = @Content(mediaType = "application/octet-stream")),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        @ApiResponse(responseCode = "200", description = "File successfully downloaded",
+            content = @Content(mediaType = "application/octet-stream")),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @ResponseBody
     public ResponseEntity<byte[]> getFile(
-            @RequestHeader(value = "Authorization") String authorizationToken,
-            @PathVariable("fileId") @Parameter(description = "File ID to download") String fileId) {
+        @RequestHeader(value = "Authorization") String authorizationToken,
+        @PathVariable("fileId") @Parameter(description = "File ID to download") String fileId) {
 
         return emDownloadService.downloadFile(fileId, authorizationToken);
     }
