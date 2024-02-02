@@ -389,4 +389,55 @@
         <cve>CVE-2023-20873</cve>
         <cve>CVE-2023-20883</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-devtools-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-devtools@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-actuator-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-actuator@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-aop-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-aop@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-json-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-json@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-logging-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-logging@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-tomcat-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-tomcat@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-starter-web-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-starter-web@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: tomcat-embed-core-9.0.80.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-core@9\.0\.80$</packageUrl>
+        <cve>CVE-2023-42794</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: tomcat-embed-websocket-9.0.80.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-websocket@9\.0\.80$</packageUrl>
+        <cve>CVE-2023-42794</cve>
+    </suppress>
+
 </suppressions>
