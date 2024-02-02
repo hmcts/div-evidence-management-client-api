@@ -272,6 +272,7 @@ dependencies {
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.sprintBoot
     integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    integrationTestImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: versions.selenium
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -328,7 +329,6 @@ dependencies {
     }
 
     implementation("org.projectlombok:lombok:${versions.lombok}")
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: versions.selenium
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
