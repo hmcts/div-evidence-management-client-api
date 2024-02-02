@@ -439,5 +439,29 @@
         <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat-embed-websocket@9\.0\.80$</packageUrl>
         <cve>CVE-2023-42794</cve>
     </suppress>
-
+    <suppress>
+        <notes><![CDATA[file name: json-path-2.7.0.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.jayway\.jsonpath/json-path@2\.7\.0$</packageUrl>
+        <cve>CVE-2023-5072</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-actuator-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-actuator@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-actuator-autoconfigure-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-actuator-autoconfigure@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: spring-boot-autoconfigure-2.7.17.jar]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring-boot-autoconfigure@2\.7\.17$</packageUrl>
+        <cve>CVE-2023-34055</cve>
+    </suppress>
 </suppressions>
