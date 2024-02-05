@@ -405,8 +405,6 @@ task functional(type: Test, description: 'Runs the functional tests', group: 'Ve
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
 
-        useJUnit()
-
         finalizedBy aggregate
 }
 
