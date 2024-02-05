@@ -56,8 +56,8 @@ def versions = [
         reformPropertiesVolume                  : '0.0.4',
         reformsJavaLogging                      : '5.1.7',
         restAssured                             : '3.3.0',
-        serenity                                : '2.5.8',
-        serenityCucumber                        : '3.0.1',
+        serenity                                : '2.1.2',
+        serenityCucumber                        : '1.9.51',
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
         springBoot                              : '2.7.17',
@@ -404,6 +404,8 @@ task bootRunAat(type: BootRun, description: 'Runs the app using AAT config', dep
 task functional(type: Test, description: 'Runs the functional tests', group: 'Verification') {
         setTestClassesDirs(sourceSets.integrationTest.output.classesDirs)
         setClasspath(sourceSets.integrationTest.runtimeClasspath)
+
+        useJUnit()
 
         finalizedBy aggregate
 }
