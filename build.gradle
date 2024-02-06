@@ -98,7 +98,7 @@ bootJar {
         attributes 'Implementation-Title': project.name,
                 'Implementation-Version': project.version
     }
-    archiveFileName = 'div-evidence-management-client.jar'
+    archiveFileName = 'div-evidence-management-client-api.jar'
 }
 mainClassName = 'uk.gov.hmcts.reform.emclient.application.EvidenceManagementClientApplication'
 
