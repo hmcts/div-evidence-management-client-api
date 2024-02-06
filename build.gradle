@@ -10,7 +10,7 @@ buildscript {
         mavenCentral()
         jcenter()
 
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0') {
@@ -26,6 +26,7 @@ plugins {
     id 'application'
     id 'checkstyle'
     id 'jacoco'
+    id 'java'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'info.solidsoft.pitest' version '1.9.11'
     id 'org.owasp.dependencycheck' version '8.0.2'
@@ -44,7 +45,7 @@ def versions = [
         commonsLang3                            : '3.9',
         guava                                   : '32.1.2-jre',
         hibernate                               : '6.0.17.Final',
-        httpComponents                          : '4.5.13',
+        httpComponents                          : '4.5.14',
         jacksonCore                             : '2.13.2',
         jacksonDatabind                         : '2.13.2',
         javaxValidation                         : '2.0.0.Final',
@@ -58,8 +59,8 @@ def versions = [
         puppyCrawl                              : '8.29',
         reformPropertiesVolume                  : '0.0.4',
         reformsJavaLogging                      : '5.1.7',
-        restAssured                             : '4.2.1',
-        serenity                                : '2.5.8',
+        restAssured                             : '5.3.0',
+        serenity                                : '3.6.12',
         serenityCucumber                        : '1.9.51',
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
@@ -73,7 +74,7 @@ def versions = [
         spring_security_rsa                     : '1.0.9.RELEASE',
         tomcat                                  : '9.0.80',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.25.1'
+        wiremockVersion                         : '3.0.1'
 ]
 
 apply plugin: 'checkstyle'
@@ -265,6 +266,9 @@ dependencyCheck {
 
 dependencies {
 
+    contractTestImplementation sourceSets.main.runtimeClasspath
+    contractTestImplementation sourceSets.test.runtimeClasspath
+
     testImplementation 'junit:junit:4.13.2'
     implementation 'junit:junit:4.13.2'
 
@@ -368,8 +372,6 @@ dependencies {
     contractTestRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit5
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit5
 
-    contractTestImplementation sourceSets.main.runtimeClasspath
-    contractTestImplementation sourceSets.test.runtimeClasspath
 }
 
 def dependencyVersions = [
