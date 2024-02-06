@@ -69,7 +69,7 @@ def versions = [
         springHateoas                           : '0.25.2.RELEASE',
         springPluginCore                        : '1.2.0.RELEASE',
         springRetry                             : '1.2.5.RELEASE',
-        springSecurityCrypto                    : '5.4.5',
+        springSecurityCrypto                    : '6.2.1',
         spring_security_rsa                     : '1.0.9.RELEASE',
         tomcat                                  : '9.0.80',
         unirestJava                             : '1.4.9',
