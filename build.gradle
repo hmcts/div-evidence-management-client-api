@@ -70,7 +70,7 @@ def versions = [
         springPluginCore                        : '1.2.0.RELEASE',
         springRetry                             : '1.2.5.RELEASE',
         springSecurityCrypto                    : '6.2.1',
-        spring_security_rsa                     : '1.0.9.RELEASE',
+        spring_security_rsa                     : '1.1.0',
         tomcat                                  : '9.0.80',
         unirestJava                             : '1.4.9',
         wiremockVersion                         : '2.25.1'
