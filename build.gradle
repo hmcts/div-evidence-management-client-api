@@ -73,7 +73,7 @@ def versions = [
         spring_security_rsa                     : '1.1.0',
         tomcat                                  : '9.0.80',
         unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.25.1'
+        wiremockVersion                         : '2.27.2'
 ]
 
 apply plugin: 'checkstyle'
