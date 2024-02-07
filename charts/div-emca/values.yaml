@@ -12,7 +12,6 @@ java:
     EVIDENCE_MANAGEMENT_HEALTH_URL: "http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/health"
     EVIDENCE_MANAGEMENT_UPLOAD_FILE_URL: "http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/documents"
     AUTH_PROVIDER_SERVICE_CLIENT_MICROSERVICE: "divorce_document_generator"
-    IDAM_AUTH_SECRET_TEST: ${IDAM_AUTH_SECRET}
     IDAM_API_URL: "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
     AUTH_PROVIDER_SERVICE_CLIENT_TOKENTIMETOLIVEINSECONDS: "900"
     HTTP_CONNECT_REQUEST_TIMEOUT: "60000"
