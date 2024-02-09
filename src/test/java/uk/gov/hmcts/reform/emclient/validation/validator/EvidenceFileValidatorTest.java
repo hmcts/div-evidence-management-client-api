@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 @SpringBootTest(classes = {EvidenceManagementClientApplication.class})
 @RunWith(SpringRunner.class)
-@TestPropertySource(value = "classpath:application.yml")
 public class EvidenceFileValidatorTest {
 
     @Resource

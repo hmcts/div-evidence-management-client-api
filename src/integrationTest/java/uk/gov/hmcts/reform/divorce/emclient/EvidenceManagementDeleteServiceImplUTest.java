@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.emclient.service;
+package uk.gov.hmcts.reform.divorce.emclient;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementDeleteServiceImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

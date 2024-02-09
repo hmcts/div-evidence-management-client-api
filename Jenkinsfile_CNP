@@ -22,7 +22,10 @@ def secrets = [
         'div-${env}': [
                 secret("div-doc-s2s-auth-secret", "IDAM_AUTH_SECRET"),
                 secret("idam-secret", "AUTH_IDAM_CLIENT_SECRET"),
-                secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY")
+                secret("div-doc-s2s-auth-secret", "AUTH_PROVIDER_SERVICE_CLIENT_KEY"),
+                secret("AppInsightsInstrumentationKey", "azure.application-insights.instrumentation-key"),
+                secret("idam-caseworker-username", "IDAM_CASEWORKER_USERNAME"),
+                secret("idam-caseworker-password", "IDAM_CASEWORKER_PASSWORD")
         ]
 ]
 

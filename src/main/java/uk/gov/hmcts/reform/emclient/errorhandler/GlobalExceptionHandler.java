@@ -26,15 +26,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpClientErrorException.class)
     // BAD_REQUEST(400),UNAUTHORIZED(401),FORBIDDEN(403),NOT_FOUND(404),METHOD_NOT_ALLOWED(405)...
     public ResponseEntity<Object> handleClientException(
-            HttpClientErrorException clientErrorException,
-            WebRequest request,
-            HttpServletResponse response) {
+        HttpClientErrorException clientErrorException,
+        WebRequest request,
+        HttpServletResponse response) {
 
         //NOSONAR
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), clientErrorException.getMessage());
 
         return ResponseEntity.status(clientErrorException.getStatusCode()).body(
-                "Http Client Exception. Please check service input parameters and also verify the status of service token generator");
+            "Http Client Exception. Please check service input parameters and also verify the status of service token generator");
     }
 
     @ExceptionHandler(value = {ResourceAccessException.class, HttpServerErrorException.class})
@@ -44,20 +44,21 @@ public class GlobalExceptionHandler {
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), restClientException.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                "Some server side exception occurred. Please check logs for details");
+            "Some server side exception occurred. Please check logs for details");
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationException(ConstraintViolationException exception, WebRequest webRequest) {
+    public ResponseEntity<Map<String, Object>> handleValidationException(
+        ConstraintViolationException exception, WebRequest webRequest) {
         /*
           This is a temporary solution because of an nginx configuration which requires a status code 200 to be returned.
          */
         webRequest.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(), WebRequest.SCOPE_REQUEST);
         webRequest.setAttribute("javax.servlet.error.error_code", "invalidFileType", WebRequest.SCOPE_REQUEST);
         webRequest.setAttribute("javax.servlet.error.request_uri",
-            ((ServletWebRequest)webRequest).getRequest().getRequestURL().toString(),
+            ((ServletWebRequest) webRequest).getRequest().getRequestURL().toString(),
             WebRequest.SCOPE_REQUEST);
-        Map<String, Object> errorAttributes = new GlobalErrorAttributes().getErrorAttributes(webRequest, false);
+        Map<String, Object> errorAttributes = new GlobalErrorAttributes().getErrorAttributes(webRequest, null);
 
         if (!exception.getConstraintViolations().isEmpty()) {
             errorAttributes.put("message", exception.getConstraintViolations().iterator().next().getMessage());

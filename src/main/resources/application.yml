@@ -92,3 +92,10 @@ spring:
     multipart:
       max-file-size: 30000KB
       max-request-size: 30000KB
+  mvc:
+    pathmatch:
+      matching-strategy:
+        ant_path_matcher
+springdoc:
+  swagger-ui:
+    enabled: true

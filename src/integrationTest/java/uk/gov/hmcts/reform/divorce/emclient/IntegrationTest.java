@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
@@ -22,7 +21,7 @@ import java.net.URL;
 @Slf4j
 @ComponentScan(basePackages = {"uk.gov.hmcts.reform.divorce.emclient", "uk.gov.hmcts.auth.provider.service"})
 @ImportAutoConfiguration({RibbonAutoConfiguration.class,HttpMessageConvertersAutoConfiguration.class,
-        FeignRibbonClientAutoConfiguration.class, FeignAutoConfiguration.class})
+         FeignAutoConfiguration.class})
 @PropertySource("classpath:application.properties")
 @PropertySource("classpath:application-${env}.properties")
 public class IntegrationTest {

@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +19,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGeneratorFactory;
 @ImportAutoConfiguration({
     RibbonAutoConfiguration.class,
     HttpMessageConvertersAutoConfiguration.class,
-    FeignRibbonClientAutoConfiguration.class,
     FeignAutoConfiguration.class,
     ServiceAuthAutoConfiguration.class})
 public class ServiceContextConfiguration {
