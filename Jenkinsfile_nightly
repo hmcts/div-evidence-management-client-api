@@ -40,6 +40,11 @@ withNightlyPipeline(type, product, component) {
     println("### Set test_environment.. ###")
     env.test_environment = 'aat'
 
+    afterSuccess('fullFunctionalTest') {
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    }
+
+    enableFullFunctionalTest()
     enableMutationTest()
     enableFortifyScan()
 
@@ -47,4 +52,3 @@ withNightlyPipeline(type, product, component) {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
     }
 }
-
