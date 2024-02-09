@@ -31,7 +31,8 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withParameterizedPipeline(params.TYPE, params.PRODUCT_NAME, params.APP, params.ENVIRONMENT, params.SUBSCRIPTION) {
     loadVaultSecrets(secrets)
 
-    afterSuccess('functionalTest:saat') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    afterSuccess('checkout') {
+        echo '${params.PRODUCT_NAME}-${params.APP} checked out'
     }
 }
+
