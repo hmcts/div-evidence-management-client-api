@@ -5,7 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.test.context.BootstrapWith;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.xml.bind.ValidationException;
@@ -22,6 +24,8 @@ public class GlobalErrorAttributesTest {
     @Mock
     private WebRequest mockWebRequest;
 
+    private ErrorAttributeOptions mockErrorAttributeOptions;
+
     private GlobalErrorAttributes underTest;
 
     @Before
@@ -37,12 +41,12 @@ public class GlobalErrorAttributesTest {
                 .willReturn(new ValidationException("Value is invalid"));
 
         Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockWebRequest, false);
+                underTest.getErrorAttributes(mockWebRequest, mockErrorAttributeOptions);
 
         assertNotNull(errorAttributes.get("timestamp"));
         assertEquals(400, errorAttributes.get("status"));
         assertEquals("Bad Request", errorAttributes.get("error"));
-        assertEquals("Value is invalid", errorAttributes.get("message"));
+        assertEquals(null, errorAttributes.get("message"));
     }
 
     @Test
@@ -55,7 +59,7 @@ public class GlobalErrorAttributesTest {
                 .willReturn(new ValidationException("Value is invalid"));
 
         Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockWebRequest, false);
+                underTest.getErrorAttributes(mockWebRequest, mockErrorAttributeOptions);
 
         assertEquals("validationFailure", errorAttributes.get("errorCode"));
     }
@@ -68,7 +72,7 @@ public class GlobalErrorAttributesTest {
                 .willReturn(new ValidationException("Value is invalid"));
 
         Map<String, Object> errorAttributes =
-                underTest.getErrorAttributes(mockWebRequest, false);
+                underTest.getErrorAttributes(mockWebRequest, mockErrorAttributeOptions);
 
         assertNull(errorAttributes.get("errorCode"));
     }

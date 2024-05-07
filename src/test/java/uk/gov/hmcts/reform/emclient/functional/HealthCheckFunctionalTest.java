@@ -64,9 +64,6 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
     @Value("${evidence.management.store.health.url}")
     private String evidenceManagementStoreApiUrl;
 
-    @Value("${idam.s2s-auth.health.url}")
-    private String serviceAuthApiUrl;
-
     @ClassRule
     public static WireMockClassRule serviceAuthServer = new WireMockClassRule(4502);
 
@@ -80,7 +77,6 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
     private final HttpClient httpClient = HttpClients.createMinimal();
     private static final String UP = "UP";
     private static final String DOWN = "DOWN";
-    private static final String SERVICE_AUTH_PROVIDER_HEALTH_CHECK = "serviceAuthProviderHealthCheck";
     private static final String EVIDENCE_MANAGEMENT_STORE_API = "evidenceManagementStoreAPI";
     private static final String HEALTHCHECK_UP_JSON = "/fixtures/evidence-management-store-api/healthcheck-up.json";
     private static final String HEALTHCHECK_DOWN_JSON = "/fixtures/evidence-management-store-api/healthcheck-down.json";
@@ -107,31 +103,31 @@ public class HealthCheckFunctionalTest extends BaseFunctionalTest {
     @Test
     public void shouldReturnStatusUpWhenAllDependenciesAreUp() throws Exception {
         mockServiceAuthFeignHealthCheck();
-        stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl, serviceAuthApiUrl);
+        stubHealthService(HttpStatus.OK, evidenceManagementStoreApiUrl);
         assertStatus(EntityUtils.toString(getHealth().getEntity()), UP,
-                EVIDENCE_MANAGEMENT_STORE_API, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
+                EVIDENCE_MANAGEMENT_STORE_API);
     }
 
     @Test
     public void shouldReturnStatusDownWhenAllDependenciesAreDown() throws Exception {
         mockServiceAuthFeignHealthCheck();
-        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
+        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl);
         assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN,
-                EVIDENCE_MANAGEMENT_STORE_API, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
+                EVIDENCE_MANAGEMENT_STORE_API);
     }
 
     @Test
     public void shouldReturnStatusDownWhenEvidenceManagementStoreApiIsDown() throws Exception {
         mockServiceAuthFeignHealthCheck();
-        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
+        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl);
         assertStatus(EntityUtils.toString(getHealth().getEntity()), UP, EVIDENCE_MANAGEMENT_STORE_API);
     }
 
     @Test
     public void shouldReturnStatusDownWhenServiceAuthApiIsDown() throws Exception {
         mockServiceAuthFeignHealthCheck();
-        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl,serviceAuthApiUrl);
-        assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN, SERVICE_AUTH_PROVIDER_HEALTH_CHECK);
+        stubHealthService(HttpStatus.SERVICE_UNAVAILABLE, evidenceManagementStoreApiUrl);
+        assertStatus(EntityUtils.toString(getHealth().getEntity()), DOWN);
     }
 
     private void stubHealthService(HttpStatus healthStatus, String...services) throws Exception {

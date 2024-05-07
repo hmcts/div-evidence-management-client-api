@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.emclient.service;
+package uk.gov.hmcts.reform.divorce.emclient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -21,6 +21,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.emclient.idam.models.UserDetails;
 import uk.gov.hmcts.reform.emclient.idam.services.UserService;
 import uk.gov.hmcts.reform.emclient.response.FileUploadResponse;
+import uk.gov.hmcts.reform.emclient.service.EvidenceManagementUploadServiceImpl;
 
 import java.io.IOException;
 import java.util.Collections;
