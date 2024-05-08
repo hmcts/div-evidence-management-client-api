@@ -84,6 +84,8 @@ service:
 spring:
   application:
     name: div-emca
+  config:
+    import: optional:configtree:/mnt/secrets/div/
   main:
     allow-bean-definition-overriding: true
   profiles:

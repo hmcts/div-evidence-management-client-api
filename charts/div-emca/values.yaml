@@ -19,7 +19,8 @@ java:
     HTTP_CONNECT_TIMEOUT: "60000"
   keyVaults:
     div:
-      resourceGroup: div
       secrets:
-        - div-doc-s2s-auth-secret
-        - AppInsightsInstrumentationKey
+        - name: div-doc-s2s-auth-secret
+          alias: AUTH_PROVIDER_SERVICE_CLIENT_KEY
+        - name: AppInsightsInstrumentationKey
+          alias: azure.application-insights.instrumentation-key
