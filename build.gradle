@@ -47,7 +47,7 @@ def versions = [
         httpComponents                          : '4.5.13',
         jacksonCore                             : '2.13.2',
         jacksonDatabind                         : '2.13.2',
-        javaxValidation                         : '2.0.0.Final',
+        javaxValidation                         : '2.0.1.Final',
         jaywayJsonPath                          : '2.4.0',
         jsr305                                  : '3.0.2',
         junit                                   : '4.13.2',
