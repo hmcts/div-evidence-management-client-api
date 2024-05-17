@@ -42,7 +42,7 @@ def versions = [
         bouncycastle                            : '1.61',
         commonsIo                               : '2.7',
         commonsLang3                            : '3.9',
-        guava                                   : '32.1.2-jre',
+        guava                                   : '32.1.3-jre',
         hibernate                               : '6.0.17.Final',
         httpComponents                          : '4.5.13',
         jacksonCore                             : '2.13.2',
