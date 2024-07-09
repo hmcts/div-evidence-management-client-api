@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 
 buildscript {
     ext {
-        springBootVersion = '2.7.14'
+        springBootVersion = '2.7.18'
         springCloudBomVersion = "2021.0.8"
     }
     repositories {
@@ -30,7 +30,7 @@ plugins {
     id 'info.solidsoft.pitest' version '1.9.11'
     id 'org.owasp.dependencycheck' version '8.0.2'
     id 'org.sonarqube' version '3.2.0'
-    id 'org.springframework.boot' version '2.7.14'
+    id 'org.springframework.boot' version '2.7.18'
     id 'au.com.dius.pact' version '4.1.0'
     id 'com.github.ben-manes.versions' version '0.51.0'
     id 'uk.gov.hmcts.java' version '0.12.27'
@@ -63,7 +63,7 @@ def versions = [
         serenityCucumber                        : '1.9.51',
         serviceTokenGenerator                   : '3.0.0',
         skyscreamer                             : '1.2.3',
-        springBoot                              : '2.7.17',
+        springBoot                              : '2.7.18',
         springCloud                             : '2021.0.8',
         springDoc                               : '1.6.9',
         springHateoas                           : '0.25.2.RELEASE',
