@@ -29,11 +29,11 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'info.solidsoft.pitest' version '1.9.11'
     id 'org.owasp.dependencycheck' version '8.0.2'
-    id 'org.sonarqube' version '3.2.0'
+    id 'org.sonarqube' version '5.1.0.4882'
     id 'org.springframework.boot' version '2.7.14'
     id 'au.com.dius.pact' version '4.1.0'
     id 'com.github.ben-manes.versions' version '0.51.0'
-    id 'uk.gov.hmcts.java' version '0.12.27'
+    id 'uk.gov.hmcts.java' version '0.12.63'
 }
 
 
@@ -57,7 +57,7 @@ def versions = [
         pact_version                            : '4.1.7',
         puppyCrawl                              : '8.29',
         reformPropertiesVolume                  : '0.0.4',
-        reformsJavaLogging                      : '5.1.7',
+        reformsJavaLogging                      : '6.1.6',
         restAssured                             : '4.2.1',
         serenity                                : '2.5.8',
         serenityCucumber                        : '1.9.51',
@@ -170,12 +170,8 @@ configurations {
 }
 
 repositories {
-    mavenLocal()
-    jcenter()
     mavenCentral()
-
     maven { url "https://jitpack.io" }
-    maven { url "https://repo.maven.apache.org/maven2" }
 }
 
 dependencyManagement {
@@ -184,7 +180,6 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudBomVersion}"
     }
     dependencies {
-
         dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.2'
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
@@ -248,7 +243,7 @@ checkstyle {
     maxWarnings = 0
     toolVersion = '8.29'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-    configFile = new File(rootDir, "checkstyle.xml")
+    getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
@@ -285,7 +280,6 @@ dependencies {
     integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
     integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.sprintBoot
-    integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -315,33 +309,20 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
 
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-    implementation (group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging){
-        exclude group: 'org.apache.httpcomponents', 'module': 'httpclient'
-    }
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
+    implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformsJavaLogging
+    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.0.3'
 
     implementation "com.google.guava:guava:${versions.guava}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${versions.tomcat}"
     implementation "org.apache.tomcat.embed:tomcat-embed-websocket:${versions.tomcat}"
     implementation "org.apache.tomcat.embed:tomcat-embed-el:${versions.tomcat}"
 
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: versions.logbackVersion
-    implementation group: 'ch.qos.logback', name: 'logback-core', version: versions.logbackVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
 
     implementation "org.springframework.security:spring-security-rsa:${versions.spring_security_rsa}"
     implementation "org.springframework.security:spring-security-crypto:${versions.springSecurityCrypto}"
 
-    implementation (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
-        exclude group: 'io.reactivex', module: 'io.reactivex'
-        exclude group: 'io.reactivex', module: 'rxnetty'
-        exclude group: 'io.reactivex', module: 'rxnetty-contexts'
-        exclude group: 'io.reactivex', module: 'rxnetty-servo'
-    }
-
     implementation("org.projectlombok:lombok:${versions.lombok}")
-
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
     testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
@@ -351,7 +332,6 @@ dependencies {
 
     testImplementation("org.projectlombok:lombok:${versions.lombok}")
     testImplementation('com.github.hmcts:fortify-client:1.2.0:all')
-
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
@@ -432,11 +412,12 @@ task developAddReleaseSuffix() {
 }
 
 jacocoTestReport {
-    dependsOn test
+    executionData(test)
 
     reports {
-        xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-        html.destination file("${buildDir}/reports/jacoco/test/html")
+        xml.required = true
+        html.required = true
+        xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
@@ -469,10 +450,9 @@ sonarqube {
         property "sonar.projectKey", "DivorceEvidenceManagementClientApi"
         property "sonar.projectName", "Divorce :: Evidence Management Client API"
         property "sonar.exclusions", sonarExclusions.join(", ")
-        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.outputLocation.get()}"
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-
     }
 }
 
