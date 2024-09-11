@@ -20,8 +20,8 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         }
         Map<String, Object> errorAttributes =
                 super.getErrorAttributes(requestAttributes, options);
-        String errorCode =
-                (String) requestAttributes.getAttribute("javax.servlet.error.error_code", RequestAttributes.SCOPE_REQUEST);
+        String errorCode = (String) requestAttributes.getAttribute("javax.servlet.error.error_code",
+            RequestAttributes.SCOPE_REQUEST);
         if (StringUtils.isNotBlank(errorCode)) {
             errorAttributes.put("errorCode", errorCode);
         }

@@ -48,8 +48,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(
-    classes = {EvidenceManagementClientApplication.class, HealthCheckFunctionalTest.LocalRibbonClientConfiguration.class})
+@ContextConfiguration(classes = {EvidenceManagementClientApplication.class,
+        HealthCheckFunctionalTest.LocalRibbonClientConfiguration.class})
 @PropertySource(value = "classpath:application.properties")
 @TestPropertySource(properties = {
     "endpoints.health.time-to-live=0",

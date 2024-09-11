@@ -60,7 +60,8 @@ public class EvidenceManagementClientControllerTest {
     private static final List<MultipartFile> MULTIPART_FILE_LIST = Collections.emptyList();
     private static final String INVALID_AUTH_TOKEN = "{[][][][][}";
     private static final String INVALID_FILE_ERROR_MSG =
-        "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif, tiff, png, pdf)";
+        "Attempt to upload invalid file, this service only accepts the following file types ('jpg, jpeg, bmp, tif,"
+                + " tiff, png, pdf)";
 
     private static final String EM_CLIENT_UPLOAD_URL = "http://localhost/emclientapi/version/1/upload";
     private static final String EM_CLIENT_DELETE_ENDPOINT_URL = "/emclientapi/version/1/deleteFile?fileUrl=";
@@ -107,7 +108,8 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken()
+    public void
+        shouldNotUploadFileAndThrowClientExceptionWhenHandleFileUploadWithS2STokenIsInvokedWithInvalidAuthToken()
         throws Exception {
         MockMultipartFile file = jpegMultipartFile();
         List<MultipartFile> multipartFileList = Collections.singletonList(file);
@@ -125,7 +127,9 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat() throws Exception {
+    public void
+        shouldReturnStatus200WithErrorBodyWhenHandleFileUploadWithS2STokenAndTheSubmittedFileIsNotTheCorrectFormat()
+            throws Exception {
         mockMvc.perform(multipart(EM_CLIENT_UPLOAD_URL)
                 .file(textMultipartFile())
                 .header(AUTHORIZATION_TOKEN_HEADER, AUTH_TOKEN)
@@ -140,12 +144,14 @@ public class EvidenceManagementClientControllerTest {
     }
 
     @Test
-    public void shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
+    public void
+        shouldNotUploadFileAndThrowServerExceptionWhenHandleFileUploadWithS2STokenAndEmStoreThrowsHttpServerException()
         throws Exception {
         MockMultipartFile file = jpegMultipartFile();
         List<MultipartFile> multipartFileList = Collections.singletonList(file);
         given(emUploadService.upload(multipartFileList, AUTH_TOKEN, REQUEST_ID))
-            .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Not enough disk space available."));
+            .willThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Not enough disk space available."));
 
         verifyExceptionFromUploadServiceIsHandledGracefully(file);
         verify(emUploadService).upload(multipartFileList, AUTH_TOKEN, REQUEST_ID);

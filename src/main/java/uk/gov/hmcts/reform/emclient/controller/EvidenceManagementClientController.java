@@ -63,7 +63,8 @@ public class EvidenceManagementClientController {
     @Operation(description = "Delete a file")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "File successfully deleted",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = FileUploadResponse.class))),
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = FileUploadResponse.class))),
         @ApiResponse(responseCode = "500", description = "Internal Server Error")
     })
     @ResponseBody
