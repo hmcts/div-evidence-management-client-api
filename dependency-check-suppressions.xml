@@ -526,4 +526,10 @@
         <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-support@4\.1\.4$</packageUrl>
         <cve>CVE-2023-5590</cve>
     </suppress>
+    <suppress>
+        CVE-2023-6378
+    </suppress>
+    <suppress>
+        CVE-2023-6481
+    </suppress>
 </suppressions>
