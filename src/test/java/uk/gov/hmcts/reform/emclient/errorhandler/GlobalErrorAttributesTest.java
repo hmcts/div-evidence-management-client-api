@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
+import org.springframework.test.context.BootstrapWith;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.xml.bind.ValidationException;

@@ -113,9 +113,9 @@ public class EvidenceManagementDeleteServiceImplUTest {
 
 
     /**
-     * This test issues a document delete request that is expected to be rejected due to the caller being
-     * unauthenticated. It ensures that the FORBIDDEN response from the EM document store service passes cleanly
-     * through the evidence management client api to the caller without any issues or exceptions occurring.
+     * This test issues a document delete request that is expected to be rejected due to the caller being unauthenticated.
+     * It ensures that the FORBIDDEN response from the EM document store service passes cleanly through the
+     * evidence management client api to the caller without any issues or exceptions occurring.
      * <p/>
      */
 

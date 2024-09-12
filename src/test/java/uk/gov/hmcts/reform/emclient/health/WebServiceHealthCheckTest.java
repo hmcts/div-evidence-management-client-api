@@ -28,8 +28,7 @@ public class WebServiceHealthCheckTest {
     private final RestTemplate restTemplate = mock(RestTemplate.class);
     private final HttpEntityFactory httpEntityFactory = mock(HttpEntityFactory.class);
 
-    private final TestWebServiceHealthCheck healthCheck = new TestWebServiceHealthCheck(httpEntityFactory, restTemplate,
-            uri);
+    private final TestWebServiceHealthCheck healthCheck = new TestWebServiceHealthCheck(httpEntityFactory, restTemplate, uri);
 
     @Test
     public void shouldReturnUpWhenServiceReturnsOk() {
@@ -44,8 +43,7 @@ public class WebServiceHealthCheckTest {
         assertThat(healthCheck.health()).isEqualTo(Health.up().build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class),
-                eq(new HashMap<>()));
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
         verifyNoMoreInteractions(httpEntityFactory, restTemplate);
     }
@@ -64,8 +62,7 @@ public class WebServiceHealthCheckTest {
         assertThat(healthCheck.health()).isEqualTo(Health.down().build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class),
-                eq(new HashMap<>()));
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
         verifyNoMoreInteractions(httpEntityFactory, restTemplate);
     }
@@ -84,8 +81,7 @@ public class WebServiceHealthCheckTest {
         assertThat(healthCheck.health()).isEqualTo(Health.down().build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class),
-                eq(new HashMap<>()));
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
         verifyNoMoreInteractions(httpEntityFactory, restTemplate);
     }
@@ -104,8 +100,7 @@ public class WebServiceHealthCheckTest {
         assertThat(healthCheck.health()).isEqualTo(Health.unknown().build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class),
-                eq(new HashMap<>()));
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
         verifyNoMoreInteractions(httpEntityFactory, restTemplate);
     }
@@ -123,8 +118,7 @@ public class WebServiceHealthCheckTest {
         assertThat(healthCheck.health()).isEqualTo(Health.unknown().build());
 
         verify(httpEntityFactory).createRequestEntityForHealthCheck();
-        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class),
-                eq(new HashMap<>()));
+        verify(restTemplate).exchange(eq(uri), eq(HttpMethod.GET), eq(httpEntity), eq(Object.class), eq(new HashMap<>()));
 
         verifyNoMoreInteractions(httpEntityFactory, restTemplate);
     }

@@ -55,8 +55,7 @@ public class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         assertEquals(
-            "Http Client Exception. Please check service input parameters and also verify the status of "
-                    + "service token generator",
+            "Http Client Exception. Please check service input parameters and also verify the status of service token generator",
             responseEntity.getBody());
     }
 

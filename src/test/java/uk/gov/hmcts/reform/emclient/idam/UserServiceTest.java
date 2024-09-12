@@ -38,8 +38,7 @@ public class UserServiceTest {
     @Test(expected = HttpClientErrorException.class)
     public void userServiceThrowErrorWhenNotAuthorised() {
         String authToken = BEARER_AUTH_TOKEN;
-        when(idamApiClient.retrieveUserDetails(authToken)).thenThrow(new HttpClientErrorException(HttpStatus
-                .UNAUTHORIZED));
+        when(idamApiClient.retrieveUserDetails(authToken)).thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
 
         testObj.getUserDetails(authToken);
     }

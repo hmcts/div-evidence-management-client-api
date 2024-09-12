@@ -34,13 +34,11 @@ public class GlobalExceptionHandler {
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), clientErrorException.getMessage());
 
         return ResponseEntity.status(clientErrorException.getStatusCode()).body(
-            "Http Client Exception. Please check service input parameters and also verify the status of service "
-                + "token generator");
+            "Http Client Exception. Please check service input parameters and also verify the status of service token generator");
     }
 
     @ExceptionHandler(value = {ResourceAccessException.class, HttpServerErrorException.class})
-    public ResponseEntity<Object> handleMaxUploadException(RestClientException restClientException,
-                                                           WebRequest request) {
+    public ResponseEntity<Object> handleMaxUploadException(RestClientException restClientException, WebRequest request) {
 
         //NOSONAR
         log.error(EXCEPTION_MESSAGE, request.getHeader(REQUEST_ID_HEADER_KEY), restClientException.getMessage());
@@ -53,11 +51,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleValidationException(
         ConstraintViolationException exception, WebRequest webRequest) {
         /*
-          This is a temporary solution because of an nginx configuration which requires a status code 200 to be
-          returned.
+          This is a temporary solution because of an nginx configuration which requires a status code 200 to be returned.
          */
-        webRequest.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(),
-            WebRequest.SCOPE_REQUEST);
+        webRequest.setAttribute("javax.servlet.error.status_code", HttpStatus.BAD_REQUEST.value(), WebRequest.SCOPE_REQUEST);
         webRequest.setAttribute("javax.servlet.error.error_code", "invalidFileType", WebRequest.SCOPE_REQUEST);
         webRequest.setAttribute("javax.servlet.error.request_uri",
             ((ServletWebRequest) webRequest).getRequest().getRequestURL().toString(),
