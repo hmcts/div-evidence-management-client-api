@@ -354,7 +354,7 @@ dependencies {
     testImplementation('com.github.hmcts:fortify-client:1.2.0:all')
 
 
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     //pact
     contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
