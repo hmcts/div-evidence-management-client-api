@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 
 buildscript {
     ext {
-        springBootVersion = '2.7.14'
+        springBootVersion = '2.7.17'
         springCloudBomVersion = "2021.0.8"
     }
     repositories {
@@ -32,44 +32,42 @@ plugins {
     id 'uk.gov.hmcts.java' version '0.12.65'
 }
 
-
-
 def versions = [
-        bouncycastle                            : '1.61',
-        commonsIo                               : '2.7',
-        commonsLang3                            : '3.9',
-        guava                                   : '32.1.2-jre',
-        hibernate                               : '6.0.17.Final',
-        httpComponents                          : '4.5.13',
-        jacksonCore                             : '2.13.2',
-        jacksonDatabind                         : '2.13.2',
-        javaxValidation                         : '2.0.0.Final',
-        jaywayJsonPath                          : '2.4.0',
-        jsr305                                  : '3.0.2',
-        junit                                   : '4.13.2',
-        junit5                                  : '5.9.3',
-        lombok                                  : '1.18.30',
-        logbackVersion                          : '1.2.10',
-        pact_version                            : '4.1.7',
-        puppyCrawl                              : '8.29',
-        reformPropertiesVolume                  : '0.0.4',
-        reformsJavaLogging                      : '6.1.6',
-        restAssured                             : '4.2.1',
-        serenity                                : '2.5.8',
-        serenityCucumber                        : '1.9.51',
-        serviceTokenGenerator                   : '3.0.0',
-        skyscreamer                             : '1.2.3',
-        springBoot                              : '2.7.17',
-        springCloud                             : '2021.0.8',
-        springDoc                               : '1.6.9',
-        springHateoas                           : '0.25.2.RELEASE',
-        springPluginCore                        : '1.2.0.RELEASE',
-        springRetry                             : '1.2.5.RELEASE',
-        springSecurityCrypto                    : '6.2.1',
-        spring_security_rsa                     : '1.1.0',
-        tomcat                                  : '9.0.104',
-        unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.27.2'
+    bouncycastle                            : '1.70',
+    commonsIo                               : '2.15.0',
+    commonsLang3                            : '3.13.0',
+    guava                                   : '33.4.8-jre',
+    hibernate                               : '6.0.17.Final',
+    httpComponents                          : '4.5.14',
+    jacksonCore                             : '2.18.3',
+    jacksonDatabind                         : '2.18.3',
+    javaxValidation                         : '2.0.0.Final',
+    jaywayJsonPath                          : '2.4.0',
+    jsr305                                  : '3.0.2',
+    junit                                   : '4.13.2',
+    junit5                                  : '5.10.1',
+    lombok                                  : '1.18.30',
+    logbackVersion                          : '1.2.10',
+    pact_version                            : '4.1.7',
+    puppyCrawl                              : '8.45.1',
+    reformPropertiesVolume                  : '0.1.0',
+    reformsJavaLogging                      : '6.1.6',
+    restAssured                             : '4.5.1',
+    serenity                                : '2.6.0',
+    serenityCucumber                        : '1.9.51',
+    serviceTokenGenerator                   : '3.1.4',
+    skyscreamer                             : '1.2.3',
+    springBoot                              : '2.7.17',
+    springCloud                             : '2021.0.8',
+    springDoc                               : '1.7.0',
+    springHateoas                           : '0.25.2.RELEASE',
+    springPluginCore                        : '1.2.0.RELEASE',
+    springRetry                             : '1.2.5.RELEASE',
+    springSecurityCrypto                    : '5.8.8',
+    spring_security_rsa                     : '1.1.1',
+    tomcat                                  : '9.0.104',
+    unirestJava                             : '1.4.9',
+    wiremockVersion                         : '2.27.2'
 ]
 
 apply plugin: 'checkstyle'
@@ -82,7 +80,6 @@ apply plugin: 'net.serenity-bdd.aggregator'
 
 group = 'uk.gov.hmcts.reform.divorce'
 version = '3.0.0'
-
 
 java {
     toolchain {
