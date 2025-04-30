@@ -187,7 +187,7 @@ dependencyManagement {
         }
 
         //CVE-2022-22965
-        dependencySet(group: 'org.springframework', version: '5.3.30') {
+        dependencySet(group: 'org.springframework', version: '5.3.39') {
             entry 'spring-aop'
             entry 'spring-context'
             entry 'spring-context-support'
