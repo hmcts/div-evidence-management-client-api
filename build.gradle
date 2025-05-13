@@ -324,7 +324,7 @@ dependencies {
     }
 
     testImplementation("org.projectlombok:lombok:${versions.lombok}")
-    testImplementation('com.github.hmcts:fortify-client:1.4.8:all')
+    testImplementation('com.github.hmcts:fortify-client:1.4.9:all')
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
