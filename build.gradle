@@ -294,7 +294,7 @@ dependencies {
     implementation group: 'com.jayway.jsonpath', name: 'json-path-assert', version: versions.jaywayJsonPath
     implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIo
     implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDoc
-    implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.15'
+    implementation group: 'io.swagger.core.v3', name: 'swagger-annotations', version: '2.2.32'
     implementation group: 'javax.validation', name: 'validation-api', version: versions.javaxValidation
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: versions.hibernate
