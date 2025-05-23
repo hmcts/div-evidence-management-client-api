@@ -24,3 +24,5 @@ java:
           alias: AUTH_PROVIDER_SERVICE_CLIENT_KEY
         - name: AppInsightsInstrumentationKey
           alias: azure.application-insights.instrumentation-key
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string
