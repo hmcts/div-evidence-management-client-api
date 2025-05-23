@@ -51,7 +51,8 @@ def versions = [
     pact_version                            : '4.1.7',
     puppyCrawl                              : '8.45.1',
     reformPropertiesVolume                  : '0.1.0',
-    reformsJavaLogging                      : '6.1.6',
+    reformLogging                      : '6.1.9',
+    apacheLogging                           : '2.17.1',
     restAssured                             : '4.5.1',
     serenity                                : '2.6.0',
     serenityCucumber                        : '1.9.51',
@@ -177,12 +178,6 @@ dependencyManagement {
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
 
-        //CVE-2021-44228, CVE-2021-44832, CVE-2021-45046, CVE-2021-45105
-        dependencySet(group: 'org.apache.logging.log4j', version: '2.24.3') {
-            entry 'log4j-api'
-            entry 'log4j-to-slf4j'
-        }
-
         //CVE-2022-22965
         dependencySet(group: 'org.springframework', version: '5.3.39') {
             entry 'spring-aop'
@@ -201,16 +196,6 @@ dependencyManagement {
         }
     }
 
-}
-
-distributions {
-  main {
-    contents {
-      from(file("$projectDir/lib/AI-Agent.xml")) {
-        into "lib"
-      }
-    }
-  }
 }
 
 tasks.withType(JavaCompile) {
@@ -303,8 +288,11 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
 
-    implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformsJavaLogging
+    implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.0.3'
+
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: versions.apacheLogging
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: versions.apacheLogging
 
     implementation "com.google.guava:guava:${versions.guava}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${versions.tomcat}"
