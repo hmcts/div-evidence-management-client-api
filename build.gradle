@@ -257,8 +257,8 @@ dependencies {
     integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
-    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
-    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.sprintBoot
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.springBoot
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -307,7 +307,7 @@ dependencies {
     implementation("org.projectlombok:lombok:${versions.lombok}")
 
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
-    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
+    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
         exclude(module: 'commons-logging')
     }
 
@@ -323,7 +323,7 @@ dependencies {
     contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
     contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
     contractTestRuntimeOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
-    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
+    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit5
     contractTestRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit5
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit5
