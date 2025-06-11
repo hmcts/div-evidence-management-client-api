@@ -2,15 +2,11 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 
 buildscript {
     ext {
-        springBootVersion = '2.7.14'
+        springBootVersion = '2.7.18'
         springCloudBomVersion = "2021.0.8"
     }
     repositories {
         mavenLocal()
-        mavenCentral()
-        jcenter()
-
-        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath('info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0') {
@@ -29,51 +25,50 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'info.solidsoft.pitest' version '1.9.11'
     id 'org.owasp.dependencycheck' version '8.0.2'
-    id 'org.sonarqube' version '3.2.0'
-    id 'org.springframework.boot' version '2.7.14'
+    id 'org.sonarqube' version '5.1.0.4882'
+    id 'org.springframework.boot' version '2.7.18'
     id 'au.com.dius.pact' version '4.1.0'
     id 'com.github.ben-manes.versions' version '0.51.0'
-    id 'uk.gov.hmcts.java' version '0.12.27'
+    id 'uk.gov.hmcts.java' version '0.12.65'
 }
 
-
-
 def versions = [
-        bouncycastle                            : '1.61',
-        commonsIo                               : '2.7',
-        commonsLang3                            : '3.9',
-        guava                                   : '32.1.2-jre',
-        hibernate                               : '6.0.17.Final',
-        httpComponents                          : '4.5.13',
-        jacksonCore                             : '2.13.2',
-        jacksonDatabind                         : '2.13.2',
-        javaxValidation                         : '2.0.0.Final',
-        jaywayJsonPath                          : '2.4.0',
-        jsr305                                  : '3.0.2',
-        junit                                   : '4.13.2',
-        junit5                                  : '5.9.3',
-        lombok                                  : '1.18.30',
-        logbackVersion                          : '1.2.10',
-        pact_version                            : '4.1.7',
-        puppyCrawl                              : '8.29',
-        reformPropertiesVolume                  : '0.0.4',
-        reformsJavaLogging                      : '5.1.7',
-        restAssured                             : '4.2.1',
-        serenity                                : '2.5.8',
-        serenityCucumber                        : '1.9.51',
-        serviceTokenGenerator                   : '3.0.0',
-        skyscreamer                             : '1.2.3',
-        springBoot                              : '2.7.17',
-        springCloud                             : '2021.0.8',
-        springDoc                               : '1.6.9',
-        springHateoas                           : '0.25.2.RELEASE',
-        springPluginCore                        : '1.2.0.RELEASE',
-        springRetry                             : '1.2.5.RELEASE',
-        springSecurityCrypto                    : '6.2.1',
-        spring_security_rsa                     : '1.1.0',
-        tomcat                                  : '9.0.80',
-        unirestJava                             : '1.4.9',
-        wiremockVersion                         : '2.27.2'
+    bouncycastle                            : '1.70',
+    commonsIo                               : '2.15.0',
+    commonsLang3                            : '3.13.0',
+    guava                                   : '33.4.8-jre',
+    hibernate                               : '6.0.17.Final',
+    httpComponents                          : '4.5.14',
+    jacksonCore                             : '2.18.3',
+    jacksonDatabind                         : '2.18.3',
+    javaxValidation                         : '2.0.0.Final',
+    jaywayJsonPath                          : '2.4.0',
+    jsr305                                  : '3.0.2',
+    junit                                   : '4.13.2',
+    junit5                                  : '5.10.1',
+    lombok                                  : '1.18.30',
+    logbackVersion                          : '1.2.10',
+    pact_version                            : '4.1.7',
+    puppyCrawl                              : '8.45.1',
+    reformPropertiesVolume                  : '0.1.0',
+    reformLogging                      : '6.1.9',
+    apacheLogging                           : '2.17.1',
+    restAssured                             : '4.5.1',
+    serenity                                : '2.6.0',
+    serenityCucumber                        : '1.9.51',
+    serviceTokenGenerator                   : '3.1.4',
+    skyscreamer                             : '1.2.3',
+    springBoot                              : '2.7.18',
+    springCloud                             : '2021.0.8',
+    springDoc                               : '1.7.0',
+    springHateoas                           : '0.25.2.RELEASE',
+    springPluginCore                        : '1.2.0.RELEASE',
+    springRetry                             : '1.2.5.RELEASE',
+    springSecurityCrypto                    : '5.8.8',
+    spring_security_rsa                     : '1.1.1',
+    tomcat                                  : '9.0.104',
+    unirestJava                             : '1.4.9',
+    wiremockVersion                         : '2.27.2'
 ]
 
 apply plugin: 'checkstyle'
@@ -86,7 +81,6 @@ apply plugin: 'net.serenity-bdd.aggregator'
 
 group = 'uk.gov.hmcts.reform.divorce'
 version = '3.0.0'
-
 
 java {
     toolchain {
@@ -171,11 +165,7 @@ configurations {
 
 repositories {
     mavenLocal()
-    jcenter()
-    mavenCentral()
-
-    maven { url "https://jitpack.io" }
-    maven { url "https://repo.maven.apache.org/maven2" }
+    maven { url 'https://pkgs.dev.azure.com/hmcts/Artifacts/_packaging/hmcts-lib/maven/v1' }
 }
 
 dependencyManagement {
@@ -184,19 +174,12 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudBomVersion}"
     }
     dependencies {
-
         dependency group: 'com.netflix.servo',name: 'servo-core', version: '0.13.2'
 
         dependency group: 'org.glassfish', name: 'jakarta.el', version: '3.0.4'
 
-        //CVE-2021-44228, CVE-2021-44832, CVE-2021-45046, CVE-2021-45105
-        dependencySet(group: 'org.apache.logging.log4j', version: '2.17.1') {
-            entry 'log4j-api'
-            entry 'log4j-to-slf4j'
-        }
-
         //CVE-2022-22965
-        dependencySet(group: 'org.springframework', version: '5.3.30') {
+        dependencySet(group: 'org.springframework', version: '5.3.39') {
             entry 'spring-aop'
             entry 'spring-context'
             entry 'spring-context-support'
@@ -213,16 +196,6 @@ dependencyManagement {
         }
     }
 
-}
-
-distributions {
-  main {
-    contents {
-      from(file("$projectDir/lib/AI-Agent.xml")) {
-        into "lib"
-      }
-    }
-  }
 }
 
 tasks.withType(JavaCompile) {
@@ -245,10 +218,11 @@ pitest {
 }
 
 checkstyle {
+    ignoreFailures = true
     maxWarnings = 0
-    toolVersion = '8.29'
+    toolVersion = '10.25.0'
     // need to set configDir to rootDir otherwise submodule will use submodule/config/checkstyle
-    configFile = new File(rootDir, "checkstyle.xml")
+    getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
@@ -283,9 +257,8 @@ dependencies {
     integrationTestImplementation group: 'org.apache.commons', name: 'commons-lang3', version: versions.commonsLang3
     integrationTestImplementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     integrationTestImplementation group: 'org.skyscreamer', name:'jsonassert', version: versions.skyscreamer
-    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
-    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.sprintBoot
-    integrationTestImplementation group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
+    integrationTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-web' , version: versions.springBoot
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonCore
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -315,44 +288,31 @@ dependencies {
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: versions.httpComponents
     implementation group: 'org.apache.httpcomponents', name: 'fluent-hc', version: versions.httpComponents
 
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLogging
-    implementation (group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLogging){
-        exclude group: 'org.apache.httpcomponents', 'module': 'httpclient'
-    }
-    implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLogging
-    implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: versions.reformPropertiesVolume
+    implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
+    implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: '4.0.3'
+
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: versions.apacheLogging
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: versions.apacheLogging
 
     implementation "com.google.guava:guava:${versions.guava}"
     implementation "org.apache.tomcat.embed:tomcat-embed-core:${versions.tomcat}"
     implementation "org.apache.tomcat.embed:tomcat-embed-websocket:${versions.tomcat}"
     implementation "org.apache.tomcat.embed:tomcat-embed-el:${versions.tomcat}"
 
-    implementation group: 'ch.qos.logback', name: 'logback-classic', version: versions.logbackVersion
-    implementation group: 'ch.qos.logback', name: 'logback-core', version: versions.logbackVersion
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
 
     implementation "org.springframework.security:spring-security-rsa:${versions.spring_security_rsa}"
     implementation "org.springframework.security:spring-security-crypto:${versions.springSecurityCrypto}"
 
-    implementation (group: 'uk.gov.hmcts.reform', name:'service-auth-provider-client', version: versions.serviceTokenGenerator){
-        exclude group: 'io.reactivex', module: 'io.reactivex'
-        exclude group: 'io.reactivex', module: 'rxnetty'
-        exclude group: 'io.reactivex', module: 'rxnetty-contexts'
-        exclude group: 'io.reactivex', module: 'rxnetty-servo'
-    }
-
     implementation("org.projectlombok:lombok:${versions.lombok}")
 
-
     testImplementation group: 'com.github.tomakehurst', name:'wiremock', version: versions.wiremockVersion
-    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot) {
+    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot) {
         exclude(module: 'commons-logging')
     }
-    testImplementation 'com.github.hmcts:fortify-client:1.2.0:all'
 
     testImplementation("org.projectlombok:lombok:${versions.lombok}")
-    testImplementation('com.github.hmcts:fortify-client:1.2.0:all')
-
+    testImplementation('com.github.hmcts:fortify-client:1.4.9:all')
 
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
@@ -363,7 +323,7 @@ dependencies {
     contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
     contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
     contractTestRuntimeOnly group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
-    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.sprintBoot
+    contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit5
     contractTestRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit5
     contractTestImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit5
@@ -433,11 +393,12 @@ task developAddReleaseSuffix() {
 }
 
 jacocoTestReport {
-    dependsOn test
+    executionData(test)
 
     reports {
-        xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-        html.destination file("${buildDir}/reports/jacoco/test/html")
+        xml.required = true
+        html.required = true
+        xml.outputLocation = file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
@@ -469,11 +430,10 @@ sonarqube {
     properties {
         property "sonar.projectKey", "DivorceEvidenceManagementClientApi"
         property "sonar.projectName", "Divorce :: Evidence Management Client API"
-        property "sonar.exclusions", sonarExclusions.join(", ")
-        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
+        property "sonar.exclusions", "src/main/java/**,"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.outputLocation.get()}"
         property "sonar.pitest.mode", "reuseReport"
         property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-
     }
 }
 

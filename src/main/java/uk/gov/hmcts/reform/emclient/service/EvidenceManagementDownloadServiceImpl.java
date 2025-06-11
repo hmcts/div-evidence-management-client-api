@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.emclient.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ public class EvidenceManagementDownloadServiceImpl implements EvidenceManagement
     @Value("${evidence.management.upload.file.url}")
     private String evidenceManagementStoreUrl;
 
+    @Qualifier("restTemplate")
     @Autowired
     private RestTemplate template;
 

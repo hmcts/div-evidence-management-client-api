@@ -526,4 +526,21 @@
         <packageUrl regex="true">^pkg:maven/org\.seleniumhq\.selenium/selenium-support@4\.1\.4$</packageUrl>
         <cve>CVE-2023-5590</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2023-6378</cve>
+    </suppress>
+    <suppress>
+        <cve>CVE-2023-6481</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[Suppression for CVE-2024-38820]]></notes>
+        <cve>CVE-2024-38820</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-beans-5.3.31.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-beans@.*$</packageUrl>
+        <cve>CVE-2024-22259</cve>
+    </suppress>
 </suppressions>

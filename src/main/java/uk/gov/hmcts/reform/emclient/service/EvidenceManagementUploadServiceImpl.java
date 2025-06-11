@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.hateoas.hal.HalLinkDiscoverer;
 import org.springframework.http.HttpEntity;
@@ -37,6 +38,7 @@ public class EvidenceManagementUploadServiceImpl implements EvidenceManagementUp
     @Value("${evidence.management.store.upload.file.url}")
     private String evidenceManagementStoreUrl;
 
+    @Qualifier("restTemplate")
     @Autowired
     private RestTemplate template;
 
