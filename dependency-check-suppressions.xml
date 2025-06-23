@@ -543,4 +543,11 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring-beans@.*$</packageUrl>
         <cve>CVE-2024-22259</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-beans-5.3.31.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-beans@.*$</packageUrl>
+        <cve>CVE-2024-38808</cve>
+    </suppress>
 </suppressions>
